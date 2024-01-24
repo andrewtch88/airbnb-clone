@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String?
+  email String? @unique
+  emailVerified DateTime?
+  image String?
+  hashedPassword String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  favouriteIds String[] @db.ObjectId
+
+  accounts Account[] // one to many (a user can have multiple accounts, etc)
+  listings Listing[] // ''
+  reservations Reservation[] // ''
+}
+
+// OAuth
+model Account {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  type String
+  provider String
+  providerAccountId String
+  refresh_token String? @db.String
+  access_token String? @db.String
+  expires_at Int?
+  token_type String?
+  scope String?
+  id_token String? @db.String
+  session_state String?
+
+  // relation of this Model's userId references User's id (store User's id in Account's userId)
+  // many to one relationship - accounts belongs to one user
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade) // cascasde means referenced record is deleted also
+
+  @@unique([provider, providerAccountId])
+}
+
+model Listing {
+  id String @id @default(auto()) @map("_id") @db.ObjectId // @id means PK
+  title String
+  description String
+  imageSrc String[]
+  createdAt DateTime @default(now())
+  category String
+  roomCount Int
+  bathroomCount Int
+  guestCount Int
+  locationValue String
+  userId String @db.ObjectId
+  price Int
+  address String
+
+  // many to one - multiple listings belongs to one user (store User's id in Listing's userId)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // relation, one to many (a listing can have multiple reservations)
+  reservations Reservation[]
+}
+
+model Reservation {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  listingId String @db.ObjectId
+  startDate DateTime
+  endDate DateTime
+  totalPrice Int
+  createdAt DateTime @default(now())
+  
+  // many to one - multiple reservations belongs to one user (store User's id in Reservation's userId)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // many to one - multiple reservations belongs to one user (store Listing's listingId in Reservation's listingId)
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
