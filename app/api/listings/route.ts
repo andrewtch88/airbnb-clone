@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/app/libs/prismadb'
 import getCurrentUser from '@/app/actions/getCurrentUser'
+import countries from 'i18n-iso-countries'
+import enLocale from 'i18n-iso-countries/langs/en.json'
+import useCountries from '@/app/hooks/useCountries'
 
 // API to post a property listing
 export async function POST(request: Request) {
@@ -37,8 +40,20 @@ export async function POST(request: Request) {
     )
   }
 
+  countries.registerLocale(enLocale)
+  const { getByValue } = useCountries()
+
+  const getRegionByCountryName = (countryName: string) => {
+    const location = countries.getAlpha2Code(countryName, 'en')
+    const country = getByValue(location as string)
+
+    return country?.region || 'Region not found'
+  }
+
   const addressArray = address.split(', ')
   const country = addressArray[addressArray.length - 1]
+  const continent = getRegionByCountryName(country)
+  const region = continent + ', ' + country
 
   const listing = await prisma.listing.create({
     data: {
@@ -49,7 +64,7 @@ export async function POST(request: Request) {
       roomCount,
       bathroomCount,
       guestCount,
-      locationValue: country,
+      region: region,
       address,
       price: parseInt(price, 10),
       userId: currentUser.id,

@@ -1,29 +1,61 @@
-import { useRef } from 'react'
-import { StandaloneSearchBox, LoadScript } from '@react-google-maps/api'
+import { useMemo, useRef, useState } from 'react'
+import { StandaloneSearchBox, useJsApiLoader } from '@react-google-maps/api'
+import type { Libraries } from '@googlemaps/js-api-loader'
+import dynamic from 'next/dynamic'
 
-// google places autocomplete (search places results suggestions)
-const PlacesAutocomplete = () => {
-  const inputRef = useRef()
+interface ContainerProps {
+  children: React.ReactNode
+  noMapOnSmallScreens?: boolean
+}
+
+const PlacesAutocomplete: React.FC<ContainerProps> = ({
+  children,
+  noMapOnSmallScreens,
+}) => {
+  const [address, setAddress] = useState('Malaysia')
+
+  const Map = useMemo(() => dynamic(() => import('./Map'), { ssr: false }), [
+    address,
+  ])
+
+  const inputRef = useRef(null)
 
   const handlePlaceChanged = () => {
     const [place] = inputRef.current.getPlaces()
     if (place) {
-      console.log(place.formatted_address)
+      setAddress(place.formatted_address)
     }
   }
 
+  const libraries = useRef<Libraries>(['places'])
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GMAP_PLACES_API_KEY as string,
+    libraries: libraries.current,
+  })
+
+  if (!isLoaded) {
+    return null // or return a loading indicator or fallback
+  }
+
   return (
-    <LoadScript
-      googleMapsApiKey={process.env.NEXT_PUBLIC_GMAP_PLACES_API_KEY as string}
-      libraries={['places']}
-    >
+    <>
       <StandaloneSearchBox
         onPlacesChanged={handlePlaceChanged}
         onLoad={(ref) => (inputRef.current = ref)}
       >
-        <input type="text" placeholder="Enter property location" />
+        <div className="mt-[-30px]">{children}</div>
       </StandaloneSearchBox>
-    </LoadScript>
+
+      {noMapOnSmallScreens ? (
+        <div className="hidden sm:block">
+          <Map address={address} zoomIn={true} showLocationTips={false} />
+        </div>
+      ) : (
+        <Map address={address} zoomIn={true} showLocationTips={false} />
+      )}
+    </>
   )
 }
 

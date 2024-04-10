@@ -6,10 +6,8 @@ import {
   MapContainer,
   TileLayer,
   Marker,
-  Popup,
   CircleMarker,
   Tooltip,
-  useMap,
 } from 'react-leaflet'
 
 import 'leaflet/dist/leaflet.css'
@@ -17,7 +15,7 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 
-import { geocode, setKey, fromAddress } from 'react-geocode'
+import { setKey, fromAddress } from 'react-geocode'
 import RecenterMap from './RecenterMap'
 
 setKey(process.env.NEXT_PUBLIC_GMAP_GEOCODING_API_KEY as string)
@@ -37,7 +35,12 @@ interface MapProps {
   zoomIn?: boolean
 }
 
-const Map: React.FC<MapProps> = ({ address, showLocationTips, zoomIn }) => {
+const Map: React.FC<MapProps> = ({
+  center,
+  address,
+  showLocationTips,
+  zoomIn,
+}) => {
   const [coordinates, setCoordinates] = useState<LatLngExpression | null>(null)
 
   const calculateZoom = () => {

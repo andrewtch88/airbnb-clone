@@ -58,7 +58,7 @@ model Listing {
   roomCount Int
   bathroomCount Int
   guestCount Int
-  locationValue String
+  region String
   userId String @db.ObjectId
   price Int
   address String
@@ -78,9 +78,40 @@ model Reservation {
   endDate DateTime
   totalPrice Int
   createdAt DateTime @default(now())
+  isPaid Boolean @default(false)
   
   // many to one - multiple reservations belongs to one user (store User's id in Reservation's userId)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   // many to one - multiple reservations belongs to one user (store Listing's listingId in Reservation's listingId)
   listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
 }
+
+// model ReservationPayment {
+
+// }
+
+// model Order {
+//   id        String    @id @default(uuid())
+//   storeId     String    // Foreign Key to Store
+//   store       Store     @relation("StoreToOrder", fields: [storeId], references: [id])
+//   orderItems OrderItem[] // Relation to OrderItem model
+//   isPaid     Boolean   @default(false)
+//   phone      String    @default("")
+//   address    String    @default("")
+//   createdAt DateTime  @default(now())
+//   updatedAt DateTime  @updatedAt
+
+//   @@index([storeId])
+// }
+
+// // Intermediary for a many-to-many relationship
+// model OrderItem {
+//   id        String  @id @default(uuid())
+//   orderId   String  // Foreign Key to Order
+//   order     Order   @relation(fields: [orderId], references: [id])
+//   productId String  // Foreign Key to Product
+//   product   Product @relation(fields: [productId], references: [id])
+
+//   @@index([orderId])
+//   @@index([productId])
+// }

@@ -6,12 +6,11 @@ import RegisterModal from './components/modals/RegisterModal'
 import LoginModal from './components/modals/LoginModal'
 import ToasterProvider from './providers/ToasterProvider'
 import getCurrentUser from './actions/getCurrentUser'
-import Head from 'next/head'
 import RentModal from './components/modals/RentModal'
 
 // root layout file of the application
 export const metadata: Metadata = {
-  title: 'Airbnb',
+  title: 'Bearbnb',
   description: 'Airbnb clone',
   icons: {
     icon: '/airbnb.ico',

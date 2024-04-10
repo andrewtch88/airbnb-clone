@@ -9,13 +9,13 @@ interface FavoritesClientProps {
   currentUser?: SafeUser | null
 }
 
-const FavoritesClient: React.FC<FavoritesClientProps> = ({
+const FavouritesClient: React.FC<FavoritesClientProps> = ({
   favouritedListings,
   currentUser,
 }) => {
   return (
     <Container>
-      <Heading title="Favorites" subtitle="List of places you favorited!" />
+      <Heading title="Favorites" subtitle="List of places you favourited!" />
       <div
         className="
           mt-10
@@ -41,4 +41,4 @@ const FavoritesClient: React.FC<FavoritesClientProps> = ({
   )
 }
 
-export default FavoritesClient
+export default FavouritesClient

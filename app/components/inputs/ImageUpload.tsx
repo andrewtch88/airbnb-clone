@@ -34,7 +34,7 @@ const ImageUpload: FC<ImageUploadProps> = ({ onChange, value }) => {
       {({ open }) => {
         return (
           <div
-            onClick={() => open?.()}
+            onClick={() => open()}
             className="
               relative cursor-pointer hover:opacity-70 transition border-dashed border-2
               border-neutral-300 flex flex-col text-neutral-600 mt-[-30px]"

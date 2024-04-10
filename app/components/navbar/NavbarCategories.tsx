@@ -4,14 +4,14 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback } from 'react'
 import qs from 'query-string'
 
-// this component is used for clicking categories and updating the url search parameters
-interface CategoryBoxProps {
+// this component is used for handling clicking categories and updating the url search parameters
+interface NavbarCategoriesProps {
   icon: IconType
   label: string
   selected?: boolean
 }
 
-const CategoryBox: React.FC<CategoryBoxProps> = ({
+const NavbarCategories: React.FC<NavbarCategoriesProps> = ({
   icon: Icon,
   label,
   selected,
@@ -32,7 +32,7 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
     }
 
     if (params?.get('category') === label) {
-      delete updatedQuery.category // toggle on off category when clicking the same category
+      delete updatedQuery.category // when clicking the same category again, delete the parameter
     }
 
     const url = qs.stringifyUrl(
@@ -60,4 +60,4 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
   )
 }
 
-export default CategoryBox
+export default NavbarCategories

@@ -5,14 +5,10 @@ import useRentModal from '@/app/hooks/useRentModal'
 import { useMemo, useState } from 'react'
 import Heading from '../Heading'
 import { categories } from '../navbar/Categories' // this imports the categories array instead of the Categories component
-import CategoryInput from '../inputs/CategoryInput'
+import ButtonInput from '../inputs/ButtonInput'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import Input from '../inputs/Input'
-import dynamic from 'next/dynamic'
 import PlacesAutocomplete from '../PlacesAutocomplete'
-import { useRef } from 'react'
-import { StandaloneSearchBox, useJsApiLoader } from '@react-google-maps/api'
-import type { Libraries } from '@googlemaps/js-api-loader'
 import Counter from '../inputs/Counter'
 import ImageUpload from '../inputs/ImageUpload'
 import axios from 'axios'
@@ -36,7 +32,6 @@ const RentModal = () => {
 
   const [step, setStep] = useState(STEPS.CATEGORY)
   const [isLoading, setIsLoading] = useState(false)
-  const [address, setAddress] = useState('Malaysia')
 
   const {
     register,
@@ -55,25 +50,21 @@ const RentModal = () => {
       bathroomCount: 1,
       guestCount: 1,
       address: '',
-      price: 1,
+      price: 1, // form fields' default values
     },
   })
 
-  // normally use register to get form values, but now using custom UI, so use watch instead
+  // normally use register to get form values, but now using custom UI, so watch is used to read current input value
   const category = watch('category')
   const guestCount = watch('guestCount') // these variables defaultValues take from the useForm<FieldValues> on above
   const roomCount = watch('roomCount')
   const bathroomCount = watch('bathroomCount')
   const imageSrc = watch('imageSrc')
 
-  const Map = useMemo(() => dynamic(() => import('../Map'), { ssr: false }), [
-    address,
-  ])
-
-  // a function that remembers the form input, really nice!
+  // a function that remembers the form input, really nice! (updating form field value)
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
-      shouldDirty: true, // marked as user interacted
+      shouldDirty: true, // field value changed
       shouldTouch: true, // user has interacted with the field, for handling validation messages or styles
       shouldValidate: true,
     })
@@ -86,15 +77,14 @@ const RentModal = () => {
 
     setIsLoading(true)
 
-    // TODO: send the data to API
     axios
       .post('/api/listings', data)
       .then(() => {
         toast.success('Listing created!')
-        router.refresh()
         reset()
         setStep(STEPS.CATEGORY)
         rentModal.onClose()
+        router.push('/myProperties')
       })
       .catch((error) => {
         if (error.response?.data?.error) {
@@ -141,7 +131,7 @@ const RentModal = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto">
         {categories.map((item) => (
           <div key={item.label} className="col-span-1">
-            <CategoryInput
+            <ButtonInput
               // value of category passed into SetCustomValue
               selected={category === item.label}
               onClick={(category) => setCustomValue('category', category)}
@@ -154,23 +144,6 @@ const RentModal = () => {
     </div>
   )
 
-  const inputRef = useRef()
-
-  const handlePlaceChanged = () => {
-    const [place] = inputRef.current.getPlaces()
-    if (place) {
-      setAddress(place.formatted_address)
-    }
-  }
-
-  const libraries = useRef<Libraries>(['places'])
-
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GMAP_PLACES_API_KEY as string,
-    libraries: libraries.current,
-  })
-
   if (step === STEPS.LOCATION) {
     bodyContent = (
       <div className="flex flex-col gap-8">
@@ -178,26 +151,16 @@ const RentModal = () => {
           title="Where is your place located?"
           subtitle="Your address is only shared with guests after they've reserved"
         />
-        {/* <PlacesAutocomplete /> */}
-
-        {isLoaded && (
-          <StandaloneSearchBox
-            onPlacesChanged={handlePlaceChanged}
-            onLoad={(ref) => (inputRef.current = ref)}
-          >
-            <div className="mt-[-30px]">
-              <Input
-                id="address"
-                label="Enter property location"
-                disabled={isLoading}
-                register={register}
-                errors={errors}
-                required
-              />
-            </div>
-          </StandaloneSearchBox>
-        )}
-        <Map address={address} zoomIn={false} showLocationTips={false} />
+        <PlacesAutocomplete>
+          <Input
+            id="address"
+            label="Where"
+            disabled={isLoading}
+            register={register}
+            errors={errors}
+            required
+          />
+        </PlacesAutocomplete>
       </div>
     )
   }

@@ -2,19 +2,16 @@
 
 import Heading from '@/app/components/Heading'
 import HeartButton from '@/app/components/HeartButton'
-import useCountries from '@/app/hooks/useCountries'
 import { SafeUser } from '@/app/types'
 import Image from 'next/image'
-import countries from 'i18n-iso-countries'
 import ListingGallery from './ListingGallery'
-import enLocale from 'i18n-iso-countries/langs/en.json'
 
 interface ListingHeadProps {
   title: string
   imageSrc: string[]
   id: string
   currentUser?: SafeUser | null
-  locationValue: string
+  region: string
 }
 
 const ListingHead: React.FC<ListingHeadProps> = ({
@@ -22,20 +19,11 @@ const ListingHead: React.FC<ListingHeadProps> = ({
   imageSrc,
   id,
   currentUser,
-  locationValue,
+  region,
 }) => {
-  countries.registerLocale(enLocale)
-  const { getByValue } = useCountries()
-
-  const location = countries.getAlpha2Code(locationValue, 'en')
-  const country = getByValue(location as string)
-
   return (
     <>
-      <Heading
-        title={title}
-        subtitle={`${country?.region}, ${country?.label}`}
-      />
+      <Heading title={title} subtitle={region} />
       <div className="w-full h-[60vh] overflow-hidden rounded-xl relative">
         <Image
           alt="image"

@@ -1,15 +1,14 @@
 'use client'
 import { safeListing, safeReservation, SafeUser } from '@/app/types'
 import { useRouter } from 'next/navigation'
-import useCountries from '@/app/hooks/useCountries'
 import { useCallback, useMemo } from 'react'
 import { format } from 'date-fns'
 import Image from 'next/image'
 import HeartButton from '../HeartButton'
 import Button from '../Button'
-import enLocale from 'i18n-iso-countries/langs/en.json'
-import countries from 'i18n-iso-countries'
 import Avatar from '../Avatar'
+import useConfirmationModal from '@/app/hooks/useConfirmationModal'
+import Modal from '../modals/Modal'
 
 interface ListingCardProps {
   data: safeListing
@@ -30,13 +29,8 @@ const ListingCard: React.FC<ListingCardProps> = ({
   actionLabel,
   currentUser,
 }) => {
+  const confirmationModal = useConfirmationModal()
   const router = useRouter()
-
-  countries.registerLocale(enLocale)
-  const { getByValue } = useCountries()
-
-  const location = countries.getAlpha2Code(data.locationValue, 'en')
-  const country = getByValue(location as string)
 
   // mainly use for cancel reservation
   const handleCancel = useCallback(
@@ -72,48 +66,52 @@ const ListingCard: React.FC<ListingCardProps> = ({
   }, [reservation])
 
   return (
-    <div
-      onClick={() => router.push(`/listings/${data.id}`)}
-      className="col-span-1 cursor-pointer group"
-    >
-      <div className="flex flex-col gap-2 w-full">
-        <div className="aspect-square w-full relative overflow-hidden rounded-xl">
-          <Image
-            alt="listing"
-            src={data.imageSrc[0]}
-            fill
-            className="object-cover h-full w-full group-hover:scale-110 transition select-none"
-            sizes="( min-width: 640px) 640px, 100vw"
-          />
-          <div className="absolute top-3 right-3">
-            <HeartButton listingId={data.id} currentUser={currentUser} />
+    <div className="flex flex-col gap-2 w-full">
+      <div
+        onClick={() => router.push(`/listings/${data.id}`)}
+        className="col-span-1 cursor-pointer group"
+      >
+        <div className="flex flex-col gap-2 w-full">
+          <div className="aspect-square w-full relative overflow-hidden rounded-xl">
+            <Image
+              alt="data"
+              src={data.imageSrc[0]}
+              fill
+              className="object-cover h-full w-full group-hover:scale-110 transition select-none"
+              sizes="( min-width: 640px) 640px, 100vw"
+            />
+            <div className="absolute top-3 right-3">
+              <HeartButton listingId={data.id} currentUser={currentUser} />
+            </div>
+          </div>
+          <div className="font-semibold text-lg">{data.region}</div>
+
+          {reservation && (
+            <>
+              <div className="text-sm font-semibold flex flex-row items-center gap-2">
+                <div>Booked by {reservation.user.name}</div>
+                {<Avatar src={reservation.user?.image} />}
+              </div>
+              <hr />
+            </>
+          )}
+
+          <div className="font-light text-neutral-500">
+            {reservationDate || data.category}
+          </div>
+          <div className="flex flex-row items-center gap-1">
+            <div className="font-semibold">RM{price}</div>
+
+            {/* if is reservation then hide the per night, just display the price in above */}
+
+            {!reservation && <div className="font-light">night</div>}
           </div>
         </div>
-        <div className="font-semibold text-lg">
-          {country?.region}, {country?.label}
-        </div>
+      </div>
 
-        {reservation && (
-          <>
-            <div className="text-sm font-semibold flex flex-row items-center gap-2">
-              <div>Booked by {reservation.user.name}</div>
-              {<Avatar src={reservation.user?.image} />}
-            </div>
-            <hr />
-          </>
-        )}
+      {/* CANCEL BUTTON GROUP*/}
 
-        <div className="font-light text-neutral-500">
-          {reservationDate || data.category}
-        </div>
-        <div className="flex flex-row items-center gap-1">
-          <div className="font-semibold">RM{price}</div>
-
-          {/* if is reservation then hide the per night, just display the price in above */}
-
-          {!reservation && <div className="font-light">night</div>}
-        </div>
-
+      <div className="flex flex-col gap-2 w-full">
         {/* need onAction function and actionLabel to display the action button */}
         {onAction && actionLabel && (
           <Button
@@ -124,6 +122,16 @@ const ListingCard: React.FC<ListingCardProps> = ({
           />
         )}
       </div>
+      {/* 
+      <Modal
+        title={'Are you sure you want to ' + actionLabel + '?'}
+        isOpen={confirmationModal.isOpen}
+        onClose={confirmationModal.onClose}
+        onSubmit={handleCancel}
+        actionLabel="Yes, I'm sure"
+        secondaryActionLabel="No"
+        secondaryAction={confirmationModal.onClose}
+      /> */}
     </div>
   )
 }

@@ -60,7 +60,10 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
         />
       )}
       <hr />
-      <div className="text-lg font-light text-neutral-500">{description}</div>
+      <div style={{ whiteSpace: 'pre-line', overflowWrap: 'anywhere' }}>
+        <div className="text-lg font-light text-neutral-500">{description}</div>
+      </div>
+
       <hr />
       <div className="text-xl font-bold">{"Where you'll be"}</div>
       <div className="font-light text-neutral-500 mt-2">{`${location}`}</div>

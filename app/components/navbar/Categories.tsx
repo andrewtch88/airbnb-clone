@@ -5,7 +5,7 @@ import { TbBeach, TbMountain, TbPool } from 'react-icons/tb'
 import { FaSkiing } from 'react-icons/fa'
 import { MdOutlineVilla } from 'react-icons/md'
 import { GiBoatFishing, GiForestCamp } from 'react-icons/gi'
-import CategoryBox from './CategoryBox'
+import NavbarCategories from './NavbarCategories'
 import { usePathname, useSearchParams } from 'next/navigation'
 
 export const categories = [
@@ -69,7 +69,7 @@ const Categories = () => {
         overflow-x-auto"
       >
         {categories.map((item) => (
-          <CategoryBox
+          <NavbarCategories
             key={item.label}
             label={item.label}
             icon={item.icon}

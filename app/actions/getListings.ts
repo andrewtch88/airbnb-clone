@@ -9,7 +9,8 @@ export interface IListingsParams {
   bathroomCount?: number
   startDate?: string
   endDate?: string
-  locationValue?: string
+  region?: string
+  address?: string
   category?: string
 }
 
@@ -20,10 +21,11 @@ export default async function getListings(params: IListingsParams) {
       roomCount,
       guestCount,
       bathroomCount,
-      locationValue,
+      region,
       startDate,
       endDate,
       category,
+      address,
     } = params
 
     let query: any = {}
@@ -38,7 +40,7 @@ export default async function getListings(params: IListingsParams) {
 
     if (roomCount) {
       query.roomCount = {
-        gte: +roomCount,
+        gte: +roomCount, // gte = greater than or equal
       }
     }
 
@@ -50,13 +52,23 @@ export default async function getListings(params: IListingsParams) {
 
     if (bathroomCount) {
       query.bathroomCount = {
-        gte: +bathroomCount,
+        gte: +bathroomCount, // bathroomCount: { gte: 2 }
       }
     }
 
-    if (locationValue) {
-      query.locationValue = locationValue
+    if (address) {
+      query.address = {
+        contains: address, // Case-insensitive search
+      }
     }
+
+    if (region) {
+      query.region = {
+        contains: region,
+      }
+    }
+
+    // [ { endDate: [Object], startDate: [Object] }, { startDate: [Object], endDate: [Object] } ]
 
     if (startDate && endDate) {
       query.NOT = {
@@ -91,6 +103,6 @@ export default async function getListings(params: IListingsParams) {
 
     return safeListing
   } catch (error) {
-    throw new Error(error)
+    throw new Error(typeof error === 'string' ? error : String(error))
   }
 }

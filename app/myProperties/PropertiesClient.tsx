@@ -24,7 +24,7 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
   const router = useRouter()
   const [deletingId, setDeletingId] = useState('')
 
-  const onCancel = useCallback(
+  const onDelete = useCallback(
     // id retrieve from key prop, that's why react force to use key prop
     (id: string) => {
       setDeletingId(id)
@@ -57,9 +57,9 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
             key={listing.id}
             data={listing}
             actionId={listing.id}
-            // When action (onCancel) is triggered, onCancel is called with actionId as argument.
+            // When action (onDelete) is triggered, onDelete is called with actionId as argument.
             // The actionId is used to identify which reservation should be canceled.
-            onAction={onCancel}
+            onAction={onDelete}
             disabled={deletingId === listing.id}
             actionLabel="Delete property"
             currentUser={currentUser}

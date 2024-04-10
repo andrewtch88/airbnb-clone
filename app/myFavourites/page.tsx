@@ -3,7 +3,7 @@ import EmptyState from '@/app/components/EmptyState'
 import getCurrentUser from '@/app/actions/getCurrentUser'
 import getFavoriteListings from '@/app/actions/getFavoriteListings'
 
-import FavoritesClient from './FavoritesClient'
+import FavouritesClient from './FavouritesClient'
 
 const ListingPage = async () => {
   const currentUser = await getCurrentUser()
@@ -29,7 +29,7 @@ const ListingPage = async () => {
   }
 
   return (
-    <FavoritesClient favouritedListings={listings} currentUser={currentUser} />
+    <FavouritesClient favouritedListings={listings} currentUser={currentUser} />
   )
 }
 
