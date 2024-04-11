@@ -8,40 +8,45 @@ import { GiBoatFishing, GiForestCamp } from 'react-icons/gi'
 import NavbarCategories from './NavbarCategories'
 import { usePathname, useSearchParams } from 'next/navigation'
 
+const convertIconToNode = (IconType: any): React.ReactNode => {
+  // Assuming IconType is a React component
+  return <IconType />
+}
+
 export const categories = [
   {
     label: 'Beach',
-    icon: TbBeach,
+    icon: convertIconToNode(TbBeach),
     description: 'This property is close to the beach!',
   },
   {
     label: 'Modern',
-    icon: MdOutlineVilla,
+    icon: convertIconToNode(MdOutlineVilla),
     description: 'This property is modern!',
   },
   {
     label: 'Countryside',
-    icon: TbMountain,
+    icon: convertIconToNode(TbMountain),
     description: 'This property is in the countryside!',
   },
   {
     label: 'Pools',
-    icon: TbPool,
+    icon: convertIconToNode(TbPool),
     description: 'This is property has a beautiful pool!',
   },
   {
     label: 'Lake',
-    icon: GiBoatFishing,
+    icon: convertIconToNode(GiBoatFishing),
     description: 'This property is near a lake!',
   },
   {
     label: 'Skiing',
-    icon: FaSkiing,
+    icon: convertIconToNode(FaSkiing),
     description: 'This property has skiing activities!',
   },
   {
     label: 'Camping',
-    icon: GiForestCamp,
+    icon: convertIconToNode(GiForestCamp),
     description: 'This property offers camping activities!',
   },
 ]

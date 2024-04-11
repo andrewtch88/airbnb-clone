@@ -12,7 +12,7 @@ interface ListingInfoProps {
   category:
     | {
         label: string
-        icon: IconType
+        icon: React.ReactNode
         description: string
       }
     | undefined // two possible types | | , object or undefined for category

@@ -6,13 +6,13 @@ import qs from 'query-string'
 
 // this component is used for handling clicking categories and updating the url search parameters
 interface NavbarCategoriesProps {
-  icon: IconType
+  icon: React.ReactNode
   label: string
   selected?: boolean
 }
 
 const NavbarCategories: React.FC<NavbarCategoriesProps> = ({
-  icon: Icon,
+  icon,
   label,
   selected,
 }) => {
@@ -54,7 +54,7 @@ const NavbarCategories: React.FC<NavbarCategoriesProps> = ({
         ${selected ? 'text-neutral-800' : 'text-neutral-500'}
       `}
     >
-      <Icon size={26} />
+      <div className="text-3xl">{icon}</div>
       <div className="font-medium text-sm select-none">{label}</div>
     </div>
   )

@@ -14,6 +14,7 @@ import ImageUpload from '../inputs/ImageUpload'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
+import TextArea from '../inputs/TextArea'
 
 // modal form for renting a home on Bearbnb
 
@@ -226,7 +227,7 @@ const RentModal = () => {
           required
         />
         <hr />
-        <Input
+        <TextArea
           id="description"
           label="Description"
           disabled={isLoading}

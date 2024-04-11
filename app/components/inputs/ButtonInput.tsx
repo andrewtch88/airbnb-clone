@@ -16,7 +16,7 @@ interface ButtonInputProps {
   onClick: (value: string) => void
   selected: boolean
   label?: string
-  icon?: IconType
+  icon?: React.ReactNode
   description?: string
   imageUrl?: string
   squared?: boolean
@@ -25,7 +25,7 @@ interface ButtonInputProps {
 
 const ButtonInput: React.FC<ButtonInputProps> = ({
   label,
-  icon: Icon,
+  icon,
   onClick,
   selected,
   description,
@@ -50,7 +50,7 @@ const ButtonInput: React.FC<ButtonInputProps> = ({
         ${selected ? 'border-black' : 'border-neutral-200'}`}
         style={style}
       >
-        {Icon && <Icon size={30} />}
+        <div className="text-4xl">{icon}</div>
         <img src={imageUrl} className="object-cover w-full h-full rounded-md" />
         <div className="font-semilight">{label}</div>
       </div>

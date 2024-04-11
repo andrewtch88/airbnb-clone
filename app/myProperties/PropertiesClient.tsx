@@ -10,6 +10,7 @@ import { safeListing, SafeUser } from '@/app/types'
 import Heading from '@/app/components/Heading'
 import Container from '@/app/components/Container'
 import ListingCard from '@/app/components/listings/ListingCard'
+import useEditModal from '@/app/hooks/useEditModal'
 
 // trips listings card page
 interface PropertiesClientProps {
@@ -23,6 +24,7 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
 }) => {
   const router = useRouter()
   const [deletingId, setDeletingId] = useState('')
+  const editModal = useEditModal()
 
   const onDelete = useCallback(
     // id retrieve from key prop, that's why react force to use key prop
@@ -45,6 +47,10 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
     [router]
   )
 
+  const toggleEditModal = useCallback(() => {
+    editModal.onOpen()
+  }, [editModal])
+
   return (
     <Container>
       <Heading title="Properties" subtitle="List of your gorgeous properties" />
@@ -62,6 +68,8 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
             onAction={onDelete}
             disabled={deletingId === listing.id}
             actionLabel="Delete property"
+            secondaryActionLabel="Edit property"
+            secondaryAction={toggleEditModal}
             currentUser={currentUser}
           />
         ))}

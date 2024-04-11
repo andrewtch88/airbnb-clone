@@ -7,8 +7,6 @@ import Image from 'next/image'
 import HeartButton from '../HeartButton'
 import Button from '../Button'
 import Avatar from '../Avatar'
-import useConfirmationModal from '@/app/hooks/useConfirmationModal'
-import Modal from '../modals/Modal'
 
 interface ListingCardProps {
   data: safeListing
@@ -16,6 +14,8 @@ interface ListingCardProps {
   onAction?: (id: string) => void
   disabled?: boolean // if disabled is true then disable the button
   actionLabel?: string //label for actionButton
+  secondaryActionLabel?: string
+  secondaryAction?: () => void
   actionId?: string // used with onAction to know e.g. deleteId
   currentUser?: SafeUser | null
 }
@@ -27,12 +27,21 @@ const ListingCard: React.FC<ListingCardProps> = ({
   disabled,
   actionId = '',
   actionLabel,
+  secondaryActionLabel,
+  secondaryAction,
   currentUser,
 }) => {
-  const confirmationModal = useConfirmationModal()
   const router = useRouter()
 
-  // mainly use for cancel reservation
+  const handleSecondaryAction = useCallback(() => {
+    if (disabled || !secondaryAction) {
+      return
+    }
+
+    secondaryAction()
+  }, [disabled, secondaryAction])
+
+  // handle the cancellation of an action associated with a listing card
   const handleCancel = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation()
@@ -109,9 +118,17 @@ const ListingCard: React.FC<ListingCardProps> = ({
         </div>
       </div>
 
-      {/* CANCEL BUTTON GROUP*/}
+      {/* BUTTON GROUP*/}
 
       <div className="flex flex-col gap-2 w-full">
+        {secondaryAction && secondaryActionLabel && (
+          <Button
+            outline
+            disabled={disabled}
+            label={secondaryActionLabel}
+            onClick={handleSecondaryAction}
+          />
+        )}
         {/* need onAction function and actionLabel to display the action button */}
         {onAction && actionLabel && (
           <Button
@@ -122,16 +139,6 @@ const ListingCard: React.FC<ListingCardProps> = ({
           />
         )}
       </div>
-      {/* 
-      <Modal
-        title={'Are you sure you want to ' + actionLabel + '?'}
-        isOpen={confirmationModal.isOpen}
-        onClose={confirmationModal.onClose}
-        onSubmit={handleCancel}
-        actionLabel="Yes, I'm sure"
-        secondaryActionLabel="No"
-        secondaryAction={confirmationModal.onClose}
-      /> */}
     </div>
   )
 }
