@@ -15,7 +15,7 @@ interface ListingCardProps {
   disabled?: boolean // if disabled is true then disable the button
   actionLabel?: string //label for actionButton
   secondaryActionLabel?: string
-  secondaryAction?: () => void
+  onSecondaryAction?: (id: string) => void
   actionId?: string // used with onAction to know e.g. deleteId
   currentUser?: SafeUser | null
 }
@@ -28,18 +28,10 @@ const ListingCard: React.FC<ListingCardProps> = ({
   actionId = '',
   actionLabel,
   secondaryActionLabel,
-  secondaryAction,
+  onSecondaryAction,
   currentUser,
 }) => {
   const router = useRouter()
-
-  const handleSecondaryAction = useCallback(() => {
-    if (disabled || !secondaryAction) {
-      return
-    }
-
-    secondaryAction()
-  }, [disabled, secondaryAction])
 
   // handle the cancellation of an action associated with a listing card
   const handleCancel = useCallback(
@@ -49,9 +41,14 @@ const ListingCard: React.FC<ListingCardProps> = ({
       if (disabled) {
         return
       }
-      onAction?.(actionId)
+
+      if (onSecondaryAction) {
+        onSecondaryAction?.(actionId)
+      } else if (onAction) {
+        onAction?.(actionId)
+      }
     },
-    [onAction, actionId, disabled]
+    [onAction, onSecondaryAction, actionId, disabled]
   )
 
   // useMemo returns a memoized value, while useCallback returns a memoized function
@@ -121,12 +118,12 @@ const ListingCard: React.FC<ListingCardProps> = ({
       {/* BUTTON GROUP*/}
 
       <div className="flex flex-col gap-2 w-full">
-        {secondaryAction && secondaryActionLabel && (
+        {onSecondaryAction && secondaryActionLabel && (
           <Button
             outline
             disabled={disabled}
             label={secondaryActionLabel}
-            onClick={handleSecondaryAction}
+            onClick={handleCancel}
           />
         )}
         {/* need onAction function and actionLabel to display the action button */}

@@ -12,6 +12,8 @@ import Container from '@/app/components/Container'
 import ListingCard from '@/app/components/listings/ListingCard'
 import useEditModal from '@/app/hooks/useEditModal'
 
+import getListingById from '@/app/actions/getListingById'
+
 // trips listings card page
 interface PropertiesClientProps {
   listings: safeListing[] // reservation includes listings now
@@ -24,10 +26,11 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
 }) => {
   const router = useRouter()
   const [deletingId, setDeletingId] = useState('')
+  const [editId, setEditId] = useState('')
   const editModal = useEditModal()
 
+  // id retrieve from key prop, that's why react force to use key prop
   const onDelete = useCallback(
-    // id retrieve from key prop, that's why react force to use key prop
     (id: string) => {
       setDeletingId(id)
 
@@ -47,9 +50,21 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
     [router]
   )
 
-  const toggleEditModal = useCallback(() => {
-    editModal.onOpen()
-  }, [editModal])
+  const onToggleEditModal = useCallback(
+    async (id: string) => {
+      try {
+        const listing = await getListingById(id)
+        setEditId(id)
+
+        editModal.onOpen()
+      } catch (error) {
+        toast.error((error as Error).message)
+      } finally {
+        setEditId('')
+      }
+    },
+    [editModal]
+  )
 
   return (
     <Container>
@@ -66,10 +81,10 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
             // When action (onDelete) is triggered, onDelete is called with actionId as argument.
             // The actionId is used to identify which reservation should be canceled.
             onAction={onDelete}
-            disabled={deletingId === listing.id}
             actionLabel="Delete property"
+            disabled={deletingId === listing.id}
             secondaryActionLabel="Edit property"
-            secondaryAction={toggleEditModal}
+            onSecondaryAction={onToggleEditModal}
             currentUser={currentUser}
           />
         ))}

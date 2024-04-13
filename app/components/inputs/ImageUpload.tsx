@@ -24,13 +24,7 @@ const ImageUpload: FC<ImageUploadProps> = ({ onChange, value }) => {
   }
 
   return (
-    <CldUploadWidget
-      onUpload={handleUpload}
-      uploadPreset="chpfnrpy"
-      options={{
-        maxFiles: 6,
-      }}
-    >
+    <CldUploadWidget onUpload={handleUpload} uploadPreset="chpfnrpy">
       {({ open }) => {
         return (
           <div
@@ -40,7 +34,7 @@ const ImageUpload: FC<ImageUploadProps> = ({ onChange, value }) => {
               border-neutral-300 flex flex-col text-neutral-600 mt-[-30px]"
           >
             <div className="font-semibold text-lg font-size-sm">
-              Click here to upload, first image = thumbnail (Max 6 images)
+              Click here to upload, first image = thumbnail
             </div>
             <div className="flex flex-wrap gap-4">
               {Array.isArray(value) &&

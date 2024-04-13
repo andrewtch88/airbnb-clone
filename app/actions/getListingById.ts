@@ -4,10 +4,18 @@ interface IParams {
   listingId?: string
 }
 
-export default async function getListingById(params: IParams) {
+function getListingById(id: string): Promise<any>
+function getListingById(params: IParams): Promise<any>
+async function getListingById(idOrParams: string | IParams) {
   try {
-    // so the value of listingId is extracted from the params object
-    const { listingId } = params
+    let listingId: string | undefined
+
+    if (typeof idOrParams === 'string') {
+      listingId = idOrParams
+    } else {
+      listingId = idOrParams.listingId // url params listingId?='abc123'
+    }
+
     const listing = await prisma.listing.findUnique({
       where: {
         id: listingId,
@@ -36,3 +44,5 @@ export default async function getListingById(params: IParams) {
     throw new Error(error)
   }
 }
+
+export default getListingById

@@ -93,7 +93,8 @@ const Modal: React.FC<ModalProps> = ({
       >
         <div
           className="relative w-full md:w-4/6 lg:w-3/6 xl:w-2/5 my-6 mx-auto h-full
-          lg:h-auto md:h-auto"
+            lg:h-auto md:h-auto overflow-y-auto"
+          style={{ maxHeight: '90vh', maxWidth: '100vw' }}
         >
           {/* CONTENT */}
           <div
@@ -110,7 +111,7 @@ const Modal: React.FC<ModalProps> = ({
               {/* HEADER */}
               <div
                 className="flex items-center p-6 rounded-t justify-center relative 
-                border-b-[1px]"
+                border-b-[1px] sticky top-0 z-10 bg-white"
               >
                 <button
                   onClick={handleClose}
@@ -121,7 +122,7 @@ const Modal: React.FC<ModalProps> = ({
                 <div className="text-lg font-semibold">{title}</div>
               </div>
               {/* BODY */}
-              <div className="relative p-6 flex-auto">{body}</div>
+              <div className="relative p-6 overflow-y-auto">{body}</div>
               {/* FOOTER */}
               <div className="flex flex-col gap-2 p-6">
                 <div className="flex flex-row items-center gap-4 w-full">

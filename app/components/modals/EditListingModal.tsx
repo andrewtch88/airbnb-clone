@@ -15,6 +15,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import CategorySelectOption from '../inputs/CategorySelectOption'
+import TextArea from '../inputs/TextArea'
 
 // modal form to edit property listing
 
@@ -63,12 +64,102 @@ const EditListingModal = () => {
 
   let bodyContent = (
     <>
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh]">
           <Heading title="" subtitle="Accommodation theme / category" />
           <CategorySelectOption
             value={category}
             onChange={(value) => setCustomValue('category', value)}
+          />
+        </div>
+
+        <div>
+          <Heading title="" subtitle="Property Title and Description" />
+          <Input
+            id="title"
+            label="Title"
+            disabled={isLoading}
+            register={register}
+            errors={errors}
+            required
+          />
+          <hr />
+          <TextArea
+            id="description"
+            label="Description"
+            disabled={isLoading}
+            register={register}
+            errors={errors}
+            required
+          />
+        </div>
+
+        <div>
+          <Heading title="" subtitle="Enter property address" />
+        </div>
+        <div>
+          <div className="mt-2">
+            <PlacesAutocomplete>
+              <Input
+                id="address"
+                label="Where"
+                disabled={isLoading}
+                register={register}
+                errors={errors}
+                required
+              />
+            </PlacesAutocomplete>
+          </div>
+        </div>
+
+        <div>
+          <Heading title="" subtitle="Photos of your place" />
+        </div>
+        <div className="mt-[15px]">
+          <ImageUpload
+            value={imageSrc}
+            onChange={(value) => setCustomValue('imageSrc', value)}
+          />
+        </div>
+
+        <div>
+          <Heading title="" subtitle="Amenities of your place" />
+          <hr />
+          <div className="mt-3">
+            <Counter
+              onChange={(value) => setCustomValue('guestCount', value)}
+              value={guestCount}
+              title="Guests"
+              subtitle="Maximum guests"
+            />
+            <hr />
+            <Counter
+              onChange={(value) => setCustomValue('roomCount', value)}
+              value={roomCount}
+              title="Rooms"
+              subtitle="Available rooms"
+            />
+            <hr />
+            <Counter
+              onChange={(value) => setCustomValue('bathroomCount', value)}
+              value={bathroomCount}
+              title="Bathrooms"
+              subtitle="Available bathrooms"
+            />
+          </div>
+        </div>
+
+        <div>
+          <Heading title="" subtitle="Price per night" />
+          <Input
+            id="price"
+            label="Price"
+            formatPrice
+            type="number"
+            disabled={isLoading}
+            register={register}
+            errors={errors}
+            required
           />
         </div>
       </div>

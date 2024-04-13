@@ -2,6 +2,7 @@
 import React from 'react'
 import { UseFormRegister, FieldValues, FieldErrors } from 'react-hook-form'
 
+// propValue and propOnChange are optional, meaning the textarea still can be used in create listing form to add multiple lines
 interface TextAreaProps {
   id: string
   label: string
@@ -21,16 +22,16 @@ const TextArea: React.FC<TextAreaProps> = ({
   required,
   register,
   errors,
-  value = [],
-  onChange,
+  value: propValue,
+  onChange: propOnChange,
 }) => {
-  const [text, setText] = React.useState<string>(value.join('\n'))
+  const [text, setText] = React.useState<string>(propValue?.join('\n') || '')
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value
 
     setText(value)
-    onChange?.(value.split('\n'))
+    propOnChange?.(value.split('\n'))
   }
 
   return (
@@ -46,7 +47,7 @@ const TextArea: React.FC<TextAreaProps> = ({
           ${errors[id] ? 'focus:border-rose-500' : 'focus:border-black'}
         `}
         value={text}
-        onChange={handleChange} // Keep this one
+        onChange={handleChange}
       />
       <label
         htmlFor={id}

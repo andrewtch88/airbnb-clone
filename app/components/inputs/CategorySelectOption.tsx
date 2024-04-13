@@ -21,7 +21,7 @@ const CategorySelectOption: React.FC<CountrySelectProps> = ({
   return (
     <div>
       <Select
-        placeholder="Change accommodation category?"
+        placeholder="Choose category"
         // isClearable
         options={categories}
         value={value} // value reflected on the select option
@@ -34,11 +34,11 @@ const CategorySelectOption: React.FC<CountrySelectProps> = ({
           </div>
         )}
         // custom styling for Select component
-        classNames={{
-          control: () => 'p-3 border-2',
-          input: () => 'text-lg',
-          option: () => 'text-lg',
-        }}
+        // classNames={{
+        //   control: () => 'p-3 border-2',
+        //   input: () => 'text-lg',
+        //   option: () => 'text-lg',
+        // }}
         // custom theme for Select component
         theme={(theme) => ({
           ...theme,
