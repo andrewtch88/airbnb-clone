@@ -7,6 +7,28 @@ interface IParams {
   listingId?: string
 }
 
+export async function GET(request: Request, { params }: { params: IParams }) {
+  const currentUser = await getCurrentUser()
+
+  if (!currentUser) {
+    return NextResponse.error()
+  }
+
+  const { listingId } = params
+
+  if (!listingId || typeof listingId !== 'string') {
+    throw new Error('Invalid ID')
+  }
+
+  const listing = await prisma?.listing.findUnique({
+    where: {
+      id: listingId,
+    },
+  })
+
+  return NextResponse.json(listing)
+}
+
 export async function DELETE(
   request: Request,
   { params }: { params: IParams }
@@ -23,7 +45,7 @@ export async function DELETE(
     throw new Error('Invalid ID')
   }
 
-  const listing = await prisma.listing.deleteMany({
+  const listing = await prisma?.listing.deleteMany({
     where: {
       id: listingId,
       userId: currentUser.id,

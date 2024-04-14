@@ -2,7 +2,7 @@
 
 import Modal from './Modal'
 import useEditModal from '@/app/hooks/useEditModal'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Heading from '../Heading'
 import { categories } from '../navbar/Categories' // this imports the categories array instead of the Categories component
 import ButtonInput from '../inputs/ButtonInput'
@@ -17,8 +17,10 @@ import { useRouter } from 'next/navigation'
 import CategorySelectOption from '../inputs/CategorySelectOption'
 import TextArea from '../inputs/TextArea'
 
-// modal form to edit property listing
+// import { useGlobalContext } from '../../contextAPI/EditListingContext'
+import { useEditListingStore } from '@/app/hooks/useEditListingStore'
 
+// modal form to edit property listing
 const EditListingModal = () => {
   const editModal = useEditModal()
   const router = useRouter()
@@ -62,8 +64,23 @@ const EditListingModal = () => {
 
   const onSubmit = () => {}
 
+  // const { listing } = useGlobalContext()
+  const { listing } = useEditListingStore()
+
+  useEffect(() => {
+    console.log(listing) // This should log the updated listing object
+  }, [listing])
+
   let bodyContent = (
     <>
+      {listing ? (
+        <div>
+          <h2>{listing.title}</h2>
+        </div>
+      ) : (
+        <div>Loading...</div>
+      )}
+
       <div className="flex flex-col gap-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh]">
           <Heading title="" subtitle="Accommodation theme / category" />

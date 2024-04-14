@@ -1,8 +1,12 @@
+// 'use client'
+
 import EmptyState from '../components/EmptyState'
 
 import getCurrentUser from '../actions/getCurrentUser'
 import getListings from '../actions/getListings'
 import PropertiesClient from './PropertiesClient'
+
+// import { EditListingProvider } from '../contextAPI/EditListingContext'
 
 // main page of trips
 const PropertiesPage = async () => {
@@ -28,7 +32,11 @@ const PropertiesPage = async () => {
     )
   }
 
-  return <PropertiesClient listings={listings} currentUser={currentUser} />
+  return (
+    // <EditListingProvider>
+    <PropertiesClient listings={listings} currentUser={currentUser} />
+    // </EditListingProvider>
+  )
 }
 
 export default PropertiesPage

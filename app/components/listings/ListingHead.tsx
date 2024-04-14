@@ -24,22 +24,14 @@ const ListingHead: React.FC<ListingHeadProps> = ({
   return (
     <>
       <Heading title={title} subtitle={region} />
-      <div className="w-full h-[60vh] overflow-hidden rounded-xl relative">
-        <Image
-          alt="image"
-          src={imageSrc[0]}
-          fill
-          className="object-cover w-full"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          priority={true}
+      <>
+        <ListingGallery
+          images={imageSrc}
+          title={title}
+          listingId={id}
+          currentUser={currentUser}
         />
-        <div className="absolute top-5 right-5">
-          <HeartButton listingId={id} currentUser={currentUser} />
-        </div>
-      </div>
-      <div className="container mx-auto mt-8">
-        <ListingGallery images={imageSrc} />
-      </div>
+      </>
     </>
   )
 }

@@ -4,29 +4,28 @@ interface IParams {
   listingId?: string
 }
 
-function getListingById(id: string): Promise<any>
-function getListingById(params: IParams): Promise<any>
-async function getListingById(idOrParams: string | IParams) {
+export default async function getListingById(params: IParams) {
   try {
-    let listingId: string | undefined
+    const { listingId } = params // url params: listingId?='abc123' or string
 
-    if (typeof idOrParams === 'string') {
-      listingId = idOrParams
-    } else {
-      listingId = idOrParams.listingId // url params listingId?='abc123'
+    if (!listingId) {
+      throw new Error('Listing ID is missing')
     }
 
-    const listing = await prisma.listing.findUnique({
+    const listing = await prisma?.listing.findUnique({
       where: {
         id: listingId,
       },
       include: {
-        user: true,
-      }, // (includes user Model: true means all fields), no need to query multiple models multiple times
-      // later used to get profile pic and user's name that owns the property listing
+        user: true, // (includes user Model: true means all fields), no need to query multiple models multiple times
+        // later used to get profile pic and user's name that owns the property listing
+      },
     })
 
+    console.log('Fetched listing:', listing)
+
     if (!listing) {
+      console.log('Listing not found for ID:', listingId)
       return null
     }
 
@@ -44,5 +43,3 @@ async function getListingById(idOrParams: string | IParams) {
     throw new Error(error)
   }
 }
-
-export default getListingById

@@ -16,7 +16,12 @@ const listingPage = async ({ params }: { params: IParams }) => {
   const currentUser = await getCurrentUser()
 
   if (!listing) {
-    return <EmptyState />
+    return (
+      <EmptyState
+        title="Invalid listing"
+        subtitle="Kindly input the correct listing ID in the URL"
+      />
+    )
   }
 
   return (

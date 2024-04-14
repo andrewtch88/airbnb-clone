@@ -33,7 +33,6 @@ const ListingCard: React.FC<ListingCardProps> = ({
 }) => {
   const router = useRouter()
 
-  // handle the cancellation of an action associated with a listing card
   const handleCancel = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation()

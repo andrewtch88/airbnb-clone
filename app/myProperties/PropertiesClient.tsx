@@ -2,7 +2,7 @@
 
 import { toast } from 'react-hot-toast'
 import axios from 'axios'
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useContext } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { safeListing, SafeUser } from '@/app/types'
@@ -11,10 +11,13 @@ import Heading from '@/app/components/Heading'
 import Container from '@/app/components/Container'
 import ListingCard from '@/app/components/listings/ListingCard'
 import useEditModal from '@/app/hooks/useEditModal'
+import { useEditListingStore } from '@/app/hooks/useEditListingStore'
+// import { useGlobalContext } from '../contextAPI/EditListingContext'
 
-import getListingById from '@/app/actions/getListingById'
+// listed properties page
+// reminder: fix the modal where it will shows all same content in all modals onToggleEditModal when editing a modal
+// when post might need userId and currentUserId
 
-// trips listings card page
 interface PropertiesClientProps {
   listings: safeListing[] // reservation includes listings now
   currentUser?: SafeUser | null
@@ -25,9 +28,28 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
   currentUser,
 }) => {
   const router = useRouter()
-  const [deletingId, setDeletingId] = useState('')
-  const [editId, setEditId] = useState('')
   const editModal = useEditModal()
+
+  const [deletingId, setDeletingId] = useState('')
+  // const { setListing } = useGlobalContext()
+  const { setListing } = useEditListingStore()
+
+  const onToggleEditModal = useCallback(
+    async (id: string) => {
+      try {
+        const response = await axios.get(`/api/listings/${id}`)
+        console.log(response.data)
+        setListing(response.data)
+
+        editModal.onOpen()
+      } catch (error) {
+        toast.error('Error fetching listing')
+      } finally {
+        setListing(null)
+      }
+    },
+    [editModal, setListing]
+  )
 
   // id retrieve from key prop, that's why react force to use key prop
   const onDelete = useCallback(
@@ -50,22 +72,6 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
     [router]
   )
 
-  const onToggleEditModal = useCallback(
-    async (id: string) => {
-      try {
-        const listing = await getListingById(id)
-        setEditId(id)
-
-        editModal.onOpen()
-      } catch (error) {
-        toast.error((error as Error).message)
-      } finally {
-        setEditId('')
-      }
-    },
-    [editModal]
-  )
-
   return (
     <Container>
       <Heading title="Properties" subtitle="List of your gorgeous properties" />
@@ -83,8 +89,8 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
             onAction={onDelete}
             actionLabel="Delete property"
             disabled={deletingId === listing.id}
-            secondaryActionLabel="Edit property"
-            onSecondaryAction={onToggleEditModal}
+            // secondaryActionLabel="Edit property"
+            // onSecondaryAction={onToggleEditModal}
             currentUser={currentUser}
           />
         ))}
