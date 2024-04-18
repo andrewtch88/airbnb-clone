@@ -3,14 +3,14 @@ Full Stack Airbnb Clone with Next.js 14: React, Tailwind, Prisma, MongoDB, NextA
 ![image](https://github.com/andrewtch88/airbnb-clone/assets/59404615/46b9c474-18c9-4ece-9e91-026f70e94104)
 
 ## Features
-Tailwind design
-Full responsiveness
-Google OAuth authentication
-Image upload using Cloudinary CDN
-Calendars with react-date-range
-Booking / Reservation system
-Properties Management
-Search properties
+Tailwind design\
+Full responsiveness\
+Google OAuth authentication\
+Image upload using Cloudinary CDN\
+Calendars with react-date-range\
+Booking / Reservation system\
+Properties Management\
+Search properties\
 Fetching Data with React Server Components (Without API!)
 
 ## Prerequisites
