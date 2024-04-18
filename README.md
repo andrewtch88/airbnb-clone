@@ -1,9 +1,36 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Full Stack Airbnb Clone with Next.js 14: React, Tailwind, Prisma, MongoDB, NextAuth
 
-## Getting Started
+![image](https://github.com/andrewtch88/airbnb-clone/assets/59404615/46b9c474-18c9-4ece-9e91-026f70e94104)
 
-First, run the development server:
+## Features
+Tailwind design
+Full responsiveness
+Google OAuth authentication
+Image upload using Cloudinary CDN
+Calendars with react-date-range
+Booking / Reservation system
+Properties Management
+Search properties
+Fetching Data with React Server Components (Without API!)
 
+## Prerequisites
+First, make sure your Node version is 14.x
+## Install packages
+Open the source code in editor and npm i in CMD 
+## Setup the environment (.env file)
+```bash
+DATABASE_URL=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GITHUB_ID=
+GITHUB_SECRET=
+NEXTAUTH_SECRET=
+```
+## Setup Prisma
+```bash
+npx prisma db push
+```
+## Start the app
 ```bash
 npm run dev
 # or
@@ -16,18 +43,12 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
 ## Deploy on Vercel
 
