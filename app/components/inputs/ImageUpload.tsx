@@ -6,9 +6,10 @@ import { IoMdClose } from 'react-icons/io'
 interface ImageUploadProps {
   onChange: (value: string[]) => void
   value: string[]
+  disabled?: boolean
 }
 
-const ImageUpload: FC<ImageUploadProps> = ({ onChange, value }) => {
+const ImageUpload: FC<ImageUploadProps> = ({ onChange, value, disabled }) => {
   const handleUpload = useCallback(
     (result: any) => {
       onChange([...value, result.info.secure_url])
@@ -16,22 +17,25 @@ const ImageUpload: FC<ImageUploadProps> = ({ onChange, value }) => {
     [onChange, value]
   )
 
+  // Remove the image at the specified index
   const handleRemove = (index: number) => {
-    // Remove the image at the specified index
     const updatedImages = [...value]
     updatedImages.splice(index, 1)
     onChange(updatedImages)
   }
 
   return (
-    <CldUploadWidget onUpload={handleUpload} uploadPreset="chpfnrpy">
+    <CldUploadWidget
+      onUpload={disabled ? undefined : handleUpload}
+      uploadPreset="chpfnrpy"
+    >
       {({ open }) => {
         return (
           <div
-            onClick={() => open()}
-            className="
-              relative cursor-pointer hover:opacity-70 transition border-dashed border-2
-              border-neutral-300 flex flex-col text-neutral-600 mt-[-30px]"
+            onClick={() => (disabled ? undefined : open())}
+            className={`relative cursor-pointer hover:opacity-70 transition border-dashed 
+              border-2 border-neutral-300 flex flex-col text-neutral-600 mt-[-30px]
+              ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             <div className="font-semibold text-lg font-size-sm">
               Click here to upload, first image = thumbnail
@@ -39,13 +43,12 @@ const ImageUpload: FC<ImageUploadProps> = ({ onChange, value }) => {
             <div className="flex flex-wrap gap-4">
               {Array.isArray(value) &&
                 value.map((imageUrl, index) => (
-                  /* {value && ( */
                   <div
                     key={index}
                     className="relative w-50 h-50 overflow-hidden"
                     style={{
-                      height: '145px',
-                      width: '145px',
+                      height: '140px',
+                      width: '140px',
                     }}
                   >
                     <Image
@@ -56,14 +59,13 @@ const ImageUpload: FC<ImageUploadProps> = ({ onChange, value }) => {
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                     <button
-                      onClick={() => handleRemove(index)}
+                      onClick={() => !disabled && handleRemove(index)}
                       className="p-1 border-0 hover:opacity-70 transition absolute left-0 top-0 bg-red-500 rounded-full text-white"
                     >
                       <IoMdClose size={18} />
                     </button>
                   </div>
                 ))}
-              {/* )} */}
             </div>
           </div>
         )

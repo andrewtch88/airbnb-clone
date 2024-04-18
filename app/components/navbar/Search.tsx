@@ -31,7 +31,6 @@ const Search = () => {
   // start flyout menu operations
   const router = useRouter()
   const params = useSearchParams()
-  const { getByValue } = useCountries()
 
   const selectedAddress = params?.get('address')
   const selectedRegion = params?.get('region')
@@ -241,7 +240,6 @@ const Search = () => {
     )
   }
 
-  // Input component has register function dy
   let bodyContent = (
     <>
       {/* Search Places Suggestion on the left */}
@@ -359,7 +357,7 @@ const Search = () => {
     <Popover>
       {/* Placeholder Search Bar */}
       <Popover.Button>
-        <div className="border-[1px] w-full md:w-auto py-2 rounded-full shadow-sm hover:shadow-md transition cursor-pointer">
+        <div className="border-[1px] w-full md:w-auto py-2 rounded-full shadow-sm hover:shadow-md transition cursor-pointer select-none">
           <div className="flex flex-row items-center justify-between">
             <div className="text-sm font-semibold px-6">{locationLabel}</div>
             <div className="hidden sm:block text-sm font-semibold px-6 border-x-[1px] flex-1 text-center">

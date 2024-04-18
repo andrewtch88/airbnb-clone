@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { UseFormRegister, FieldValues, FieldErrors } from 'react-hook-form'
 
 // propValue and propOnChange are optional, meaning the textarea still can be used in create listing form to add multiple lines
@@ -25,12 +25,8 @@ const TextArea: React.FC<TextAreaProps> = ({
   value: propValue,
   onChange: propOnChange,
 }) => {
-  const [text, setText] = React.useState<string>(propValue?.join('\n') || '')
-
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value
-
-    setText(value)
     propOnChange?.(value.split('\n'))
   }
 
@@ -46,7 +42,7 @@ const TextArea: React.FC<TextAreaProps> = ({
           ${errors[id] ? 'border-rose-500' : 'border-neutral-300'}
           ${errors[id] ? 'focus:border-rose-500' : 'focus:border-black'}
         `}
-        value={text}
+        value={propValue?.join('\n')}
         onChange={handleChange}
       />
       <label

@@ -9,7 +9,6 @@ import LoginModal from './components/modals/LoginModal'
 import ToasterProvider from './providers/ToasterProvider'
 import getCurrentUser from './actions/getCurrentUser'
 import RentModal from './components/modals/CreateListingModal'
-import EditListingModal from './components/modals/EditListingModal'
 // import { EditListingProvider } from './contextAPI/EditListingContext'
 
 // root layout file of the application
@@ -41,9 +40,6 @@ export default async function RootLayout({
         <RentModal />
         <LoginModal />
         <RegisterModal />
-        {/* <EditListingProvider> */}
-        <EditListingModal />
-        {/* </EditListingProvider> */}
         <Navbar currentUser={currentUser} />
         {/* children - (Home or other pages) are placed here */}
         <div className="pb-20 pt-28">{children}</div>

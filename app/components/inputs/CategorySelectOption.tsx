@@ -10,22 +10,25 @@ export type CategorySelectValue = {
 }
 
 interface CountrySelectProps {
-  value?: CategorySelectValue
-  onChange: (value: CategorySelectValue) => void
+  value?: CategorySelectValue | null
+  onChange: (value: CategorySelectValue | null) => void
+  disabled?: boolean
 }
 
 const CategorySelectOption: React.FC<CountrySelectProps> = ({
   value,
   onChange,
+  disabled,
 }) => {
   return (
     <div>
       <Select
+        isDisabled={disabled}
         placeholder="Choose category"
         // isClearable
         options={categories}
-        value={value} // value reflected on the select option
-        onChange={(value) => onChange(value as CategorySelectValue)}
+        value={value || null} // value reflected on the select option
+        onChange={(value) => onChange(value as CategorySelectValue | null)}
         // options={""} is used here
         formatOptionLabel={(option: any) => (
           <div className="flex flex-row items-center gap-3">

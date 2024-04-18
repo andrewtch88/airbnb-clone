@@ -33,6 +33,19 @@ const ListingCard: React.FC<ListingCardProps> = ({
 }) => {
   const router = useRouter()
 
+  const handleSecondaryAction = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+
+      if (disabled) {
+        return
+      }
+
+      onSecondaryAction?.(actionId)
+    },
+    [onSecondaryAction, disabled]
+  )
+
   const handleCancel = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation()
@@ -41,13 +54,9 @@ const ListingCard: React.FC<ListingCardProps> = ({
         return
       }
 
-      if (onSecondaryAction) {
-        onSecondaryAction?.(actionId)
-      } else if (onAction) {
-        onAction?.(actionId)
-      }
+      onAction?.(actionId)
     },
-    [onAction, onSecondaryAction, actionId, disabled]
+    [onAction, disabled]
   )
 
   // useMemo returns a memoized value, while useCallback returns a memoized function
@@ -122,7 +131,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
             outline
             disabled={disabled}
             label={secondaryActionLabel}
-            onClick={handleCancel}
+            onClick={handleSecondaryAction}
           />
         )}
         {/* need onAction function and actionLabel to display the action button */}

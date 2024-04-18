@@ -86,6 +86,7 @@ const RentModal = () => {
         setStep(STEPS.CATEGORY)
         rentModal.onClose()
         router.push('/myProperties')
+        router.refresh()
       })
       .catch((error) => {
         if (error.response?.data?.error) {
@@ -270,6 +271,7 @@ const RentModal = () => {
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.CATEGORY ? undefined : prevPage}
       body={bodyContent}
+      disabled={isLoading}
     />
   )
 }

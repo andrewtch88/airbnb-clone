@@ -5,7 +5,6 @@ import useEditModal from '@/app/hooks/useEditModal'
 import { useEffect, useMemo, useState } from 'react'
 import Heading from '../Heading'
 import { categories } from '../navbar/Categories' // this imports the categories array instead of the Categories component
-import ButtonInput from '../inputs/ButtonInput'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import Input from '../inputs/Input'
 import PlacesAutocomplete from '../PlacesAutocomplete'
@@ -16,16 +15,24 @@ import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import CategorySelectOption from '../inputs/CategorySelectOption'
 import TextArea from '../inputs/TextArea'
+import { safeListing } from '@/app/types'
 
 // import { useGlobalContext } from '../../contextAPI/EditListingContext'
-import { useEditListingStore } from '@/app/hooks/useEditListingStore'
 
-// modal form to edit property listing
-const EditListingModal = () => {
+interface EditListingModalProps {
+  listing: safeListing | null
+}
+
+const EditListingModal: React.FC<EditListingModalProps> = ({ listing }) => {
   const editModal = useEditModal()
   const router = useRouter()
 
   const [isLoading, setIsLoading] = useState(false)
+
+  const getDefaultCategory = (category: any) => {
+    const defaultCategory = categories.find((cat) => cat.label === category)
+    return defaultCategory || null
+  }
 
   const {
     register,
@@ -36,17 +43,39 @@ const EditListingModal = () => {
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      title: '',
-      description: '',
-      imageSrc: '',
-      category: '',
-      roomCount: 1,
-      bathroomCount: 1,
-      guestCount: 1,
-      address: '',
-      price: 1, // form fields' default values
+      title: listing?.title || '',
+      description: listing?.description || '',
+      imageSrc: listing?.imageSrc || '',
+      category: getDefaultCategory(listing?.category) || '',
+      roomCount: listing?.roomCount || 1,
+      bathroomCount: listing?.bathroomCount || 1,
+      guestCount: listing?.guestCount || 1,
+      address: listing?.address || '',
+      price: listing?.price || 1, // form fields' default values
     },
   })
+
+  useEffect(() => {
+    if (editModal.isOpen) {
+      reset({
+        title: listing?.title || '',
+        description: listing?.description || '',
+        imageSrc: listing?.imageSrc || '',
+        category: getDefaultCategory(listing?.category) || '',
+        roomCount: listing?.roomCount || 1,
+        bathroomCount: listing?.bathroomCount || 1,
+        guestCount: listing?.guestCount || 1,
+        address: listing?.address || '',
+        price: listing?.price || 1,
+      })
+    }
+  }, [editModal.isOpen, listing, reset])
+
+  useEffect(() => {
+    if (!editModal.isOpen) {
+      reset()
+    }
+  }, [editModal.isOpen, reset])
 
   const category = watch('category')
   const guestCount = watch('guestCount') // these variables defaultValues take from the useForm<FieldValues> on above
@@ -62,31 +91,39 @@ const EditListingModal = () => {
     })
   }
 
-  const onSubmit = () => {}
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    setIsLoading(true)
 
-  // const { listing } = useGlobalContext()
-  const { listing } = useEditListingStore()
+    data.category = data.category.label
 
-  useEffect(() => {
-    console.log(listing) // This should log the updated listing object
-  }, [listing])
+    axios
+      .put(`/api/listings/${listing?.id}`, data)
+      .then(() => {
+        toast.success('Listing updated')
+        editModal.onClose()
+        router.refresh()
+      })
+      .catch((error) => {
+        if (error.response?.data?.error) {
+          toast.error(error.response.data.error, { duration: 5000 })
+        } else {
+          toast.error('Something went wrong')
+        }
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+  }
 
   let bodyContent = (
     <>
-      {listing ? (
-        <div>
-          <h2>{listing.title}</h2>
-        </div>
-      ) : (
-        <div>Loading...</div>
-      )}
-
       <div className="flex flex-col gap-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh]">
           <Heading title="" subtitle="Accommodation theme / category" />
           <CategorySelectOption
             value={category}
             onChange={(value) => setCustomValue('category', value)}
+            disabled={isLoading}
           />
         </div>
 
@@ -136,6 +173,7 @@ const EditListingModal = () => {
           <ImageUpload
             value={imageSrc}
             onChange={(value) => setCustomValue('imageSrc', value)}
+            disabled={isLoading}
           />
         </div>
 
@@ -148,6 +186,7 @@ const EditListingModal = () => {
               value={guestCount}
               title="Guests"
               subtitle="Maximum guests"
+              disabled={isLoading}
             />
             <hr />
             <Counter
@@ -155,6 +194,7 @@ const EditListingModal = () => {
               value={roomCount}
               title="Rooms"
               subtitle="Available rooms"
+              disabled={isLoading}
             />
             <hr />
             <Counter
@@ -162,6 +202,7 @@ const EditListingModal = () => {
               value={bathroomCount}
               title="Bathrooms"
               subtitle="Available bathrooms"
+              disabled={isLoading}
             />
           </div>
         </div>
@@ -183,15 +224,19 @@ const EditListingModal = () => {
     </>
   )
 
+  const cancel = () => {
+    editModal.onClose()
+  }
+
   return (
     <Modal
-      title="Editing your home"
+      title={`Editing - ${listing?.title}`}
       isOpen={editModal.isOpen}
       onClose={editModal.onClose}
-      onSubmit={onSubmit}
-      actionLabel={'test 1'}
-      secondaryActionLabel={'test'}
-      secondaryAction={undefined}
+      onSubmit={handleSubmit(onSubmit)}
+      actionLabel={'Update Listing'}
+      secondaryActionLabel={'Cancel'}
+      secondaryAction={cancel}
       body={bodyContent}
     />
   )
