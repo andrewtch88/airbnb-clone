@@ -54,9 +54,9 @@ export default NextAuth({
       },
     }),
   ],
-  pages: {
-    signIn: '/', // if any errors then redirect to main page
-  },
+  // pages: {
+  //   signIn: '/', // if any errors then redirect to main page
+  // },
 
   debug: process.env.NODE_ENV === 'development',
 

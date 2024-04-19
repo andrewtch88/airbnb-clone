@@ -2,7 +2,7 @@
 import axios from 'axios'
 import { AiFillGithub } from 'react-icons/ai'
 import { FcGoogle } from 'react-icons/fc'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import useRegisterModal from '@/app/hooks/useRegisterModal'
 import useLoginModal from '@/app/hooks/useLoginModal'
@@ -13,6 +13,7 @@ import { toast } from 'react-hot-toast'
 import Button from '../Button'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 
 const RegisterModal = () => {
   const router = useRouter()
@@ -105,13 +106,10 @@ const RegisterModal = () => {
         })
         router.refresh()
         registerModal.onClose()
-      } else if (callback?.error == 'OAuthAccountNotLinked') {
-        toast.error(
-          'You already have an account with this email. Try other option',
-          { duration: 5000 }
-        )
-      } else {
-        toast.error('Something went wrong')
+      }
+
+      if (callback?.error) {
+        toast.error(callback.error)
       }
     })
   }
