@@ -7,14 +7,21 @@ const { getByValue } = useCountries()
 
 const getRegionByAddress = (address: string) => {
   const addressArray = address.split(', ')
-  const country = addressArray[addressArray.length - 1]
+  let country = ''
+  let location: string | undefined = ''
 
-  const location = countries.getAlpha2Code(country, 'en')
-  const countryName = getByValue(location as string)
+  for (let i = 0; i < addressArray.length; i++) {
+    if (countries.getAlpha2Code(addressArray[i], 'en')) {
+      country = addressArray[i]
+      location = countries.getAlpha2Code(country, 'en')
+      break
+    }
+  }
 
+  const countryDetails = getByValue(location as string)
   return (
-    countryName?.region ||
-    'Region not found' + ', ' + countryName ||
+    countryDetails?.region ||
+    'Region not found' + ', ' + country ||
     'Country not found'
   )
 }

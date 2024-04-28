@@ -1,7 +1,5 @@
 'use client'
 
-import { IconType } from 'react-icons'
-
 export interface RegionsButtonsProps {
   regions: {
     label: string

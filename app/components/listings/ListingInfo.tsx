@@ -1,14 +1,13 @@
 'use client'
 
-import { SafeUser } from '@/app/types'
-import dynamic from 'next/dynamic'
-import { useMemo } from 'react'
-import { IconType } from 'react-icons'
+import { safeListing, SafeUser } from '@/app/types'
+import { IoStar } from 'react-icons/io5'
 import Avatar from '../Avatar'
 import ListingCategory from './ListingCategory'
+import ShowMoreText from 'react-show-more-text'
 
 interface ListingInfoProps {
-  user: SafeUser
+  listing: safeListing
   category:
     | {
         label: string
@@ -20,56 +19,80 @@ interface ListingInfoProps {
   roomCount: number
   guestCount: number
   bathroomCount: number
-  address: string
 }
 
 const ListingInfo: React.FC<ListingInfoProps> = ({
-  user,
+  listing,
   category,
   description,
   roomCount,
   guestCount,
   bathroomCount,
-  address,
 }) => {
-  const location = address.slice(address.indexOf(',') + 2)
-
-  const Map = useMemo(() => dynamic(() => import('../Map'), { ssr: false }), [
-    location,
-  ])
-
   return (
-    <div className="col-span-4 flex flex-col gap-8">
-      <div className="flex flex-col gap-2">
-        <div className="text-xl font-semibold flex flex-row items-center gap-2">
-          <div>Hosted by {user?.name}</div>
-          <Avatar src={user?.image} />
+    <>
+      <div className="col-span-4 flex flex-col gap-8">
+        <div className="flex flex-col gap-2">
+          <div className="text-xl font-semibold flex flex-row items-center gap-2">
+            <div>Hosted by {listing.user?.name}</div>
+            <Avatar src={listing.user?.image} />
+          </div>
+          <div className="flex flex-row items-center gap-4 font-light text-neutral-500">
+            <div>{guestCount} guests</div>
+            <div>{roomCount} rooms</div>
+            <div>{bathroomCount} bathrooms</div>
+          </div>
+          <div className="flex justify-between">
+            <p className="flex items-center text-md font-light">
+              <IoStar className="me-1 mr-2 inline w-4 h-4 fill-current" />
+              {listing.reviewCount !== 0 ? (
+                <>
+                  <span className="font-medium">
+                    {listing.averageRating.toFixed(2)}
+                    {' - '}
+                    <span className="underline">
+                      {listing.reviewCount} reviews
+                    </span>
+                  </span>
+                </>
+              ) : (
+                <span className="font-light">No reviews yet</span>
+              )}
+            </p>
+          </div>
         </div>
-        <div className="flex flex-row items-center gap-4 font-light text-neutral-500">
-          <div>{guestCount} guests</div>
-          <div>{roomCount} rooms</div>
-          <div>{bathroomCount} bathrooms</div>
-        </div>
+        <hr />
+        {category && (
+          <ListingCategory
+            icon={category.icon}
+            label={category.label}
+            description={category.description}
+          />
+        )}
+        <hr />
+        <ShowMoreText
+          lines={6}
+          more={
+            <span className="underline text-gray-900 font-medium">
+              Show more >
+            </span>
+          }
+          less={
+            <div className="mt-2">
+              <span className="underline text-gray-900 font-medium">
+                Show less
+              </span>
+            </div>
+          }
+          className="text-lg font-light text-neutral-500 whitespace-pre-line"
+          truncatedEndingComponent={'... '}
+        >
+          <p style={{ whiteSpace: 'pre-line', overflowWrap: 'anywhere' }}>
+            {description}
+          </p>
+        </ShowMoreText>
       </div>
-      <hr />
-      {category && (
-        <ListingCategory
-          icon={category.icon}
-          label={category.label}
-          description={category.description}
-        />
-      )}
-      <hr />
-      <div style={{ whiteSpace: 'pre-line', overflowWrap: 'anywhere' }}>
-        <div className="text-lg font-light text-neutral-500">{description}</div>
-      </div>
-
-      <hr />
-      <div className="text-xl font-bold">{"Where you'll be"}</div>
-      <div className="font-light text-neutral-500 mt-2">{`${location}`}</div>
-      {/* <Map center={coordinates} /> */}
-      <Map address={location} showLocationTips={true} zoomIn={true} />
-    </div>
+    </>
   )
 }
 

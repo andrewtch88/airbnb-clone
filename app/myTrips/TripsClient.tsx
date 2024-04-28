@@ -10,8 +10,9 @@ import { safeReservation, SafeUser } from '@/app/types'
 import Heading from '@/app/components/Heading'
 import Container from '@/app/components/Container'
 import ListingCard from '@/app/components/listings/ListingCard'
+import useReviewModal from '../hooks/useReviewModal'
+import ReviewModal from '../components/modals/ReviewModal'
 
-// trips listings card page
 interface TripsClientProps {
   reservations: safeReservation[] // reservation includes listings now
   currentUser?: SafeUser | null
@@ -22,27 +23,47 @@ const TripsClient: React.FC<TripsClientProps> = ({
   currentUser,
 }) => {
   const router = useRouter()
+  const reviewModal = useReviewModal()
+
   const [deletingId, setDeletingId] = useState('')
+  const [
+    reservationData,
+    setReservationData,
+  ] = useState<safeReservation | null>(null)
 
-  const onCancel = useCallback(
-    // id retrieve from key prop, that's why react force to use key prop
-    (id: string) => {
-      setDeletingId(id)
+  // const onCancel = useCallback(
+  //   // id retrieve from key prop, that's why react force to use key prop
+  //   (id: string) => {
+  //     setDeletingId(id)
 
-      axios
-        .delete(`/api/reservations/${id}`)
-        .then(() => {
-          toast.success('Reservation cancelled')
-          router.refresh()
-        })
-        .catch((error) => {
-          toast.error(error?.response?.data?.error)
-        })
-        .finally(() => {
-          setDeletingId('')
-        })
+  //     axios
+  //       .delete(`/api/reservations/${id}`)
+  //       .then(() => {
+  //         toast.success('Reservation cancelled')
+  //         router.refresh()
+  //       })
+  //       .catch((error) => {
+  //         toast.error(error?.response?.data?.error)
+  //       })
+  //       .finally(() => {
+  //         setDeletingId('')
+  //       })
+  //   },
+  //   [router]
+  // )
+
+  const onToggleReviewModal = useCallback(
+    async (id: string) => {
+      try {
+        const response = await axios.get(`/api/reservations/${id}`)
+        setReservationData(response.data)
+
+        reviewModal.onOpen()
+      } catch (error) {
+        toast.error('Error fetching reservation details')
+      }
     },
-    [router]
+    [reviewModal, setReservationData]
   )
 
   return (
@@ -63,13 +84,16 @@ const TripsClient: React.FC<TripsClientProps> = ({
             actionId={reservation.id}
             // When action (onCancel) is triggered, onCancel is called with actionId as argument.
             // The actionId is used to identify which reservation should be canceled.
-            onAction={onCancel}
-            disabled={deletingId === reservation.id}
-            actionLabel="Cancel reservation"
+            onAction={onToggleReviewModal}
+            // disabled={deletingId === reservation.id}
             currentUser={currentUser}
+            {...(reservation.hasReviewed == false && {
+              actionLabel: 'Add review',
+            })}
           />
         ))}
       </div>
+      <ReviewModal reservation={reservationData} />
     </Container>
   )
 }

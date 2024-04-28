@@ -1,8 +1,37 @@
-import { Listing, Reservation, User } from '@prisma/client'
+import { Listing, Reservation, User, Review } from '@prisma/client'
 
 export type safeListing = Omit<Listing, 'createdAt'> & {
   createdAt: string
+  overallRatingCounts?: { [key: number]: number }
+  ratingCategoriesAvg?: {
+    cleanlinessRating: number
+    accuracyRating: number
+    checkIn_Rating: number
+    communicationRating: number
+    locationRating: number
+    valueRating: number
+  }
+  user?: SafeUser
+  reviews?: safeReview[] // an array of SafeReview objects
 }
+
+// reviews: [
+//   {
+//     id: 'review1',
+//       // ...
+//     },
+//   },
+//   {
+//     id: 'review2',
+//       // ...
+//     },
+//   },
+//   {
+//     id: 'review3',
+//       // ...
+//     },
+//   },
+// ];
 
 export type safeReservation = Omit<
   Reservation,
@@ -22,4 +51,10 @@ export type SafeUser = Omit<
   createdAt: string
   updatedAt: string
   emailVerified: string | null
+}
+
+export type safeReview = Omit<Review, 'createdAt' | 'updatedAt'> & {
+  createdAt: string
+  updatedAt: string
+  user: SafeUser // later can use review.user to associate the user that makes the review
 }

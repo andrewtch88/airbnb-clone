@@ -33,6 +33,7 @@ interface MapProps {
   address?: string
   showLocationTips?: boolean
   zoomIn?: boolean
+  largeMap?: boolean
 }
 
 const Map: React.FC<MapProps> = ({
@@ -40,6 +41,7 @@ const Map: React.FC<MapProps> = ({
   address,
   showLocationTips,
   zoomIn,
+  largeMap,
 }) => {
   const [coordinates, setCoordinates] = useState<LatLngExpression | null>(null)
 
@@ -73,7 +75,7 @@ const Map: React.FC<MapProps> = ({
           center={coordinates}
           zoom={calculateZoom()}
           scrollWheelZoom={false}
-          className="h-[35vh] rounded-lg"
+          className={`${largeMap ? `h-[50vh]` : 'h-[35vh]'} rounded-lg`}
         >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           {address && <Marker position={coordinates} />}

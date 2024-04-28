@@ -24,6 +24,7 @@ model User {
   accounts Account[] // one to many (a user can have multiple accounts, etc)
   listings Listing[] // ''
   reservations Reservation[] // ''
+  reviews Review[] // ''
 }
 
 // OAuth
@@ -45,6 +46,7 @@ model Account {
   // many to one relationship - accounts belongs to one user
   user User @relation(fields: [userId], references: [id], onDelete: Cascade) // cascasde means referenced record is deleted also
 
+  @@index([userId], name: "index_accounts_on_user_id")
   @@unique([provider, providerAccountId])
 }
 
@@ -53,6 +55,8 @@ model Listing {
   title String
   description String
   imageSrc String[]
+  averageRating Float @default(0)
+  reviewCount Int @default(0)
   createdAt DateTime @default(now())
   category String
   roomCount Int
@@ -68,6 +72,9 @@ model Listing {
 
   // relation, one to many (a listing can have multiple reservations)
   reservations Reservation[]
+  reviews Review[]
+
+  @@index([userId], name: "index_properties_on_user_id")
 }
 
 model Reservation {
@@ -79,12 +86,50 @@ model Reservation {
   totalPrice Int
   createdAt DateTime @default(now())
   isPaid Boolean @default(false)
-  
-  // many to one - multiple reservations belongs to one user (store User's id in Reservation's userId)
+  hasReviewed Boolean @default(false)
+  review Review? // one to one
+
+  // many to one - multiple reservations belong to one user
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  // many to one - multiple reservations belongs to one user (store Listing's listingId in Reservation's listingId)
+  
+  // many to one - multiple reservations belong to one listing
   listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  // Indexes
+  @@index([userId], name: "index_reservations_on_userId") // Index on userId for faster lookup of reservations made by a specific user
+  @@index([listingId], name: "index_reservations_on_listingId") // Index on listingId for faster lookup of reservations for a specific listing
 }
+
+
+model Review {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  listingId String @db.ObjectId
+  reservationId String @unique @db.ObjectId // one to one
+  review String
+  cleanlinessRating Int
+  accuracyRating Int
+  checkIn_Rating Int
+  communicationRating Int
+  locationRating Int
+  valueRating Int
+  finalRating Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+  listing Listing @relation(fields: [listingId], references: [id])
+  reservation Reservation @relation(fields: [reservationId], references: [id]) // one to one
+
+  // Indexes  
+  @@index([listingId], name: "index_reviews_on_listingId") // Index on listingId for faster lookup of reviews based on listing
+  @@index([userId], name: "index_reviews_on_userId") // Index on userId for faster lookup of reviews written by a specific user
+  @@index([userId, listingId, reservationId], name: "index_reviews_on_user_id_and_property_id_and_reservation_id")
+  // Unique compound index on userId, listingId, and reservationId
+  // This ensures that a user can only have one review for a specific listing and reservation combination
+  // The unique constraint prevents duplicate reviews for the same user, listing, and reservation 
+}
+
 
 // model ReservationPayment {
 

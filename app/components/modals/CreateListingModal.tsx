@@ -5,7 +5,7 @@ import useRentModal from '@/app/hooks/useRentModal'
 import { useMemo, useState } from 'react'
 import Heading from '../Heading'
 import { categories } from '../navbar/Categories' // this imports the categories array instead of the Categories component
-import ButtonInput from '../inputs/ButtonInput'
+import ButtonInput from '../inputs/ButtonWithIcons'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import Input from '../inputs/Input'
 import PlacesAutocomplete from '../PlacesAutocomplete'

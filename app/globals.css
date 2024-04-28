@@ -23,3 +23,11 @@ body,
   width: 100% !important;
   font-size: 16px !important;
 }
+
+@media (max-width: 768px) {
+  .mobile-view {
+    /* Styles for mobile view */
+    display: flex;
+    flex-direction: column;
+  }
+}

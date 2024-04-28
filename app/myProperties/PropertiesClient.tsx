@@ -85,7 +85,7 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
               data={listing}
               actionId={listing.id}
               // When action (onDelete) is triggered, onDelete is called with actionId as argument.
-              // The actionId is used to identify which reservation should be canceled.
+              // The actionId is used to identify which id should be canceled.
               onAction={onDelete}
               actionLabel="Delete property"
               disabled={deletingId === listing.id}

@@ -31,7 +31,7 @@ export default async function getReservations(params: IParams) {
       where: query,
       include: {
         listing: true, // includes listing Model all fields, no need query 2 times
-        user: true,
+        user: true, // later can use reservation.user.name to get user name, is like joining tables with the help of include above
       },
       orderBy: {
         createdAt: 'desc',
@@ -50,7 +50,6 @@ export default async function getReservations(params: IParams) {
         createdAt: reservation.listing.createdAt.toISOString(),
       },
       user: {
-        // later can use reservation.user.name to get user name, is like joining tables with the help of include above
         // then sanitize the strings in the app\types\index.ts and export the model types to initialize the models in the props of the components interface
         ...reservation.user,
         createdAt: reservation.user.createdAt.toISOString(),

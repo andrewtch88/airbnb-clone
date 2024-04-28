@@ -17,6 +17,8 @@ import { toast } from 'react-hot-toast'
 import axios from 'axios'
 import ListingReservation from '@/app/components/listings/ListingReservation'
 import { Range } from 'react-date-range'
+import dynamic from 'next/dynamic'
+import ListingReview from '@/app/components/listings/ListingReview'
 
 // this file is the root of the listing page setup, with listingHead, ListingInfo and Listing Reservation UI
 
@@ -28,11 +30,7 @@ const initialDateRange = {
 
 interface ListingClientProps {
   reservations?: safeReservation[]
-  listing: safeListing & {
-    user: SafeUser
-  } // listing should have the properties of safeListing and user (&)
-  // if both types is not array but want to combine to call listing.user, then add & to merge the types
-  // *see getReservations.ts for full explanation
+  listing: safeListing
   currentUser?: SafeUser | null
 }
 
@@ -65,14 +63,14 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const [totalPrice, setTotalPrice] = useState(listing.price)
   const [dateRange, setDateRange] = useState<Range>(initialDateRange) // dateRange state is used to manage the selected date range for a reservation
 
-  const onCreateReservation = useCallback(() => {
+  const onCreateReservation = useCallback(async () => {
     if (!currentUser) {
       // open loginModal
       toast.error('You must be logged in to create a reservation')
       return loginModal.onOpen()
     }
     setIsLoading(true)
-    axios
+    await axios
       .post('/api/reservations', {
         totalPrice,
         startDate: dateRange.startDate,
@@ -116,6 +114,13 @@ const ListingClient: React.FC<ListingClientProps> = ({
     return categories.find((item) => item.label === listing.category)
   }, [listing.category])
 
+  const location = listing.address.slice(listing.address.indexOf(',') + 2)
+
+  const Map = useMemo(
+    () => dynamic(() => import('../../components/Map'), { ssr: false }),
+    [location]
+  )
+
   return (
     <Container>
       <div className="max-w-screen-lg mx-auto">
@@ -129,13 +134,12 @@ const ListingClient: React.FC<ListingClientProps> = ({
           />
           <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
             <ListingInfo
-              user={listing.user}
+              listing={listing}
               category={category}
               description={listing.description}
               roomCount={listing.roomCount}
               guestCount={listing.guestCount}
               bathroomCount={listing.bathroomCount}
-              address={listing.address}
             />
             <div className="order-first mb-10 md:order-last md:col-span-3">
               <ListingReservation
@@ -149,6 +153,20 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 isOwner={listing.userId === currentUser?.id}
               />
             </div>
+          </div>
+
+          {/* Continue ListingInfo here because map and reviews not inside grid */}
+          <ListingReview listing={listing} />
+          <hr />
+          <div className="text-xl font-bold">{"Where you'll be"}</div>
+          <div className="font-light text-neutral-500 mt-2">{`${location}`}</div>
+          <div style={{ height: '50px' }}>
+            <Map
+              address={location}
+              showLocationTips={true}
+              zoomIn={false}
+              largeMap
+            />
           </div>
         </div>
       </div>

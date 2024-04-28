@@ -7,6 +7,7 @@ import Image from 'next/image'
 import HeartButton from '../HeartButton'
 import Button from '../Button'
 import Avatar from '../Avatar'
+import { IoStar } from 'react-icons/io5'
 
 interface ListingCardProps {
   data: safeListing
@@ -98,16 +99,28 @@ const ListingCard: React.FC<ListingCardProps> = ({
               <HeartButton listingId={data.id} currentUser={currentUser} />
             </div>
           </div>
-          <div className="font-semibold text-lg">{data.region}</div>
-
-          {reservation && (
-            <>
-              <div className="text-sm font-semibold flex flex-row items-center gap-2">
-                <div>Booked by {reservation.user.name}</div>
-                {<Avatar src={reservation.user?.image} />}
-              </div>
-              <hr />
-            </>
+          {/* Average Rating of Listing */}
+          <div className="flex justify-between">
+            <div className="font-semibold text-lg">{data.region}</div>
+            <p className="flex items-center text-md font-light">
+              <IoStar className="mr-1 block w-4 h-4 fill-current" />
+              {data.reviewCount > 0
+                ? `${data.averageRating.toFixed(2)}`
+                : 'New'}
+            </p>
+          </div>
+          {reservation?.userId == currentUser?.id ? (
+            <></>
+          ) : (
+            reservation && (
+              <>
+                <div className="text-sm font-semibold flex flex-row items-center gap-2">
+                  <div>Booked by {reservation.user.name}</div>
+                  {<Avatar src={reservation.user?.image} />}
+                </div>
+                <hr />
+              </>
+            )
           )}
 
           <div className="font-light text-neutral-500">

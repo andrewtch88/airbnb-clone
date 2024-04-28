@@ -15,6 +15,7 @@ const Logo = () => {
       width="120"
       src="/images/logo.png"
       priority={true}
+      style={{ width: 'auto', height: 'auto' }}
     />
   )
 }
