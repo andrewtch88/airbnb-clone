@@ -60,11 +60,10 @@ const ListingReview: React.FC<ListingReviewProps> = ({ listing }) => {
                             <div
                               style={{
                                 width: `${
-                                  (((listing?.overallRatingCounts?.[number] ||
+                                  ((listing?.overallRatingCounts?.[number] ||
                                     0) *
                                     100) /
-                                    listing.reviewCount) *
-                                  (listing.reviewCount > 1 ? 2 : 1)
+                                  listing.reviewCount
                                 }%`,
                               }}
                               className="absolute inset-y-0 rounded-full border border-black bg-black"

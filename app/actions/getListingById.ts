@@ -46,7 +46,7 @@ export default async function getListingById(params: IParams) {
     const overallRatingCountsTransformed = overallRatingCounts.reduce(
       (acc, curr) => ({
         ...acc,
-        [curr.finalRating]: curr._count.finalRating,
+        [Math.round(curr.finalRating)]: curr._count.finalRating,
       }),
       {}
     )
