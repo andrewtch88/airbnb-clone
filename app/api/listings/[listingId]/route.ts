@@ -67,6 +67,7 @@ export async function PUT(request: Request, { params }: { params: IParams }) {
       region: region,
       address,
       price: parseInt(price, 10),
+      updatedAt: new Date(),
     },
   })
 

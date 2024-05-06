@@ -10,7 +10,8 @@ const getRegionByAddress = (address: string) => {
   let country = ''
   let location: string | undefined = ''
 
-  for (let i = 0; i < addressArray.length; i++) {
+  // Iterate from the end to the beginning
+  for (let i = addressArray.length - 1; i >= 0; i--) {
     if (countries.getAlpha2Code(addressArray[i], 'en')) {
       country = addressArray[i]
       location = countries.getAlpha2Code(country, 'en')

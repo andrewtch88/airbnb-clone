@@ -11,6 +11,8 @@ import { IoChatboxOutline, IoStar } from 'react-icons/io5'
 import { CiMap } from 'react-icons/ci'
 import { IoPricetagOutline } from 'react-icons/io5'
 import '../../globals.css'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
+import qs from 'query-string'
 
 interface ReviewModalProps {
   listing: safeListing
@@ -18,6 +20,18 @@ interface ReviewModalProps {
 
 const ShowAllReview: React.FC<ReviewModalProps> = ({ listing }) => {
   const [showAllReview, setShowAllReview] = useState(false)
+  // const [sortBy, setSortBy] = useState('newest')
+
+  // const params = useSearchParams()
+  // const currentUrl = usePathname()
+
+  // const sortRatings = (e: string) => {
+  //   setSortBy(e)
+  //   const updatedQuery = new URLSearchParams(params?.toString())
+  //   updatedQuery.set('sortBy', e)
+  //   const newUrl = `${currentUrl}?${updatedQuery.toString()}`
+  //   window.history.pushState(null, '', newUrl)
+  // }
 
   if (showAllReview) {
     return (

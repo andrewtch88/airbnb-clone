@@ -19,7 +19,6 @@ import Input from '../inputs/Input'
 import Button from '../Button'
 import Heading from '../Heading'
 import { RegionsButtonsProps } from '../inputs/ButtonWithIcons'
-import useCountries from '@/app/hooks/useCountries'
 
 enum STEPS {
   LOCATION = 0,

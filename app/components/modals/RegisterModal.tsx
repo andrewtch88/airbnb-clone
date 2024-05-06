@@ -13,7 +13,6 @@ import { toast } from 'react-hot-toast'
 import Button from '../Button'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useSearchParams } from 'next/navigation'
 
 const RegisterModal = () => {
   const router = useRouter()

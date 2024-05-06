@@ -6,7 +6,7 @@ interface IParams {
 
 export default async function getListingById(params: IParams) {
   try {
-    const { listingId } = params // url params: listingId?='abc123' or string
+    const { listingId } = params
 
     if (!listingId) {
       throw new Error('Listing ID is missing')
@@ -21,6 +21,7 @@ export default async function getListingById(params: IParams) {
         // review: true,
         reviews: {
           // reviews is in listing model (relation, one to many)
+          orderBy: [{ finalRating: 'asc' }, { createdAt: 'desc' }],
           include: {
             user: true, // Include the associated user for each review
           },
@@ -81,6 +82,7 @@ export default async function getListingById(params: IParams) {
     return {
       ...listing,
       createdAt: listing.createdAt.toISOString(),
+      updatedAt: listing.updatedAt.toISOString(),
       user: {
         ...listing.user,
         createdAt: listing.user.createdAt.toISOString(),

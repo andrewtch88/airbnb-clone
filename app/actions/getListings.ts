@@ -12,6 +12,8 @@ export interface IListingsParams {
   region?: string
   address?: string
   category?: string
+  lowRatedOnly?: boolean
+  allProperties?: boolean
 }
 
 export default async function getListings(params: IListingsParams) {
@@ -26,9 +28,17 @@ export default async function getListings(params: IListingsParams) {
       endDate,
       category,
       address,
+      lowRatedOnly,
+      allProperties,
     } = params
 
-    let query: any = {}
+    let query: any = allProperties ? {} : { isSuspended: false }
+
+    if (lowRatedOnly) {
+      query.averageRating = {
+        lt: 4,
+      }
+    }
 
     if (userId) {
       query.userId = userId
@@ -91,6 +101,9 @@ export default async function getListings(params: IListingsParams) {
 
     const listings = await prisma.listing.findMany({
       where: query,
+      include: {
+        appeal: true,
+      },
       orderBy: {
         createdAt: 'desc',
       },
@@ -99,6 +112,14 @@ export default async function getListings(params: IListingsParams) {
     const safeListing = listings.map((listing) => ({
       ...listing,
       createdAt: listing.createdAt.toISOString(),
+      updatedAt: listing.updatedAt.toISOString(),
+      appeal: listing.appeal
+        ? {
+            ...listing.appeal,
+            createdAt: listing.appeal.createdAt.toISOString(),
+            updatedAt: listing.appeal.updatedAt.toISOString(),
+          }
+        : null,
     }))
 
     return safeListing

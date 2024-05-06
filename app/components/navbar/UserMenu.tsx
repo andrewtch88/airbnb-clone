@@ -9,12 +9,15 @@ import { signOut } from 'next-auth/react'
 import { SafeUser } from '@/app/types'
 import useRentModal from '@/app/hooks/useRentModal'
 import { useRouter } from 'next/navigation'
+import Button from '../Button'
+import toast from 'react-hot-toast'
 
 interface UserMenuProps {
   currentUser?: SafeUser | null
+  showComponent?: boolean
 }
 
-const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
+const UserMenu: React.FC<UserMenuProps> = ({ currentUser, showComponent }) => {
   const router = useRouter()
   const registerModal = useRegisterModal()
   const loginModal = useLoginModal()
@@ -36,24 +39,34 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
     rentModal.onOpen()
   }, [currentUser, loginModal, rentModal])
 
+  const handleSignOut = () => {
+    signOut()
+    toast.success('You have logged out', { duration: 3000 })
+    router.refresh()
+  }
+
   return (
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
-        <div
-          onClick={toggleRentModal}
-          className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer"
-        >
-          Bearbnb your home
-        </div>
-        <div
-          onClick={toggleOpen}
-          className="p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
-        >
-          <AiOutlineMenu />
-          <div className="hidden md:block select-none">
-            <Avatar src={currentUser?.image} />
-          </div>
-        </div>
+        {showComponent && (
+          <>
+            <div
+              onClick={toggleRentModal}
+              className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer"
+            >
+              Bearbnb your home
+            </div>
+            <div
+              onClick={toggleOpen}
+              className="p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
+            >
+              <AiOutlineMenu />
+              <div className="hidden md:block select-none">
+                <Avatar src={currentUser?.image} />
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       {isOpen && (
@@ -79,7 +92,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                 />
                 <MenuItem label="Bearbnb my home" onClick={toggleRentModal} />
                 <hr />
-                <MenuItem label="Logout" onClick={() => signOut()} />
+                <MenuItem label="Logout" onClick={handleSignOut} />
               </>
             ) : (
               <>

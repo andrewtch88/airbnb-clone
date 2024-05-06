@@ -1,14 +1,23 @@
 'use client'
 
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
 
-const Logo = () => {
+interface LogoProps {
+  showComponent?: boolean
+}
+
+const Logo: React.FC<LogoProps> = ({ showComponent }) => {
   const router = useRouter()
+
   return (
     <Image
-      onClick={() => router.push('/')}
+      onClick={() =>
+        showComponent == false
+          ? router.push('/adminDashboard')
+          : router.push('/')
+      }
       alt="logo"
       className="hidden md:block cursor-pointer select-none"
       height="120"

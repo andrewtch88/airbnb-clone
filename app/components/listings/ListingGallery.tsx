@@ -23,7 +23,7 @@ const ListingGallery: React.FC<ListingGalleryProps> = ({
       <div className="fixed inset-0 z-50 bg-black/80 text-white flex items-center justify-center">
         <div className="bg-black p-8 grid gap-4 max-h-screen overflow-y-auto">
           <div className="flex justify-between items-center">
-            <h2 className="text-3xl">Photos of {title}</h2>
+            <h2 className="text-3xl mr-8">Photos of {title}</h2>
             <button
               onClick={() => setShowAllPhotos(false)}
               className="flex gap-1 py-2 px-4 rounded-2xl shadow shadow-black bg-white text-black"
@@ -48,6 +48,7 @@ const ListingGallery: React.FC<ListingGalleryProps> = ({
               <div key={index}>
                 <Image
                   src={image}
+                  className="rounded-2xl max-h-[70vh] object-cover"
                   alt={`Photo ${index + 1}`}
                   width={700}
                   height={700}
@@ -69,7 +70,7 @@ const ListingGallery: React.FC<ListingGalleryProps> = ({
             <div>
               <Image
                 onClick={() => setShowAllPhotos(true)}
-                className="aspect-square cursor-pointer object-cover"
+                className="aspect-square cursor-pointer"
                 src={images[0]}
                 alt=""
                 width={700}
@@ -82,7 +83,7 @@ const ListingGallery: React.FC<ListingGalleryProps> = ({
           {images?.[1] && (
             <Image
               onClick={() => setShowAllPhotos(true)}
-              className="aspect-square cursor-pointer object-cover"
+              className="aspect-square cursor-pointer"
               src={images[1]}
               alt=""
               width={350}
@@ -93,7 +94,7 @@ const ListingGallery: React.FC<ListingGalleryProps> = ({
             {images?.[2] && (
               <Image
                 onClick={() => setShowAllPhotos(true)}
-                className="aspect-square cursor-pointer object-cover relative top-2"
+                className="aspect-square cursor-pointer relative top-2"
                 src={images[2]}
                 alt=""
                 width={350}

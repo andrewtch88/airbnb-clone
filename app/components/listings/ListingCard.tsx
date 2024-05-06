@@ -80,10 +80,25 @@ const ListingCard: React.FC<ListingCardProps> = ({
     return `${format(start, 'PP')} - ${format(end, 'PP')}`
   }, [reservation])
 
+  let overlayText = ''
+  if (data.isSuspended) {
+    if (data.appeal?.status === 'rejected') {
+      overlayText = 'Appeal rejected, submit appeal again?'
+    } else if (data.appeal?.status === 'pending') {
+      overlayText = 'Appeal for suspension pending'
+    } else {
+      overlayText = 'Property suspended: Bad reviews and ratings'
+    }
+  }
+
   return (
     <div className="flex flex-col gap-2 w-full">
       <div
-        onClick={() => router.push(`/listings/${data.id}`)}
+        onClick={
+          data.isSuspended
+            ? () => {}
+            : () => router.push(`/listings/${data.id}`)
+        }
         className="col-span-1 cursor-pointer group"
       >
         <div className="flex flex-col gap-2 w-full">
@@ -92,12 +107,29 @@ const ListingCard: React.FC<ListingCardProps> = ({
               alt="data"
               src={data.imageSrc[0]}
               fill
-              className="object-cover h-full w-full group-hover:scale-110 transition select-none"
+              className={`object-cover h-full w-full select-none ${
+                data.isSuspended ? '' : 'group-hover:scale-110 transition'
+              }`}
               sizes="( min-width: 640px) 640px, 100vw"
             />
-            <div className="absolute top-3 right-3">
-              <HeartButton listingId={data.id} currentUser={currentUser} />
-            </div>
+            {currentUser && (
+              <>
+                {data.isSuspended ? (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-center text-xl font-bold text-red-600 bg-white bg-opacity-80 px-4 py-2 rounded-md">
+                      {overlayText}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="absolute top-3 right-3">
+                    <HeartButton
+                      listingId={data.id}
+                      currentUser={currentUser}
+                    />
+                  </div>
+                )}
+              </>
+            )}
           </div>
           {/* Average Rating of Listing */}
           <div className="flex justify-between">

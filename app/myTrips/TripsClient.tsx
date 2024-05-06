@@ -85,7 +85,9 @@ const TripsClient: React.FC<TripsClientProps> = ({
             // When action (onCancel) is triggered, onCancel is called with actionId as argument.
             // The actionId is used to identify which reservation should be canceled.
             onAction={onToggleReviewModal}
+            // onAction={onCancel}
             // disabled={deletingId === reservation.id}
+            // actionLabel="Cancel reservation"
             currentUser={currentUser}
             {...(reservation.hasReviewed == false && {
               actionLabel: 'Add review',

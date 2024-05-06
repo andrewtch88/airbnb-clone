@@ -31,3 +31,9 @@ body,
     flex-direction: column;
   }
 }
+
+@layer components {
+  .active {
+    @apply text-white bg-blue-500 rounded-lg w-full dark:bg-blue-600;
+  }
+}
