@@ -1,11 +1,15 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 import getCurrentUser from '@/app/actions/getCurrentUser'
 import prisma from '@/app/libs/prismadb'
 import getRegionByAddress from '@/app/hooks/useRegion'
+import getCurrentAdmin from '@/app/actions/getCurrentAdmin'
+
+import { useSearchParams } from 'next/navigation'
 
 interface IParams {
   listingId?: string
+  isAdmin?: boolean
 }
 
 export async function PUT(request: Request, { params }: { params: IParams }) {
@@ -74,14 +78,21 @@ export async function PUT(request: Request, { params }: { params: IParams }) {
   return NextResponse.json(updatedListing)
 }
 
-export async function GET(request: Request, { params }: { params: IParams }) {
-  const currentUser = await getCurrentUser()
-
-  if (!currentUser) {
-    return NextResponse.error()
-  }
+export async function GET(
+  request: NextRequest,
+  { params }: { params: IParams }
+) {
+  const { searchParams } = request.nextUrl
+  const isAdmin = searchParams.get('isAdmin') === 'true'
 
   const { listingId } = params
+
+  const getCurrentData = isAdmin ? getCurrentAdmin : getCurrentUser
+
+  const verifyRole = await getCurrentData()
+  if (!verifyRole) {
+    return NextResponse.error()
+  }
 
   if (!listingId || typeof listingId !== 'string') {
     throw new Error('Invalid ID')
@@ -90,6 +101,9 @@ export async function GET(request: Request, { params }: { params: IParams }) {
   const listing = await prisma?.listing.findUnique({
     where: {
       id: listingId,
+    },
+    include: {
+      appeal: true,
     },
   })
 

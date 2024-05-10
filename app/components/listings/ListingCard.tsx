@@ -8,6 +8,7 @@ import HeartButton from '../HeartButton'
 import Button from '../Button'
 import Avatar from '../Avatar'
 import { IoStar } from 'react-icons/io5'
+import Link from 'next/link'
 
 interface ListingCardProps {
   data: safeListing
@@ -103,15 +104,30 @@ const ListingCard: React.FC<ListingCardProps> = ({
       >
         <div className="flex flex-col gap-2 w-full">
           <div className="aspect-square w-full relative overflow-hidden rounded-xl">
-            <Image
-              alt="data"
-              src={data.imageSrc[0]}
-              fill
-              className={`object-cover h-full w-full select-none ${
-                data.isSuspended ? '' : 'group-hover:scale-110 transition'
-              }`}
-              sizes="( min-width: 640px) 640px, 100vw"
-            />
+            {actionLabel === 'Suspend property' ||
+            actionLabel === 'View suspension appeal' ? (
+              <Link href={`/listings/${actionId}`} passHref>
+                <Image
+                  alt="data"
+                  src={data.imageSrc[0]}
+                  fill
+                  className={`object-cover h-full w-full select-none ${
+                    data.isSuspended ? '' : 'group-hover:scale-110 transition'
+                  }`}
+                  sizes="(min-width: 640px) 640px, 100vw"
+                />
+              </Link>
+            ) : (
+              <Image
+                alt="data"
+                src={data.imageSrc[0]}
+                fill
+                className={`object-cover h-full w-full select-none ${
+                  data.isSuspended ? '' : 'group-hover:scale-110 transition'
+                }`}
+                sizes="(min-width: 640px) 640px, 100vw"
+              />
+            )}
             {currentUser && (
               <>
                 {data.isSuspended ? (

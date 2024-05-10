@@ -12,8 +12,8 @@ export interface IListingsParams {
   region?: string
   address?: string
   category?: string
-  lowRatedOnly?: boolean
   allProperties?: boolean
+  onAppeal?: boolean
 }
 
 export default async function getListings(params: IListingsParams) {
@@ -28,16 +28,19 @@ export default async function getListings(params: IListingsParams) {
       endDate,
       category,
       address,
-      lowRatedOnly,
       allProperties,
+      onAppeal,
     } = params
 
-    let query: any = allProperties ? {} : { isSuspended: false }
+    let query: any = {}
 
-    if (lowRatedOnly) {
-      query.averageRating = {
-        lt: 4,
-      }
+    if (!allProperties) {
+      query.isSuspended = false
+    }
+
+    if (onAppeal) {
+      query.appeal = { status: 'pending' }
+      query.isSuspended = true
     }
 
     if (userId) {
@@ -100,16 +103,16 @@ export default async function getListings(params: IListingsParams) {
     }
 
     const listings = await prisma.listing.findMany({
-      where: query,
       include: {
         appeal: true,
       },
+      where: query,
       orderBy: {
         createdAt: 'desc',
       },
     })
 
-    const safeListing = listings.map((listing) => ({
+    const safeListings = listings.map((listing) => ({
       ...listing,
       createdAt: listing.createdAt.toISOString(),
       updatedAt: listing.updatedAt.toISOString(),
@@ -122,8 +125,8 @@ export default async function getListings(params: IListingsParams) {
         : null,
     }))
 
-    return safeListing
+    return safeListings
   } catch (error) {
-    throw new Error(typeof error === 'string' ? error : String(error))
+    throw new Error(error)
   }
 }

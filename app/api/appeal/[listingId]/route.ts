@@ -1,7 +1,6 @@
 import getCurrentUser from '@/app/actions/getCurrentUser'
 import { NextResponse } from 'next/server'
 import prisma from '@/app/libs/prismadb'
-import { Data } from '@react-google-maps/api'
 
 interface IParams {
   listingId?: string

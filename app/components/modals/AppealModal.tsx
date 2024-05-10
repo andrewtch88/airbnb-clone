@@ -15,10 +15,11 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 
 interface AppealModalProps {
-  listing: safeListing | null
+  listing: safeListing
+  adminView?: boolean
 }
 
-const AppealModal: React.FC<AppealModalProps> = ({ listing }) => {
+const AppealModal: React.FC<AppealModalProps> = ({ listing, adminView }) => {
   const appealModal = useAppealModal()
   const router = useRouter()
 
@@ -31,15 +32,73 @@ const AppealModal: React.FC<AppealModalProps> = ({ listing }) => {
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      appealLetter: '',
+      appealLetter: adminView ? listing?.appeal?.appealLetter : '',
     },
   })
 
   useEffect(() => {
-    if (!appealModal.isOpen) {
+    if (appealModal.isOpen) {
+      reset({
+        appealLetter: adminView ? listing?.appeal?.appealLetter : '',
+      })
+    } else {
       reset()
     }
-  }, [appealModal.isOpen, reset])
+  }, [appealModal.isOpen, listing, reset])
+
+  const cancel = () => {
+    appealModal.onClose()
+  }
+
+  const onApproveAppeal = () => {
+    setIsLoading(true)
+
+    const data: any = {}
+    data.appeal = 'approve'
+
+    axios
+      .put(`/api/admin/appealProperty/${listing?.id}`, data)
+      .then(() => {
+        toast.success('Appeal approved!', { duration: 5000 })
+        appealModal.onClose()
+        router.refresh()
+      })
+      .catch((error) => {
+        if (error.response?.data?.error) {
+          toast.error(error.response.data.error, { duration: 5000 })
+        } else {
+          toast.error('Something went wrong', { duration: 5000 })
+        }
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+  }
+
+  const onRejectAppeal = () => {
+    setIsLoading(true)
+
+    const data: any = {}
+    data.appeal = 'reject'
+
+    axios
+      .put(`/api/admin/appealProperty/${listing?.id}`, data)
+      .then(() => {
+        toast.success('Appeal rejected')
+        appealModal.onClose()
+        router.refresh()
+      })
+      .catch((error) => {
+        if (error.response?.data?.error) {
+          toast.error(error.response.data.error, { duration: 5000 })
+        } else {
+          toast.error('Something went wrong', { duration: 5000 })
+        }
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+  }
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true)
@@ -85,6 +144,16 @@ const AppealModal: React.FC<AppealModalProps> = ({ listing }) => {
           <div>
             {listing?.title} in {listing?.region}
           </div>
+          <div>
+            {/* {listing?.user.image ? (
+              <Avatar src={review.user.image} />
+            ) : (
+              <Avatar src={null} />
+            )}
+            <div>
+              <p className="text-base text-gray-900 ms-4">{review.user.name}</p>
+            </div> */}
+          </div>
           <div className="mt-2 text-xl font-medium leading-6 text-gray-900 flex items-center">
             <IoStar className="inline h-6 w-6 fill-current me-2" />
             <span>
@@ -102,15 +171,18 @@ const AppealModal: React.FC<AppealModalProps> = ({ listing }) => {
       </div>
 
       <Heading
-        title="Appeal form"
-        subtitle="Review the customer feedbacks carefully (by navigating to the image above) 
-          and outline how you plan to address the issues raised to improve your service."
+        title={adminView ? 'Property Owner Appeal Form' : 'Appeal form'}
+        subtitle={
+          adminView
+            ? ''
+            : 'Review the customer feedbacks carefully (by navigating to the image above) and outline how you plan to address the issues raised to improve your service.'
+        }
       />
 
       <TextArea
         id="appealLetter"
-        label="Write appeal here"
-        disabled={isLoading}
+        label={adminView ? '' : 'Write appeal here'}
+        disabled={adminView ? true : isLoading}
         register={register}
         errors={errors}
         required
@@ -118,19 +190,15 @@ const AppealModal: React.FC<AppealModalProps> = ({ listing }) => {
     </div>
   )
 
-  const cancel = () => {
-    appealModal.onClose()
-  }
-
   return (
     <Modal
-      title={`Appeal form`}
+      title={adminView ? 'Viewing Owner Appeal Form' : 'Appeal form'}
       isOpen={appealModal.isOpen}
       onClose={appealModal.onClose}
-      onSubmit={handleSubmit(onSubmit)}
-      actionLabel={'Submit Appeal'}
-      secondaryActionLabel={'Cancel'}
-      secondaryAction={cancel}
+      onSubmit={adminView ? onRejectAppeal : handleSubmit(onSubmit)}
+      actionLabel={adminView ? 'Reject Appeal' : 'Submit Appeal'}
+      secondaryActionLabel={adminView ? 'Approve Appeal' : 'Cancel'}
+      secondaryAction={adminView ? onApproveAppeal : cancel}
       body={bodyContent}
     />
   )

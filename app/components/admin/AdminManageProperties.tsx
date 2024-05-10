@@ -1,22 +1,33 @@
 import axios from 'axios'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import ListingCard from '../listings/ListingCard'
 import { useRouter } from 'next/navigation'
 import { safeListing } from '@/app/types'
 import Paginate from '../Paginate'
-import Link from 'next/link'
 
 interface AdminManagePropertiesProps {
-  listings: safeListing[]
+  sortBy: string
 }
 
 const AdminManageProperties: React.FC<AdminManagePropertiesProps> = ({
-  listings,
+  sortBy,
 }) => {
+  const [listings, setListings] = useState<safeListing[]>([])
   const [suspendId, setSuspendId] = useState('')
 
   const router = useRouter()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get(
+        `/api/admin/suspendProperty?sortBy=${sortBy}`
+      )
+      setListings(response.data)
+    }
+
+    fetchData()
+  }, [sortBy])
 
   const onSuspend = useCallback(
     (id: string) => {
@@ -39,16 +50,14 @@ const AdminManageProperties: React.FC<AdminManagePropertiesProps> = ({
   )
 
   const listingItem = (listing: safeListing) => (
-    <Link href={`/listings/${listing.id}`} passHref>
-      <ListingCard
-        key={listing.id}
-        data={listing}
-        actionId={listing.id}
-        onAction={onSuspend}
-        actionLabel="Suspend property"
-        disabled={suspendId === listing.id}
-      />
-    </Link>
+    <ListingCard
+      key={listing.id}
+      data={listing}
+      actionId={listing.id}
+      onAction={onSuspend}
+      actionLabel="Suspend property"
+      disabled={suspendId === listing.id}
+    />
   )
 
   return (

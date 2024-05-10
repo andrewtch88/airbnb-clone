@@ -16,15 +16,22 @@ import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import AdminManageProperties from '../components/admin/AdminManageProperties'
 import { safeListing } from '../types'
+import AdminManageAppeals from '../components/admin/AdminManageAppeals'
 
 interface AdminDashboardProps {
-  listings: safeListing[]
+  belowAvgListings: safeListing[]
+  appealListings: safeListing[]
 }
 
-const AdminDashboardClient: React.FC<AdminDashboardProps> = ({ listings }) => {
+const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
+  belowAvgListings,
+  appealListings,
+}) => {
   // console.log({ currentAdmin })
+
   const [activeTab, setActiveTab] = useState('suspendProperty')
-  const [sortBy, setSortBy] = useState('newest')
+  const [sortReviewBy, setSortReviewBy] = useState('newest')
+  const [sortPropertyBy, setSortPropertyBy] = useState('newest')
 
   const router = useRouter()
 
@@ -115,10 +122,26 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({ listings }) => {
           id="suspendProperty"
           role="tabpanel"
         >
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-            Properties with Low Ratings
-          </h3>
-          <AdminManageProperties listings={listings} />
+          <div className="flex justify-between items-center">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+              Latest Poor Performing Properties
+            </h3>
+            <div className="flex items-center mb-2">
+              <p className="mr-2">Sort by: </p>
+              <select
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2"
+                value={sortPropertyBy}
+                onChange={(e) => setSortPropertyBy(e.target.value)}
+              >
+                <option value="newest">Latest</option>
+                <option value="gte: 3, lte: 4">
+                  Average Performing Properties
+                </option>
+                <option value="lte: 3">Below Average Properties</option>
+              </select>
+            </div>
+          </div>
+          <AdminManageProperties sortBy={sortPropertyBy} />
         </div>
         <div
           className={`p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full ${
@@ -128,17 +151,9 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({ listings }) => {
           role="tabpanel"
         >
           <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-            Appeals Tab
+            Latest Appeals on Property Suspensions
           </h3>
-          <p className="mb-2">
-            This is some placeholder content the Appeals tab's associated
-            content, clicking another tab will toggle the visibility of this one
-            for the next.
-          </p>
-          <p>
-            The tab JavaScript swaps classes to control the content visibility
-            and styling.
-          </p>
+          <AdminManageAppeals listings={appealListings} />
         </div>
         <div
           className={`p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full ${
@@ -155,8 +170,8 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({ listings }) => {
               <p className="mr-2">Sort by: </p>
               <select
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                value={sortReviewBy}
+                onChange={(e) => setSortReviewBy(e.target.value)}
               >
                 <option value="newest">Latest</option>
                 <option value="finalRating asc">Low to High</option>
@@ -164,7 +179,7 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({ listings }) => {
               </select>
             </div>
           </div>
-          <AdminManageReviews sortBy={sortBy} />
+          <AdminManageReviews sortBy={sortReviewBy} />
         </div>
         <div
           className={`p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full ${

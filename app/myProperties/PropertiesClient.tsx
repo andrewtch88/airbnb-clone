@@ -59,7 +59,7 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
         toast.error('Error fetching listing')
       }
     },
-    [editModal, setListingData]
+    [appealModal, setListingData]
   )
 
   // id retrieve from key prop, that's why react force to use key prop
@@ -105,19 +105,19 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
               actionLabel={'Delete property'}
               disabled={deletingId === listing.id}
               secondaryActionLabel={
-                listing.isSuspended && listing.appeal.status === 'pending'
+                listing.isSuspended && listing?.appeal?.status === 'pending'
                   ? undefined
                   : (listing.isSuspended &&
-                      listing.appeal.status === 'rejected') ||
+                      listing?.appeal?.status === 'rejected') ||
                     (listing.isSuspended && !listing.appeal)
                   ? 'Appeal'
                   : 'Edit property'
               }
               onSecondaryAction={
-                listing.isSuspended && listing.appeal.status === 'pending'
+                listing.isSuspended && listing?.appeal?.status === 'pending'
                   ? undefined
                   : (listing.isSuspended &&
-                      listing.appeal.status === 'rejected') ||
+                      listing?.appeal?.status === 'rejected') ||
                     (listing.isSuspended && !listing.appeal)
                   ? onToggleAppealModal
                   : onToggleEditModal

@@ -68,14 +68,10 @@ const EditListingModal: React.FC<EditListingModalProps> = ({ listing }) => {
         address: listing?.address || '',
         price: listing?.price || 1,
       })
-    }
-  }, [editModal.isOpen, listing, reset])
-
-  useEffect(() => {
-    if (!editModal.isOpen) {
+    } else {
       reset()
     }
-  }, [editModal.isOpen, reset])
+  }, [editModal.isOpen, listing, reset])
 
   const category = watch('category')
   const guestCount = watch('guestCount') // these variables defaultValues take from the useForm<FieldValues> on above

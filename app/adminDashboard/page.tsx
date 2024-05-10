@@ -15,9 +15,9 @@ const AdminDashboardPage = async () => {
     )
   }
 
-  const listings = await getListings({ lowRatedOnly: true })
+  const appealListings = await getListings({ onAppeal: true })
 
-  return <AdminDashboardClient listings={listings} />
+  return <AdminDashboardClient appealListings={appealListings} />
 }
 
 export default AdminDashboardPage
