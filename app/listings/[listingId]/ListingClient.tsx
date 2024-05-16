@@ -7,11 +7,14 @@ import Container from '@/app/components/Container'
 import ListingHead from '../../components/listings/ListingHead'
 import ListingInfo from '@/app/components/listings/ListingInfo'
 import useLoginModal from '@/app/hooks/useLoginModal'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import {
   differenceInCalendarDays,
   differenceInDays,
   eachDayOfInterval,
+  isAfter,
+  isSameDay,
+  addDays,
 } from 'date-fns'
 import { toast } from 'react-hot-toast'
 import axios from 'axios'
@@ -21,12 +24,6 @@ import dynamic from 'next/dynamic'
 import ListingReview from '@/app/components/listings/ListingReview'
 
 // this file is the root of the listing page setup, with listingHead, ListingInfo and Listing Reservation UI
-
-const initialDateRange = {
-  startDate: new Date(),
-  endDate: new Date(),
-  key: 'selection',
-}
 
 interface ListingClientProps {
   reservations?: safeReservation[]
@@ -39,8 +36,13 @@ const ListingClient: React.FC<ListingClientProps> = ({
   reservations = [],
   currentUser,
 }) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [totalPrice, setTotalPrice] = useState(listing.price)
+
   const loginModal = useLoginModal()
   const router = useRouter()
+  const params = useSearchParams()
+  const success = params?.get('success')
 
   // calculate disabled dates on the calendar based on the reservations
   const disabledDates = useMemo(() => {
@@ -59,40 +61,76 @@ const ListingClient: React.FC<ListingClientProps> = ({
     return dates
   }, [reservations])
 
-  const [isLoading, setIsLoading] = useState(false)
-  const [totalPrice, setTotalPrice] = useState(listing.price)
+  const getInitialDateRange = (disabledDates: Date[]) => {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0) // Set to midnight for consistency
+
+    let nextAvailableDate = today
+
+    const findNextAvailableDate = (date: Date) => {
+      while (
+        disabledDates.some((disabledDate) => isSameDay(disabledDate, date))
+      ) {
+        date = addDays(date, 1)
+      }
+      return date
+    }
+
+    nextAvailableDate = findNextAvailableDate(nextAvailableDate)
+
+    return {
+      startDate: nextAvailableDate,
+      endDate: nextAvailableDate,
+      key: 'selection',
+    }
+  }
+
+  const initialDateRange = getInitialDateRange(disabledDates)
   const [dateRange, setDateRange] = useState<Range>(initialDateRange) // dateRange state is used to manage the selected date range for a reservation
 
-  const onCreateReservation = useCallback(async () => {
-    if (!currentUser) {
-      // open loginModal
-      toast.error('You must be logged in to create a reservation')
-      return loginModal.onOpen()
-    }
-    setIsLoading(true)
-    await axios
-      .post('/api/reservations', {
+  const onCheckout = useCallback(async () => {
+    try {
+      if (!currentUser) {
+        toast.error('You must be logged in to create a reservation')
+        return loginModal.onOpen()
+      }
+
+      setIsLoading(true)
+      const response = await axios.post('/api/checkout', {
+        perNightPrice: listing?.price,
         totalPrice,
         startDate: dateRange.startDate,
         endDate: dateRange.endDate,
         listingId: listing?.id,
       })
-      .then(() => {
+
+      window.location.assign(response.data.url)
+    } catch (error) {
+      toast.error('Something went wrong')
+      setIsLoading(false)
+    }
+  }, [totalPrice, dateRange, listing?.id, currentUser, loginModal])
+
+  useEffect(() => {
+    let isSuccessHandled = false
+
+    const handleSuccessfulCheckout = () => {
+      if (success === 'true' && !isSuccessHandled) {
+        isSuccessHandled = true
+
         setDateRange(initialDateRange)
+
         router.push('/myTrips')
         toast.success('Listing reserved!', { duration: 5000 })
-      })
-      .catch((error) => {
-        if (error.response?.data?.error) {
-          toast.error(error.response.data.error, { duration: 5000 })
-        } else {
-          toast.error('Something went wrong')
-        }
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
-  }, [totalPrice, dateRange, listing?.id, router, currentUser, loginModal])
+      } else if (success === 'false') {
+        toast.error('Checkout cancelled or failed.')
+      }
+    }
+
+    handleSuccessfulCheckout()
+
+    return () => setIsLoading(false)
+  }, [success, setDateRange, router])
 
   // on calendar change, count total price based on days selected
   useEffect(() => {
@@ -105,7 +143,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
       if (dayCount && listing.price) {
         setTotalPrice(dayCount * listing.price)
       } else {
-        setTotalPrice(listing.price)
+        setTotalPrice(0)
       }
     }
   }, [dateRange, listing.price])
@@ -147,7 +185,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 totalPrice={totalPrice}
                 onChangeDateRange={(value) => setDateRange(value)}
                 dateRange={dateRange}
-                onSubmit={onCreateReservation}
+                onSubmit={onCheckout}
                 disabled={isLoading}
                 disabledDates={disabledDates}
                 isOwner={listing.userId === currentUser?.id}

@@ -38,7 +38,7 @@
     "react-select": "^5.8.0",
     "react-show-more-text": "^1.7.1",
     "react-spinners": "^0.13.8",
-    "stripe": "^14.14.0",
+    "stripe": "^14.25.0",
     "styled-components": "^6.1.8",
     "use-between": "^1.3.5",
     "world-countries": "^5.0.0",

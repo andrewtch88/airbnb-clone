@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Range } from 'react-date-range'
+import toast from 'react-hot-toast'
 import Button from '../Button'
 import Calendar from '../inputs/Calendar'
 
@@ -27,6 +28,14 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
   dateRange,
   isOwner,
 }) => {
+  const handleOnSubmit = () => {
+    if (totalPrice === 0) {
+      toast.error('Select dates to reserve!')
+    } else {
+      onSubmit()
+    }
+  }
+
   return (
     <div className="bg-white rounded-xl border-[1px] border-neutral-200 overflow-hidden">
       <div className="flex flex-row items-center justify-center gap-1 p-4">
@@ -42,15 +51,28 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
         />
       </div>
       <hr />
-      <div className="p-4 flex flex-reverse justify-end font-semibold text-lg">
-        <div> Total: RM{totalPrice} </div>
-      </div>
-      <hr />
+      {totalPrice !== 0 && (
+        <>
+          <div className="p-4 flex flex-reverse justify-end font-semibold text-lg">
+            <div> Total: RM{totalPrice} </div>
+          </div>
+          <hr />
+        </>
+      )}
       <div className="p-4">
         {isOwner ? (
           <Button disabled={true} label="Hi owner, checking the calendar?" />
         ) : (
-          <Button disabled={disabled} label="Reserve" onClick={onSubmit} />
+          <div className="items-center gap-4">
+            <p className="font-light text-neutral-600 mb-4 text-center text-sm">
+              You won't be charged yet
+            </p>
+            <Button
+              disabled={disabled}
+              label="Reserve"
+              onClick={handleOnSubmit}
+            />
+          </div>
         )}
       </div>
     </div>

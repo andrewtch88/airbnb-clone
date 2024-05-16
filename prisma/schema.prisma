@@ -116,9 +116,9 @@ model Reservation {
   endDate DateTime
   totalPrice Int
   createdAt DateTime @default(now())
-  isPaid Boolean @default(false)
   hasReviewed Boolean @default(false)
   review Review? // one to one
+  payment Payment? 
 
   // many to one - multiple reservations belong to one user
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -130,7 +130,6 @@ model Reservation {
   @@index([userId], name: "index_reservations_on_userId") // Index on userId for faster lookup of reservations made by a specific user
   @@index([listingId], name: "index_reservations_on_listingId") // Index on listingId for faster lookup of reservations for a specific listing
 }
-
 
 model Review {
   id String @id @default(auto()) @map("_id") @db.ObjectId
@@ -163,33 +162,15 @@ model Review {
   // The unique constraint prevents duplicate reviews for the same user, listing, and reservation 
 }
 
+model Payment {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  reservationId String @unique @db.ObjectId  // one to one
+  totalAmount Int
+  total_amount_currency String
+  perNightPrice Int
+  per_night_currency String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-// model ReservationPayment {
-
-// }
-
-// model Order {
-//   id        String    @id @default(uuid())
-//   storeId     String    // Foreign Key to Store
-//   store       Store     @relation("StoreToOrder", fields: [storeId], references: [id])
-//   orderItems OrderItem[] // Relation to OrderItem model
-//   isPaid     Boolean   @default(false)
-//   phone      String    @default("")
-//   address    String    @default("")
-//   createdAt DateTime  @default(now())
-//   updatedAt DateTime  @updatedAt
-
-//   @@index([storeId])
-// }
-
-// // Intermediary for a many-to-many relationship
-// model OrderItem {
-//   id        String  @id @default(uuid())
-//   orderId   String  // Foreign Key to Order
-//   order     Order   @relation(fields: [orderId], references: [id])
-//   productId String  // Foreign Key to Product
-//   product   Product @relation(fields: [productId], references: [id])
-
-//   @@index([orderId])
-//   @@index([productId])
-// }
+  reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade) // one to one
+}

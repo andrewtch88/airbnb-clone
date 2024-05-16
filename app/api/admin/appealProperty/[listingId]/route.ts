@@ -7,63 +7,68 @@ interface IParams {
 }
 
 export async function PUT(request: Request, { params }: { params: IParams }) {
-  const currentAdmin = await getCurrentAdmin()
+  try {
+    const currentAdmin = await getCurrentAdmin()
 
-  if (!currentAdmin) {
-    return NextResponse.error()
-  }
+    if (!currentAdmin) {
+      return NextResponse.error()
+    }
 
-  const { listingId } = params
+    const { listingId } = params
 
-  if (!listingId || typeof listingId !== 'string') {
-    return NextResponse.error()
-  }
+    if (!listingId || typeof listingId !== 'string') {
+      return NextResponse.error()
+    }
 
-  const body = await request.json()
+    const body = await request.json()
 
-  const { appeal } = body
+    const { appeal } = body
 
-  if (!appeal) {
-    return NextResponse.error()
-  }
+    if (!appeal) {
+      return NextResponse.error()
+    }
 
-  let existingAppeal, existingProperty
+    let existingAppeal, existingProperty
 
-  if (appeal === 'approve') {
-    existingAppeal = await prisma.appeal.deleteMany({
-      where: {
-        listingId,
-      },
-    })
+    if (appeal === 'approve') {
+      existingAppeal = await prisma.appeal.deleteMany({
+        where: {
+          listingId,
+        },
+      })
 
-    existingProperty = await prisma.listing.update({
-      where: {
-        id: listingId,
-      },
-      data: {
-        isSuspended: false,
-      },
-    })
-  } else if (appeal === 'reject') {
-    existingAppeal = await prisma.appeal.update({
-      where: {
-        listingId,
-      },
-      data: {
-        status: 'rejected',
-      },
-    })
-  }
+      existingProperty = await prisma.listing.update({
+        where: {
+          id: listingId,
+        },
+        data: {
+          isSuspended: false,
+        },
+      })
+    } else if (appeal === 'reject') {
+      existingAppeal = await prisma.appeal.update({
+        where: {
+          listingId,
+        },
+        data: {
+          status: 'rejected',
+        },
+      })
+    }
 
-  if (appeal === 'approve') {
-    return NextResponse.json({
-      appeal: existingAppeal,
-      property: existingProperty,
-    })
-  } else if (appeal === 'reject') {
-    return NextResponse.json({
-      appeal: existingAppeal,
-      message: 'Appeal rejected',
-    })
+    if (appeal === 'approve') {
+      return NextResponse.json({
+        appeal: existingAppeal,
+        property: existingProperty,
+      })
+    } else if (appeal === 'reject') {
+      return NextResponse.json({
+        appeal: existingAppeal,
+        message: 'Appeal rejected',
+      })
+    }
+  } catch (error) {
+    console.log('api/admin/appealProperty', error)
+    return new NextResponse('Internal Error', { status: 500 })
   }
 }

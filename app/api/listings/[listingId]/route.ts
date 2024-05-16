@@ -13,54 +13,22 @@ interface IParams {
 }
 
 export async function PUT(request: Request, { params }: { params: IParams }) {
-  const currentUser = await getCurrentUser()
+  try {
+    const currentUser = await getCurrentUser()
 
-  if (!currentUser) {
-    return NextResponse.error()
-  }
+    if (!currentUser) {
+      return NextResponse.error()
+    }
 
-  const { listingId } = params
+    const { listingId } = params
 
-  if (!listingId || typeof listingId !== 'string') {
-    throw new Error('Invalid ID')
-  }
+    if (!listingId || typeof listingId !== 'string') {
+      throw new Error('Invalid ID')
+    }
 
-  const body = await request.json()
+    const body = await request.json()
 
-  const {
-    title,
-    description,
-    imageSrc,
-    category,
-    roomCount,
-    bathroomCount,
-    guestCount,
-    address,
-    price,
-  } = body
-
-  if (imageSrc === '') {
-    return NextResponse.json(
-      { error: 'Please include an image for your property.' },
-      { status: 400 }
-    )
-  }
-
-  if (imageSrc.length < 3) {
-    return NextResponse.json(
-      { error: 'Please include at least 3 images for your property.' },
-      { status: 400 }
-    )
-  }
-
-  const region = getRegionByAddress(address)
-
-  let updatedListing = await prisma?.listing.update({
-    where: {
-      id: listingId,
-      userId: currentUser.id,
-    },
-    data: {
+    const {
       title,
       description,
       imageSrc,
@@ -68,70 +36,117 @@ export async function PUT(request: Request, { params }: { params: IParams }) {
       roomCount,
       bathroomCount,
       guestCount,
-      region: region,
       address,
-      price: parseInt(price, 10),
-      updatedAt: new Date(),
-    },
-  })
+      price,
+    } = body
 
-  return NextResponse.json(updatedListing)
+    if (imageSrc === '') {
+      return NextResponse.json(
+        { error: 'Please include an image for your property.' },
+        { status: 400 }
+      )
+    }
+
+    if (imageSrc.length < 3) {
+      return NextResponse.json(
+        { error: 'Please include at least 3 images for your property.' },
+        { status: 400 }
+      )
+    }
+
+    const region = getRegionByAddress(address)
+
+    let updatedListing = await prisma?.listing.update({
+      where: {
+        id: listingId,
+        userId: currentUser.id,
+      },
+      data: {
+        title,
+        description,
+        imageSrc,
+        category,
+        roomCount,
+        bathroomCount,
+        guestCount,
+        region: region,
+        address,
+        price: parseInt(price, 10),
+        updatedAt: new Date(),
+      },
+    })
+
+    return NextResponse.json(updatedListing)
+  } catch (error) {
+    console.log('api/listings/[listingId] - PUT', error)
+    return new NextResponse('Internal Error', { status: 500 })
+  }
 }
 
 export async function GET(
   request: NextRequest,
   { params }: { params: IParams }
 ) {
-  const { searchParams } = request.nextUrl
-  const isAdmin = searchParams.get('isAdmin') === 'true'
+  try {
+    const { searchParams } = request.nextUrl
+    const isAdmin = searchParams.get('isAdmin') === 'true'
 
-  const { listingId } = params
+    const { listingId } = params
 
-  const getCurrentData = isAdmin ? getCurrentAdmin : getCurrentUser
+    const getCurrentData = isAdmin ? getCurrentAdmin : getCurrentUser
 
-  const verifyRole = await getCurrentData()
-  if (!verifyRole) {
-    return NextResponse.error()
+    const verifyRole = await getCurrentData()
+    if (!verifyRole) {
+      return NextResponse.error()
+    }
+
+    if (!listingId || typeof listingId !== 'string') {
+      throw new Error('Invalid ID')
+    }
+
+    const listing = await prisma?.listing.findUnique({
+      where: {
+        id: listingId,
+      },
+      include: {
+        appeal: true,
+      },
+    })
+
+    return NextResponse.json(listing)
+  } catch (error) {
+    console.log('api/listings/[listingId] - GET', error)
+    return new NextResponse('Internal Error', { status: 500 })
   }
-
-  if (!listingId || typeof listingId !== 'string') {
-    throw new Error('Invalid ID')
-  }
-
-  const listing = await prisma?.listing.findUnique({
-    where: {
-      id: listingId,
-    },
-    include: {
-      appeal: true,
-    },
-  })
-
-  return NextResponse.json(listing)
 }
 
 export async function DELETE(
   request: Request,
   { params }: { params: IParams }
 ) {
-  const currentUser = await getCurrentUser()
+  try {
+    const currentUser = await getCurrentUser()
 
-  if (!currentUser) {
-    return NextResponse.error()
+    if (!currentUser) {
+      return NextResponse.error()
+    }
+
+    const { listingId } = params
+
+    if (!listingId || typeof listingId !== 'string') {
+      throw new Error('Invalid ID')
+    }
+
+    const listing = await prisma?.listing.deleteMany({
+      where: {
+        id: listingId,
+        userId: currentUser.id,
+      },
+    })
+
+    return NextResponse.json(listing)
+  } catch (error) {
+    console.log('api/listings/[listingId] - DELETE', error)
+    return new NextResponse('Internal Error', { status: 500 })
   }
-
-  const { listingId } = params
-
-  if (!listingId || typeof listingId !== 'string') {
-    throw new Error('Invalid ID')
-  }
-
-  const listing = await prisma?.listing.deleteMany({
-    where: {
-      id: listingId,
-      userId: currentUser.id,
-    },
-  })
-
-  return NextResponse.json(listing)
 }
