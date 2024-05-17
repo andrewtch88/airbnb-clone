@@ -19,10 +19,10 @@ Full Stack Airbnb Clone with Next.js 14: React, Tailwind CSS, Prisma, MongoDB, N
 <table>
     <tr>
         <td>
-<a href="#"><img src="https://github.com/andrewtch88/airbnb-clone/assets/59404615/412246f9-3717-44e6-95ac-e5b85d5432a6" alt="Alt text" width="30" height="30" /></a>
+<a href="#"><img src="https://github.com/andrewtch88/airbnb-clone/assets/59404615/412246f9-3717-44e6-95ac-e5b85d5432a6" alt="Alt text" width="60" height="60" /></a>
         </td>
         <td>
-<a href="#"><img src="https://github.com/andrewtch88/airbnb-clone/assets/59404615/27dae3a8-2375-412a-835c-05b90cf73b0c" alt="Alt text" width="30" height="30" /></a>
+<a href="#"><img src="https://github.com/andrewtch88/airbnb-clone/assets/59404615/27dae3a8-2375-412a-835c-05b90cf73b0c" alt="Alt text" width="60" height="60" /></a>
         </td>
         <td>
 <a href="#"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" alt="" width="30" height="30" /></a>
