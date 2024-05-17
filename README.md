@@ -92,9 +92,6 @@ Fetching Data with React Server Components (Without API!)
 - Sign up for a Google Cloud Platform <a href='https://console.cloud.google.com/'>HERE</a>
 - Sign up for a Meta for Developers <a href='https://developers.facebook.com'>HERE</a>
 
-## Install packages
-Open the source code in editor and npm i in CMD
- 
 ### :key: Setup Environment Variables (.env and .env.local file)
 ```bash
 DATABASE_URL=""
