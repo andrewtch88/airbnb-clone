@@ -94,7 +94,6 @@ Fetching Data with React Server Components (Without API!)
 - Install Node JS in your computer <a href='https://nodejs.org/en/'>HERE</a>
 - Sign up for a Cloudinary account <a href='https://cloudinary.com/'>HERE</a>
 - Sign up for a Google Cloud Platform <a href='https://console.cloud.google.com/'>HERE</a>
-- Sign up for a Meta for Developers <a href='https://developers.facebook.com'>HERE</a>
 
 ### :key: Setup Environment Variables (.env and .env.local file)
 ```bash
