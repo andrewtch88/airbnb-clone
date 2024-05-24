@@ -101,7 +101,8 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ reservation }) => {
         </div>
         <div className="ml-3 text-2xl text-black font-medium">
           <div>
-            {reservation?.listing.title} in {reservation?.listing.region}
+            {reservation?.listing.title} in{' '}
+            {reservation?.listing.city + ', ' + reservation?.listing.country}
           </div>
           {reservation?.listing.reviewCount == 0 ? (
             <span className="mt-2 text-xl font-medium leading-6 text-gray-900 flex items-center">

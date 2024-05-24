@@ -1,11 +1,11 @@
 'use client'
 
 export interface RegionsButtonsProps {
-  regions: {
+  countries: {
     label: string
     image: string
   }[]
-  region: string
+  country: string
   setCustomValue: (id: string, value: any) => void
   style?: React.CSSProperties
 }

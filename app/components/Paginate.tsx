@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react'
 import ReactPaginate from 'react-paginate'
 
@@ -24,9 +26,7 @@ const Paginate: React.FC<PaginateProps<any>> = ({
 
   return (
     <>
-      {currentItems.map((item, index) => (
-        <div key={index}>{renderItem(item)}</div>
-      ))}
+      {currentItems.map((item) => renderItem(item))}
       <div className="fixed bottom-0 left-0 right-0 bg-gray-50 dark:bg-gray-800">
         <div className="col-span-2 max-w-screen-xl mx-auto">
           <div className="flex justify-center p-3">

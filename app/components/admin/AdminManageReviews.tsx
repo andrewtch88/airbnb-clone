@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { safeReview } from '../../types'
-import ReviewItem from '../listings/ListingReviewItem'
+import ReviewItem from '../listing/ListingReviewItem'
 import { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
 import toast from 'react-hot-toast'

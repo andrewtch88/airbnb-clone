@@ -51,6 +51,7 @@ const RentModal = () => {
       bathroomCount: 1,
       guestCount: 1,
       address: '',
+      city: '',
       price: 1, // form fields' default values
     },
   })
@@ -153,10 +154,18 @@ const RentModal = () => {
           title="Where is your place located?"
           subtitle="Your address is only shared with guests after they've reserved"
         />
+        <Input
+          id="city"
+          label="City Name"
+          disabled={isLoading}
+          register={register}
+          errors={errors}
+          required
+        />
         <PlacesAutocomplete>
           <Input
             id="address"
-            label="Where"
+            label="Address"
             disabled={isLoading}
             register={register}
             errors={errors}

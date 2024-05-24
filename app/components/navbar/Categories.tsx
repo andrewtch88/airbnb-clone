@@ -56,7 +56,7 @@ const Categories = () => {
   const category = params?.get('category')
   const pathname = usePathname()
 
-  const isMainPage = pathname === '/'
+  const isMainPage = pathname === '/listingsPage'
 
   if (!isMainPage) {
     return null

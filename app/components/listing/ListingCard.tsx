@@ -9,6 +9,7 @@ import Button from '../Button'
 import Avatar from '../Avatar'
 import { IoStar } from 'react-icons/io5'
 import Link from 'next/link'
+import toast from 'react-hot-toast'
 
 interface ListingCardProps {
   data: safeListing
@@ -92,6 +93,11 @@ const ListingCard: React.FC<ListingCardProps> = ({
     }
   }
 
+  const copyAddress = () => {
+    navigator.clipboard.writeText(data.address)
+    toast.success('Address copied!')
+  }
+
   return (
     <div className="flex flex-col gap-2 w-full">
       <div
@@ -105,7 +111,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
         <div className="flex flex-col gap-2 w-full">
           <div className="aspect-square w-full relative overflow-hidden rounded-xl">
             {actionLabel === 'Suspend property' ||
-            actionLabel === 'View suspension appeal' ? (
+            actionLabel === 'View appeal' ? (
               <Link href={`/listings/${actionId}`} passHref>
                 <Image
                   alt="data"
@@ -147,45 +153,56 @@ const ListingCard: React.FC<ListingCardProps> = ({
               </>
             )}
           </div>
-          {/* Average Rating of Listing */}
-          <div className="flex justify-between">
-            <div className="font-semibold text-lg">{data.region}</div>
-            <p className="flex items-center text-md font-light">
-              <IoStar className="mr-1 block w-4 h-4 fill-current" />
-              {data.reviewCount > 0
-                ? `${data.averageRating.toFixed(2)}`
-                : 'New'}
-            </p>
-          </div>
-          {reservation?.userId == currentUser?.id ? (
-            <></>
-          ) : (
-            reservation && (
-              <>
-                <div className="text-sm font-semibold flex flex-row items-center gap-2">
-                  <div>Booked by {reservation.user.name}</div>
-                  {<Avatar src={reservation.user?.image} />}
-                </div>
-                <hr />
-              </>
-            )
-          )}
-
-          <div className="font-light text-neutral-500">
-            {reservationDate || data.category}
-          </div>
-          <div className="flex flex-row items-center gap-1">
-            <div className="font-semibold">RM{price}</div>
-
-            {/* if is reservation then hide the per night, just display the price in above */}
-
-            {!reservation && <div className="font-light">night</div>}
-          </div>
         </div>
       </div>
 
-      {/* BUTTON GROUP*/}
+      {/* Listing Data */}
+      <div className="flex justify-between">
+        {reservation?.userId == currentUser?.id && currentUser ? (
+          <div
+            className="text-sm font-semibold flex flex-row items-center gap-2 cursor-copy"
+            onClick={copyAddress}
+          >
+            {data.address}
+          </div>
+        ) : (
+          <div className="font-semibold text-lg">
+            {data.city + ', ' + data.country}
+          </div>
+        )}
+        <p className="flex items-center text-md font-light">
+          <IoStar className="mr-1 block w-4 h-4 fill-current" />
+          {data.reviewCount > 0 ? `${data.averageRating.toFixed(2)}` : 'New'}
+        </p>
+      </div>
 
+      {/* BOOKED BY */}
+      {reservation?.userId == currentUser?.id ? (
+        <></>
+      ) : (
+        reservation && (
+          <>
+            <div className="text-sm font-semibold flex flex-row items-center gap-2">
+              <div>Booked by {reservation.user.name}</div>
+              {<Avatar src={reservation.user?.image} />}
+            </div>
+            <hr />
+          </>
+        )
+      )}
+
+      <div className="font-light text-neutral-500">
+        {reservationDate || data.category}
+      </div>
+      <div className="flex flex-row items-center gap-1">
+        <div className="font-semibold">RM{price}</div>
+
+        {/* if is reservation then hide the per night, just display the price in above */}
+
+        {!reservation && <div className="font-light">night</div>}
+      </div>
+
+      {/* BUTTON GROUP*/}
       <div className="flex flex-col gap-2 w-full">
         {onSecondaryAction && secondaryActionLabel && (
           <Button

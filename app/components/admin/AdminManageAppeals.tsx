@@ -1,7 +1,7 @@
 import { safeListing } from '@/app/types'
 import React from 'react'
 import Link from 'next/link'
-import ListingCard from '../listings/ListingCard'
+import ListingCard from '../listing/ListingCard'
 import Paginate from '../Paginate'
 import { useCallback, useState, useContext } from 'react'
 import axios from 'axios'

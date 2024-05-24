@@ -6,6 +6,9 @@ const nextConfig = {
       'lh3.googleusercontent.com',
       'a0.muscache.com',
       'res.cloudinary.com',
+      'source.unsplash.com',
+      'maps.googleapis.com',
+      'media-cdn.tripadvisor.com',
     ],
   },
 }

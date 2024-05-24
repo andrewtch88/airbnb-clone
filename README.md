@@ -3,21 +3,29 @@ Full Stack Airbnb Clone with Next.js 14: React, Tailwind, Prisma, MongoDB, NextA
 ![image](https://github.com/andrewtch88/airbnb-clone/assets/59404615/e739aad4-d645-4f35-a32f-fc1c8c3fc041)
 
 ## Features
-Tailwind design\
+
+Next JS Tailwind design\
 Full responsiveness\
 Google OAuth authentication\
 Image upload using Cloudinary CDN\
 Calendars with react-date-range\
+Reviews\
 Booking / Reservation system\
 Properties Management\
 Search properties\
-Fetching Data with React Server Components (Without API!)
+Basic Admin Dashboard\
+Stripe Payment\
 
 ## Prerequisites
+
 First, make sure your Node version is 14.x
+
 ## Install packages
-Open the source code in editor and npm i in CMD 
+
+Open the source code in editor and npm i in CMD
+
 ## Setup the environment (.env file)
+
 ```bash
 DATABASE_URL=
 GOOGLE_CLIENT_ID=
@@ -26,11 +34,15 @@ GITHUB_ID=
 GITHUB_SECRET=
 NEXTAUTH_SECRET=
 ```
+
 ## Setup Prisma
+
 ```bash
 npx prisma db push
 ```
+
 ## Start the app
+
 ```bash
 npm run dev
 # or

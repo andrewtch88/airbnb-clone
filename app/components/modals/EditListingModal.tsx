@@ -52,6 +52,7 @@ const EditListingModal: React.FC<EditListingModalProps> = ({ listing }) => {
       guestCount: listing?.guestCount || 1,
       address: listing?.address || '',
       price: listing?.price || 1, // form fields' default values
+      city: listing?.city || '',
     },
   })
 
@@ -67,6 +68,7 @@ const EditListingModal: React.FC<EditListingModalProps> = ({ listing }) => {
         guestCount: listing?.guestCount || 1,
         address: listing?.address || '',
         price: listing?.price || 1,
+        city: listing?.city || '',
       })
     } else {
       reset()
@@ -149,16 +151,28 @@ const EditListingModal: React.FC<EditListingModalProps> = ({ listing }) => {
         </div>
         <div>
           <div className="mt-2">
-            <PlacesAutocomplete>
+            <div className="mb-10">
               <Input
-                id="address"
-                label="Where"
+                id="city"
+                label="City Name"
                 disabled={isLoading}
                 register={register}
                 errors={errors}
                 required
               />
-            </PlacesAutocomplete>
+            </div>
+            <div>
+              <PlacesAutocomplete>
+                <Input
+                  id="address"
+                  label="Address"
+                  disabled={isLoading}
+                  register={register}
+                  errors={errors}
+                  required
+                />
+              </PlacesAutocomplete>
+            </div>
           </div>
         </div>
 

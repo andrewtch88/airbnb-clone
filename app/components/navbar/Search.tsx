@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 import Calendar from '../inputs/Calendar'
 import Counter from '../inputs/Counter'
-import { regions } from '@/app/components/SearchByRegions'
+import { countries } from '@/app/components/SearchByRegions'
 import ButtonInput from '../inputs/ButtonWithIcons'
 import { BiSearch } from 'react-icons/bi'
 import { Fragment } from 'react'
@@ -32,13 +32,13 @@ const Search = () => {
   const params = useSearchParams()
 
   const selectedAddress = params?.get('address')
-  const selectedRegion = params?.get('region')
+  const selectedCountry = params?.get('country')
   const selectedStartDate = params?.get('startDate')
   const selectedEndDate = params?.get('endDate')
   const selectedGuestCount = params?.get('guestCount')
 
   const locationLabel = useMemo(() => {
-    if (selectedAddress && selectedRegion) {
+    if (selectedAddress && selectedCountry) {
       const addressArray = selectedAddress.split(', ')
       const country = addressArray[addressArray.length - 1]
       return country
@@ -50,12 +50,12 @@ const Search = () => {
       return country
     }
 
-    if (selectedRegion) {
-      return selectedRegion
+    if (selectedCountry) {
+      return selectedCountry
     }
 
-    return 'Anywhere'
-  }, [selectedAddress, selectedRegion])
+    return 'Search destinations'
+  }, [selectedAddress, selectedCountry])
 
   const durationLabel = useMemo(() => {
     if (selectedStartDate && selectedEndDate) {
@@ -70,7 +70,7 @@ const Search = () => {
       return `${diff} Days`
     }
 
-    return 'Any Week'
+    return 'Add dates'
   }, [selectedStartDate, selectedEndDate])
 
   const guestCountLabel = useMemo(() => {
@@ -78,7 +78,7 @@ const Search = () => {
       return `${selectedGuestCount} Guests`
     }
 
-    return 'Add Guests'
+    return 'Add guests'
   }, [selectedGuestCount])
 
   const [step, setStep] = useState(STEPS.LOCATION)
@@ -99,7 +99,7 @@ const Search = () => {
   } = useForm<FieldValues>({
     defaultValues: {
       address: '',
-      region: '',
+      country: '',
       roomCount: 1,
       bathroomCount: 1,
       guestCount: 1,
@@ -108,7 +108,7 @@ const Search = () => {
 
   // register(`formField name`) or setCustomValue(`formField name`, value) then watch(`formField name`) to read current input value
   const address = watch('address')
-  const region = watch('region')
+  const country = watch('country')
   const guestCount = watch('guestCount')
   const roomCount = watch('roomCount')
   const bathroomCount = watch('bathroomCount')
@@ -155,8 +155,8 @@ const Search = () => {
         updatedQuery.address = address
       }
 
-      if (region && region !== "I'm flexible") {
-        updatedQuery.region = region
+      if (country && country !== "I'm flexible") {
+        updatedQuery.country = country
       }
 
       // transform dates to string as they're used as url parameters
@@ -170,7 +170,7 @@ const Search = () => {
 
       const url = qs.stringifyUrl(
         {
-          url: '/',
+          url: '/listingsPage',
           query: updatedQuery,
         },
         { skipNull: true }
@@ -185,7 +185,7 @@ const Search = () => {
     [
       step,
       address,
-      region,
+      country,
       router,
       guestCount,
       roomCount,
@@ -216,18 +216,18 @@ const Search = () => {
   // end flyout menu operations
 
   const RegionsButtons: React.FC<RegionsButtonsProps> = ({
-    regions,
-    region,
+    countries,
+    country,
     setCustomValue,
     style,
   }) => {
     return (
       <>
-        {regions.map((item) => (
+        {countries.map((item) => (
           <div key={item.label} className="col-span-1 p-1">
             <ButtonInput
-              selected={region === item.label}
-              onClick={() => setCustomValue('region', item.label)}
+              selected={country === item.label}
+              onClick={() => setCustomValue('country', item.label)}
               description={item.label}
               imageUrl={item.image}
               squared
@@ -263,8 +263,8 @@ const Search = () => {
         <div className="font-bold">Search by region</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-1 max-h-[50vh] overflow-y-auto">
           <RegionsButtons
-            regions={regions}
-            region={region}
+            countries={countries}
+            country={country}
             setCustomValue={setCustomValue}
           />
         </div>
@@ -275,8 +275,8 @@ const Search = () => {
         <div className="font-bold">Search by region</div>
         <div className="w-full h-[40vh] rounded-lg object-cover flex space-x-2 overflow-x-auto">
           <RegionsButtons
-            regions={regions}
-            region={region}
+            countries={countries}
+            country={country}
             setCustomValue={setCustomValue}
             style={{ width: '150px', height: '150px' }}
           />
@@ -356,7 +356,7 @@ const Search = () => {
     <Popover>
       {/* Placeholder Search Bar */}
       <Popover.Button>
-        <div className="border-[1px] w-full md:w-auto py-2 rounded-full shadow-sm hover:shadow-md transition cursor-pointer select-none">
+        <div className="border-[1px] w-full md:w-auto py-2 rounded-full shadow-sm hover:shadow-md transition cursor-pointer select-none bg-white">
           <div className="flex flex-row items-center justify-between">
             <div className="text-sm font-semibold px-6">{locationLabel}</div>
             <div className="hidden sm:block text-sm font-semibold px-6 border-x-[1px] flex-1 text-center">

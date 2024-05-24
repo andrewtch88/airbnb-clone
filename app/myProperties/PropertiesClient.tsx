@@ -9,7 +9,7 @@ import { safeListing, SafeUser } from '@/app/types'
 
 import Heading from '@/app/components/Heading'
 import Container from '@/app/components/Container'
-import ListingCard from '@/app/components/listings/ListingCard'
+import ListingCard from '@/app/components/listing/ListingCard'
 import useEditModal from '@/app/hooks/useEditModal'
 
 // import { useGlobalContext } from '../contextAPI/EditListingContext'

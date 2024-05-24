@@ -15,6 +15,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
   const pathname = usePathname()
   const showComponent = pathname !== '/adminDashboard'
+  const showSearch = pathname !== '/adminDashboard' && pathname !== '/'
 
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm">
@@ -22,7 +23,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
         <Container>
           <div className="flex flex-row items-center justify-between gap-3 md:gap-0">
             <Logo showComponent={showComponent} />
-            {showComponent && <Search />}
+            {showSearch && <Search />}
             <UserMenu currentUser={currentUser} showComponent={showComponent} />
           </div>
         </Container>

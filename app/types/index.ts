@@ -5,6 +5,7 @@ import {
   Review,
   Admin,
   Appeal,
+  Payment,
 } from '@prisma/client'
 
 export type safeListing = Omit<Listing, 'createdAt'> & {
@@ -41,6 +42,12 @@ export type safeListing = Omit<Listing, 'createdAt'> & {
 //     },
 //   },
 // ];
+
+export type safePayment = Omit<Payment, 'createdAt' | 'updatedAt'> & {
+  createdAt: string
+  updatedAt: string
+  reservation: safeReservation
+}
 
 export type safeReservation = Omit<
   Reservation,

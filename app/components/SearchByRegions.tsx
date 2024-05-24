@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const regions = [
+export const countries = [
   {
     label: "I'm flexible",
     image:

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import ListingCard from '../listings/ListingCard'
+import ListingCard from '../listing/ListingCard'
 import { useRouter } from 'next/navigation'
 import { safeListing } from '@/app/types'
 import Paginate from '../Paginate'

@@ -5,7 +5,7 @@ import React, { useCallback, useState } from 'react'
 interface StarRatingProps {
   categoryRating: string
   value: number
-  onChange: (value: number) => void
+  onChange?: (value: number) => void
   disabled?: boolean
 }
 

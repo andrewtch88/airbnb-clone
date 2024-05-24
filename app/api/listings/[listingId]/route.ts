@@ -38,6 +38,7 @@ export async function PUT(request: Request, { params }: { params: IParams }) {
       guestCount,
       address,
       price,
+      city,
     } = body
 
     if (imageSrc === '') {
@@ -54,7 +55,7 @@ export async function PUT(request: Request, { params }: { params: IParams }) {
       )
     }
 
-    const region = getRegionByAddress(address)
+    const country = getRegionByAddress(address)
 
     let updatedListing = await prisma?.listing.update({
       where: {
@@ -69,8 +70,9 @@ export async function PUT(request: Request, { params }: { params: IParams }) {
         roomCount,
         bathroomCount,
         guestCount,
-        region: region,
+        country: country,
         address,
+        city,
         price: parseInt(price, 10),
         updatedAt: new Date(),
       },

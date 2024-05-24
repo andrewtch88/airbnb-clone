@@ -37,7 +37,7 @@ const NavbarCategories: React.FC<NavbarCategoriesProps> = ({
 
     const url = qs.stringifyUrl(
       {
-        url: '/',
+        url: '/listingsPage',
         query: updatedQuery,
       },
       { skipNull: true }

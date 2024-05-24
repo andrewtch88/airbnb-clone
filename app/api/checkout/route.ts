@@ -43,9 +43,9 @@ export async function POST(request: Request) {
           currency: 'MYR',
           unit_amount: Math.round(totalPrice! * 100),
           product_data: {
-            name: listing.title,
-            description: listing.description!,
-            images: [listing.imageSrc[0]],
+            name: listing.title!,
+            description: listing.description!.substring(0, 300) + '...',
+            images: [listing.imageSrc[0]!],
           },
         },
       },

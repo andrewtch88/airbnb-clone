@@ -1,5 +1,5 @@
 import prisma from '@/app/libs/prismadb'
-
+import { europeanCountries } from '../hooks/useRegion'
 // Retrieves all listings from DB using server component (no 'use client') and Prisma, flexible as it can display home screen or owner listings screen
 
 export interface IListingsParams {
@@ -9,7 +9,7 @@ export interface IListingsParams {
   bathroomCount?: number
   startDate?: string
   endDate?: string
-  region?: string
+  country?: string
   address?: string
   category?: string
   allProperties?: boolean
@@ -23,7 +23,7 @@ export default async function getListings(params: IListingsParams) {
       roomCount,
       guestCount,
       bathroomCount,
-      region,
+      country,
       startDate,
       endDate,
       category,
@@ -72,12 +72,17 @@ export default async function getListings(params: IListingsParams) {
     if (address) {
       query.address = {
         contains: address, // Case-insensitive search
+        mode: 'insensitive',
       }
     }
 
-    if (region) {
-      query.region = {
-        contains: region,
+    if (country) {
+      if (country == 'Europe') {
+        query.country = {
+          in: europeanCountries,
+        }
+      } else {
+        query.country = country
       }
     }
 

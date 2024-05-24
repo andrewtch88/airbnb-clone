@@ -16,7 +16,7 @@ const Logo: React.FC<LogoProps> = ({ showComponent }) => {
       onClick={() =>
         showComponent == false
           ? router.push('/adminDashboard')
-          : router.push('/')
+          : router.push('/listingsPage')
       }
       alt="logo"
       className="hidden md:block cursor-pointer select-none"

@@ -142,7 +142,7 @@ const AppealModal: React.FC<AppealModalProps> = ({ listing, adminView }) => {
         </div>
         <div className="ml-3 text-2xl text-black font-medium">
           <div>
-            {listing?.title} in {listing?.region}
+            {listing?.title} in {listing?.city}, {listing?.country}
           </div>
           <div>
             {/* {listing?.user.image ? (

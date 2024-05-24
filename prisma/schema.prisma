@@ -75,10 +75,11 @@ model Listing {
   roomCount Int
   bathroomCount Int
   guestCount Int
-  region String
   userId String @db.ObjectId
   price Int
   address String
+  country String
+  city String
   isSuspended Boolean @default(false)
   appeal Appeal? // one to one
 
@@ -118,7 +119,7 @@ model Reservation {
   createdAt DateTime @default(now())
   hasReviewed Boolean @default(false)
   review Review? // one to one
-  payment Payment? 
+  payment Payment? // one to one
 
   // many to one - multiple reservations belong to one user
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
