@@ -66,35 +66,60 @@ const TripsClient: React.FC<TripsClientProps> = ({
     [reviewModal, setReservationData]
   )
 
+  const today = new Date()
+
+  const pastTrips = reservations.filter(
+    (reservation) => new Date(reservation.endDate) < today
+  )
+  const futureTrips = reservations.filter(
+    (reservation) => new Date(reservation.endDate) >= today
+  )
+
   return (
     <Container>
-      <Heading
-        title="Trips"
-        subtitle="Where you've been and where you're going"
-      />
-      <div
-        className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 
-          xl:grid-cols-5 2xl:grid-cols-6 gap-8"
-      >
-        {reservations.map((reservation: any) => (
-          <ListingCard
-            key={reservation.id}
-            data={reservation.listing}
-            reservation={reservation}
-            actionId={reservation.id}
-            // When action (onCancel) is triggered, onCancel is called with actionId as argument.
-            // The actionId is used to identify which reservation should be canceled.
-            onAction={onToggleReviewModal}
-            // onAction={onCancel}
-            // disabled={deletingId === reservation.id}
-            // actionLabel="Cancel reservation"
-            currentUser={currentUser}
-            {...(reservation.hasReviewed == false && {
-              actionLabel: 'Add review',
-            })}
-          />
-        ))}
-      </div>
+      <>
+        {futureTrips.length > 0 && (
+          <>
+            <Heading
+              title="Upcoming / Ongoing Trips"
+              subtitle="Where you're going"
+            />
+            <div className="mt-5 mb-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
+              {futureTrips.map((reservation) => (
+                <ListingCard
+                  key={reservation.id}
+                  data={reservation.listing}
+                  reservation={reservation}
+                  actionId={reservation.id}
+                  onAction={onToggleReviewModal}
+                  currentUser={currentUser}
+                />
+              ))}
+            </div>
+          </>
+        )}
+
+        {pastTrips.length > 0 && (
+          <div className="border-t">
+            <Heading title="Past Trips" subtitle="Where you've been" />
+            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
+              {pastTrips.map((reservation) => (
+                <ListingCard
+                  key={reservation.id}
+                  data={reservation.listing}
+                  reservation={reservation}
+                  actionId={reservation.id}
+                  onAction={onToggleReviewModal}
+                  currentUser={currentUser}
+                  {...(reservation.hasReviewed === false && {
+                    actionLabel: 'Add review',
+                  })}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </>
       <ReviewModal reservation={reservationData} />
     </Container>
   )

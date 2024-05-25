@@ -32,10 +32,6 @@ const Home = () => {
           <h1 className="text-5xl font-bold text-center text-white drop-shadow-lg shadow-black">
             Find places to stay in anywhere
           </h1>
-          {/* <p className="text-white text-lg md:text-xl drop-shadow-lg shadow-black">
-            Whether you’re looking for a cabin, a condo, or a castle—find your
-            getaway on Bearbnb.
-          </p> */}
           <div className="mt-10 w-full flex justify-center">
             <Search />
           </div>
@@ -70,7 +66,7 @@ const Home = () => {
             needs.
           </p>
         </div>
-        <div className="flex flex-col max-w-xs p-4">
+        <div className="flex flex-col max-w-xs p-4 lg:ml-3">
           <IoIosStarOutline className="w-8 h-8 mb-4" />
           <h3 className="text-xl md:text-2xl font-semibold mb-2">
             Read real reviews

@@ -42,26 +42,86 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
     [router]
   )
 
+  const getStartAndEndOfWeek = (date: Date) => {
+    const startOfWeek = new Date(date)
+    const endOfWeek = new Date(date)
+
+    // Set startOfWeek to the previous Sunday
+    startOfWeek.setDate(date.getDate() - date.getDay())
+
+    // Set endOfWeek to the next Saturday
+    endOfWeek.setDate(date.getDate() + (6 - date.getDay()))
+
+    // Reset hours to 00:00:00 for comparison
+    startOfWeek.setHours(0, 0, 0, 0)
+    endOfWeek.setHours(23, 59, 59, 999)
+
+    return { startOfWeek, endOfWeek }
+  }
+
+  const today = new Date()
+
+  const { startOfWeek, endOfWeek } = getStartAndEndOfWeek(today)
+
+  const thisWeekBookings = reservations.filter(
+    (reservation) =>
+      (new Date(reservation.startDate) >= startOfWeek &&
+        new Date(reservation.startDate) <= endOfWeek) ||
+      (new Date(reservation.endDate) >= startOfWeek &&
+        new Date(reservation.endDate) <= endOfWeek)
+  )
+
+  const pastBookings = reservations.filter(
+    (reservation) => new Date(reservation.endDate) < startOfWeek
+  )
+
   return (
     <Container>
-      <Heading title="Reservations" subtitle="Bookings on your properties" />
-      <div
-        className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 
-        xl:grid-cols-5 2xl:grid-cols-6 gap-8"
-      >
-        {reservations.map((reservation: any) => (
-          <ListingCard
-            key={reservation.id}
-            data={reservation.listing}
-            reservation={reservation}
-            actionId={reservation.id}
-            // onAction={onCancel}
-            disabled={deletingId === reservation.id}
-            // actionLabel="Cancel guest reservation"
-            currentUser={currentUser}
+      {thisWeekBookings.length > 0 && (
+        <>
+          <Heading
+            title="This Week's Ongoing Bookings"
+            subtitle="Latest Bookings on your properties"
           />
-        ))}
-      </div>
+          <div className="mt-5 mb-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
+            {thisWeekBookings.map((reservation) => (
+              <ListingCard
+                key={reservation.id}
+                data={reservation.listing}
+                reservation={reservation}
+                actionId={reservation.id}
+                // onAction={onCancel}
+                disabled={deletingId === reservation.id}
+                // actionLabel="Cancel guest reservation"
+                currentUser={currentUser}
+              />
+            ))}
+          </div>
+        </>
+      )}
+
+      {pastBookings.length > 0 && (
+        <div className="border-t">
+          <Heading
+            title="Past Bookings"
+            subtitle="Previous Bookings on your properties"
+          />
+          <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
+            {pastBookings.map((reservation) => (
+              <ListingCard
+                key={reservation.id}
+                data={reservation.listing}
+                reservation={reservation}
+                actionId={reservation.id}
+                // onAction={onCancel}
+                disabled={deletingId === reservation.id}
+                // actionLabel="Cancel guest reservation"
+                currentUser={currentUser}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </Container>
   )
 }
