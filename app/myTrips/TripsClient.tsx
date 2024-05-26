@@ -84,7 +84,7 @@ const TripsClient: React.FC<TripsClientProps> = ({
               title="Upcoming / Ongoing Trips"
               subtitle="Where you're going"
             />
-            <div className="mt-5 mb-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
+            <div className="mt-5 mb-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
               {futureTrips.map((reservation) => (
                 <ListingCard
                   key={reservation.id}
@@ -100,7 +100,7 @@ const TripsClient: React.FC<TripsClientProps> = ({
         )}
 
         {pastTrips.length > 0 && (
-          <div className="border-t">
+          <div className="border-t border-gray-300 px-4 py-4 sm:px-6">
             <Heading title="Past Trips" subtitle="Where you've been" />
             <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
               {pastTrips.map((reservation) => (

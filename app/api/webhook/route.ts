@@ -50,11 +50,12 @@ export async function POST(request: Request) {
     try {
       const reserveAndPaymentRecord = await prisma.$transaction(
         async (prisma) => {
-          const updatedListing = await prisma.listing.update({
+          const createReservation = await prisma.listing.update({
             where: { id: listingId },
             data: {
               reservations: {
                 create: {
+                  // relation between listing and reservation
                   userId: userId,
                   startDate: new Date(startDate),
                   endDate: new Date(endDate),
@@ -75,7 +76,7 @@ export async function POST(request: Request) {
             },
           })
 
-          const reservationId = updatedListing.reservations[0].id
+          const reservationId = createReservation.reservations[0].id
 
           const existingPayment = await prisma.payment.findUnique({
             where: { reservationId },
@@ -95,7 +96,7 @@ export async function POST(request: Request) {
             },
           })
 
-          return { updatedListing, payment }
+          return { createReservation, payment }
         }
       )
 
