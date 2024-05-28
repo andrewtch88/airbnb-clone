@@ -18,7 +18,7 @@ const Home = () => {
     <div className="container mx-auto p-4 relative flex flex-col items-center space-y-12">
       <div className="relative w-full md:h-[33em] h-[22em] flex justify-center">
         <Image
-          className="object-cover contrast-125"
+          className="object-cover contrast-125 select-none"
           alt="where to"
           src="https://a0.muscache.com/im/pictures/c8ba7316-48cc-407c-bbad-04116ff2c555.jpg"
           layout="fill"
@@ -29,7 +29,7 @@ const Home = () => {
         />
         {/* Search Input Field */}
         <div className="absolute inset-0 flex flex-col justify-center items-center">
-          <h1 className="text-5xl font-bold text-center text-white drop-shadow-lg shadow-black">
+          <h1 className="select-none text-5xl font-bold text-center text-white drop-shadow-lg shadow-black">
             Find places to stay in anywhere
           </h1>
           <div className="mt-10 w-full flex justify-center">

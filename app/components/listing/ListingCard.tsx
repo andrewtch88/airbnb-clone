@@ -1,5 +1,10 @@
 'use client'
-import { safeListing, safeReservation, SafeUser } from '@/app/types'
+import {
+  safeListing,
+  safeNotification,
+  safeReservation,
+  SafeUser,
+} from '@/app/types'
 import { useRouter } from 'next/navigation'
 import { useCallback, useMemo } from 'react'
 import { format } from 'date-fns'
@@ -21,6 +26,7 @@ interface ListingCardProps {
   onSecondaryAction?: (id: string) => void
   actionId?: string // used with onAction to know e.g. deleteId
   currentUser?: SafeUser | null
+  notifications?: safeNotification[]
 }
 
 const ListingCard: React.FC<ListingCardProps> = ({
@@ -33,6 +39,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
   secondaryActionLabel,
   onSecondaryAction,
   currentUser,
+  notifications,
 }) => {
   const router = useRouter()
 
@@ -134,23 +141,21 @@ const ListingCard: React.FC<ListingCardProps> = ({
                 sizes="(min-width: 640px) 640px, 100vw"
               />
             )}
-            {currentUser && (
-              <>
-                {data.isSuspended ? (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-center text-xl font-bold text-red-600 bg-white bg-opacity-80 px-4 py-2 rounded-md">
-                      {overlayText}
-                    </span>
-                  </div>
-                ) : (
-                  <div className="absolute top-3 right-3">
-                    <HeartButton
-                      listingId={data.id}
-                      currentUser={currentUser}
-                    />
-                  </div>
-                )}
-              </>
+
+            {/* Overlay Text (Suspension status or New reservation) */}
+            {data.isSuspended ||
+            (reservation &&
+              notifications &&
+              notifications[0].newReservationIds.includes(reservation.id)) ? (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-center text-xl font-bold text-red-600 bg-white bg-opacity-80 px-4 py-2 rounded-md">
+                  {data.isSuspended ? overlayText : 'New'}
+                </span>
+              </div>
+            ) : (
+              <div className="absolute top-3 right-3">
+                <HeartButton listingId={data.id} currentUser={currentUser} />
+              </div>
             )}
           </div>
         </div>
@@ -182,7 +187,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
       ) : (
         reservation && (
           <>
-            <div className="text-sm font-semibold flex flex-row items-center gap-2">
+            <div className="mt-5 text-sm font-semibold flex flex-row items-center gap-2">
               <div>Booked by {reservation.user.name}</div>
               {<Avatar src={reservation.user?.image} />}
             </div>

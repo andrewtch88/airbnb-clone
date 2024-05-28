@@ -3,6 +3,7 @@ import getCurrentUser from '@/app/actions/getCurrentUser'
 import getReservations from '@/app/actions/getReservations'
 
 import ReservationsClient from './ReservationsClient'
+import getNotifications from '../actions/getNotifications'
 
 const ReservationsPage = async () => {
   const currentUser = await getCurrentUser()
@@ -17,6 +18,7 @@ const ReservationsPage = async () => {
   }
 
   const reservations = await getReservations({ ownerId: currentUser.id })
+  const notifications = await getNotifications()
 
   if (reservations.length === 0) {
     return (
@@ -28,7 +30,11 @@ const ReservationsPage = async () => {
   }
 
   return (
-    <ReservationsClient reservations={reservations} currentUser={currentUser} />
+    <ReservationsClient
+      notifications={notifications}
+      reservations={reservations}
+      currentUser={currentUser}
+    />
   )
 }
 

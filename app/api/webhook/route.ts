@@ -48,45 +48,49 @@ export async function POST(request: Request) {
     }
 
     try {
-      const reserveAndPaymentRecord = await prisma.$transaction(
-        async (prisma) => {
-          const createReservation = await prisma.listing.update({
-            where: { id: listingId },
-            data: {
-              reservations: {
-                create: {
-                  // relation between listing and reservation
-                  userId: userId,
-                  startDate: new Date(startDate),
-                  endDate: new Date(endDate),
-                  totalPrice: Number(totalPrice),
-                },
+      // code is executed by whole using transaction (to ensure no duplicate reservation)
+      const reserveAndNotify = await prisma.$transaction(async (prisma) => {
+        const createReservation = await prisma.listing.update({
+          where: { id: listingId },
+          data: {
+            reservations: {
+              create: {
+                // relation between listing and reservation
+                userId: userId,
+                startDate: new Date(startDate),
+                endDate: new Date(endDate),
+                totalPrice: Number(totalPrice),
               },
             },
-            select: {
-              reservations: {
-                select: {
-                  id: true,
-                },
-                orderBy: {
-                  createdAt: 'desc',
-                },
-                take: 1,
+          },
+          select: {
+            reservations: {
+              select: {
+                id: true,
               },
+              orderBy: {
+                createdAt: 'desc',
+              },
+              take: 1,
             },
-          })
+          },
+        })
 
-          const reservationId = createReservation.reservations[0].id
+        const reservationId = createReservation.reservations[0].id
 
-          const existingPayment = await prisma.payment.findUnique({
-            where: { reservationId },
-          })
+        const existingPayment = await prisma.payment.findUnique({
+          where: { reservationId },
+        })
 
-          if (existingPayment) {
-            throw new Error('Payment already exists for this reservation')
-          }
+        let createPayment = null
+        let createNotification = null
 
-          const payment = await prisma.payment.create({
+        if (existingPayment) {
+          throw new Error(
+            'Reservation already taken by someone else, try other dates.'
+          )
+        } else {
+          createPayment = await prisma.payment.create({
             data: {
               reservationId: reservationId,
               totalAmount: Math.round(Number(totalPrice!)),
@@ -96,11 +100,39 @@ export async function POST(request: Request) {
             },
           })
 
-          return { createReservation, payment }
-        }
-      )
+          // Start creating owner notification
+          const listingOwner = await prisma.listing.findUnique({
+            where: { id: listingId },
+            select: { userId: true },
+          })
 
-      return NextResponse.json(reserveAndPaymentRecord)
+          if (!listingOwner) {
+            throw new Error('Listing owner not found')
+          }
+
+          createNotification = await prisma.notification.upsert({
+            where: { userId: listingOwner.userId },
+            update: {
+              unreadCount: {
+                increment: 1,
+              },
+              newReservationIds: {
+                push: reservationId,
+              },
+            },
+            create: {
+              userId: listingOwner.userId,
+              newReservationIds: [reservationId],
+              unreadCount: 1,
+            },
+          })
+          // End creating owner notification
+        }
+
+        return { createReservation, createPayment, createNotification }
+      })
+
+      return NextResponse.json(reserveAndNotify)
     } catch (error) {
       console.error('Error creating reservation:', error)
       return NextResponse.json(

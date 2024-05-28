@@ -6,18 +6,22 @@ import { AiOutlineMenu } from 'react-icons/ai' // hamburger menu icon
 import Avatar from '../Avatar'
 import MenuItem from './MenuItem'
 import { signOut } from 'next-auth/react'
-import { SafeUser } from '@/app/types'
+import { safeNotification, SafeUser } from '@/app/types'
 import useRentModal from '@/app/hooks/useRentModal'
 import { useRouter } from 'next/navigation'
-import Button from '../Button'
 import toast from 'react-hot-toast'
 
 interface UserMenuProps {
   currentUser?: SafeUser | null
   showComponent?: boolean
+  notifications: safeNotification[]
 }
 
-const UserMenu: React.FC<UserMenuProps> = ({ currentUser, showComponent }) => {
+const UserMenu: React.FC<UserMenuProps> = ({
+  currentUser,
+  showComponent,
+  notifications,
+}) => {
   const router = useRouter()
   const registerModal = useRegisterModal()
   const loginModal = useLoginModal()
@@ -45,6 +49,13 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser, showComponent }) => {
     router.refresh()
   }
 
+  const unreadCount = () => {
+    if (notifications && notifications[0]?.unreadCount > 0) {
+      return `(${notifications[0]?.unreadCount} new)`
+    }
+    return ''
+  }
+
   return (
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
@@ -61,8 +72,17 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser, showComponent }) => {
               className="p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
             >
               <AiOutlineMenu />
-              <div className="hidden md:block select-none">
-                <Avatar src={currentUser?.image} />
+
+              <div className="inline-block">
+                <div className="hidden md:block select-none">
+                  <Avatar src={currentUser?.image} />
+                </div>
+
+                {notifications && notifications[0]?.unreadCount > 0 && (
+                  <span className="absolute top-0 right-0 block h-6 w-6 bg-red-500 text-white rounded-full text-center leading-6">
+                    {notifications[0]?.unreadCount}
+                  </span>
+                )}
               </div>
             </div>
           </>
@@ -82,10 +102,12 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser, showComponent }) => {
                   label="My favourites"
                   onClick={() => router.push('/myFavourites')}
                 />
-                <MenuItem
-                  label="My reservations"
-                  onClick={() => router.push('/myReservations')}
-                />
+                <div className="whitespace-nowrap">
+                  <MenuItem
+                    label={`My reservations ${unreadCount()}`}
+                    onClick={() => router.push('/myReservations')}
+                  />
+                </div>
                 <MenuItem
                   label="My properties"
                   onClick={() => router.push('/myProperties')}

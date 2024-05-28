@@ -6,6 +6,7 @@ import {
   Admin,
   Appeal,
   Payment,
+  Notification,
 } from '@prisma/client'
 
 export type safeListing = Omit<Listing, 'createdAt'> & {
@@ -90,4 +91,9 @@ export type safeAppeal = Omit<Appeal, 'createdAt' | 'updatedAt'> & {
   updatedAt: string
   user: SafeUser
   listing: safeListing
+}
+
+export type safeNotification = Omit<Notification, 'createdAt' | 'updatedAt'> & {
+  createdAt: string
+  updatedAt: string
 }

@@ -44,39 +44,24 @@ export async function POST(request: Request, { params }: { params: IParams }) {
       )
     }
 
-    const existingAppeal = await prisma.appeal.findUnique({
+    const createAppeal = await prisma.appeal.upsert({
       where: {
         listingId,
       },
+      create: {
+        userId,
+        listingId,
+        appealLetter,
+        createdAt: new Date(),
+      },
+      update: {
+        appealLetter,
+        status: 'pending',
+        updatedAt: new Date(),
+      },
     })
 
-    let appealData
-
-    if (existingAppeal) {
-      // Update the existing appeal
-      appealData = await prisma.appeal.update({
-        where: {
-          id: existingAppeal.id,
-        },
-        data: {
-          appealLetter,
-          status: 'pending',
-          updatedAt: new Date(),
-        },
-      })
-    } else {
-      // Create a new appeal
-      appealData = await prisma.appeal.create({
-        data: {
-          userId,
-          listingId,
-          appealLetter,
-          createdAt: new Date(),
-        },
-      })
-    }
-
-    return NextResponse.json(appealData)
+    return NextResponse.json(createAppeal)
   } catch (error) {
     console.log('api/appeal/[listingId]', error)
     return new NextResponse('Internal Error', { status: 500 })

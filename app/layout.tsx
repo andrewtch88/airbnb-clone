@@ -9,6 +9,7 @@ import LoginModal from './components/modals/LoginModal'
 import ToasterProvider from './providers/ToasterProvider'
 import getCurrentUser from './actions/getCurrentUser'
 import RentModal from './components/modals/CreateListingModal'
+import getNotifications from './actions/getNotifications'
 // import { EditListingProvider } from './contextAPI/EditListingContext'
 
 // root layout file of the application
@@ -32,6 +33,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const currentUser = await getCurrentUser()
+  const notifications = await getNotifications()
 
   return (
     <html lang="en">
@@ -40,7 +42,7 @@ export default async function RootLayout({
         <RentModal />
         <LoginModal />
         <RegisterModal />
-        <Navbar currentUser={currentUser} />
+        <Navbar currentUser={currentUser} notifications={notifications} />
 
         {/* children - (Home or other pages) are placed here */}
 
