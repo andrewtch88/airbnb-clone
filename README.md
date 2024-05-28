@@ -81,7 +81,6 @@ Google OAuth authentication\
 Properties Reviews\
 Image upload using Cloudinary CDN\
 Calendars with react-date-range\
-Reviews\
 Booking / Reservation system\
 Properties Management\
 Search properties\
