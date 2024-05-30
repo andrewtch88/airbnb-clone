@@ -13,7 +13,8 @@ Full Stack Airbnb Clone with Next.js 14: React, Tailwind CSS, Prisma, MongoDB, N
 
 ## Tech Stack
 
-![architecture](https://github.com/andrewtch88/airbnb-clone/assets/59404615/8fe6130b-169b-4c94-bfed-fb2624d7c50b)
+![architecture](![image](https://github.com/andrewtch88/airbnb-clone/assets/59404615/81c78cb4-833c-4a67-9da8-61221e790734)
+)
 <br />
 
 <table>
