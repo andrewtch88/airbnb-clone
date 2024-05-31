@@ -69,6 +69,13 @@ const AdminViewPayments: React.FC<AdminViewPaymentsProps> = ({
   searchUserBy,
   payments,
 }) => {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) return null
   // const [payments, setPayments] = useState<safePayment[]>([])
 
   // useEffect(() => {
@@ -105,8 +112,6 @@ const AdminViewPayments: React.FC<AdminViewPaymentsProps> = ({
               </p>
             </Link>
           </div>
-
-          {/* REVIEW COUNT AND AVERAGE RATING */}
           <p className="flex items-center text-md text-black">
             <IoStar className="mr-1 block w-4 h-4 fill-current" />
             {payment.reservation.listing.reviewCount > 0
@@ -132,8 +137,8 @@ const AdminViewPayments: React.FC<AdminViewPaymentsProps> = ({
               <th className="px-4 py-2">Total Amount</th>
               <th className="px-4 py-2">Tenant</th>
               <th className="px-4 py-2">Property Owner</th>
-              <th className="px-4 py-2">Cancel Reason</th>
-              <th className="px-4 py-2">Action</th>
+              {/* <th className="px-4 py-2">Cancel Reason</th>
+              <th className="px-4 py-2">Action</th> */}
             </tr>
           </thead>
           <tbody className="border border-gray-200">

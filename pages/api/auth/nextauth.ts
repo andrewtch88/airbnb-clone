@@ -30,49 +30,32 @@ export default NextAuth({
           throw new Error('Invalid credentials')
         }
 
-        // console.log(credentials)
+        const isAdmin = credentials.email === 'admin@gmail.com'
 
-        if (credentials.email === 'admin@gmail.com') {
-          const admin = await prisma.admin.findUnique({
+        const userOrAdmin = await prisma[isAdmin ? 'admin' : 'user'].findUnique(
+          {
             where: { email: credentials.email },
-          })
-
-          if (!admin || !admin?.hashedPassword) {
-            throw new Error('This admin account does not exist')
           }
+        )
 
-          const isPasswordValid = await bcrypt.compare(
-            credentials.password,
-            admin.hashedPassword
+        if (!userOrAdmin || !userOrAdmin.hashedPassword) {
+          throw new Error(
+            `${isAdmin ? 'Admin' : 'User'} does not exist, please try again`
           )
-
-          if (!isPasswordValid) {
-            throw new Error('Wrong admin password, please try again')
-          }
-
-          return admin
-        }
-
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
-        })
-
-        if (!user || !user?.hashedPassword) {
-          throw new Error('User does not exist, please try again')
         }
 
         const isPasswordValid = await bcrypt.compare(
           credentials.password,
-          user.hashedPassword
+          userOrAdmin.hashedPassword
         )
 
         if (!isPasswordValid) {
-          throw new Error('Wrong password, please try again')
+          throw new Error(
+            `Wrong ${isAdmin ? 'admin' : 'user'} password, please try again`
+          )
         }
 
-        return user
+        return { ...userOrAdmin, role: isAdmin ? 'admin' : 'user' }
       },
     }),
   ],

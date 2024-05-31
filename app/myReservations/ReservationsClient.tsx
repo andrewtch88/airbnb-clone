@@ -113,7 +113,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
         {thisWeekBookings.length > 0 && (
           <>
             <Heading
-              title="This Week's Ongoing Bookings"
+              title="This Week's Bookings"
               subtitle="Current Week Bookings on your properties"
             />
             <div className="mt-5 mb-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">

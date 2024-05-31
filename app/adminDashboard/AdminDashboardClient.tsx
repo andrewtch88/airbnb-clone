@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Container from '../components/Container'
 
 import '../globals.css'
@@ -32,22 +32,12 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
 }) => {
   // console.log({ currentAdmin })
 
-  const [activeTab, setActiveTab] = useState('suspendProperty')
+  const [mounted, setMounted] = useState(false)
+  const [activeTab, setActiveTab] = useState('payment')
   const [sortReviewBy, setSortReviewBy] = useState('newest')
   const [sortPropertyBy, setSortPropertyBy] = useState('newest')
 
   const router = useRouter()
-
-  const handleTabClick = (e: any, tabId: any) => {
-    e.preventDefault()
-    setActiveTab(tabId)
-  }
-
-  const handleSignOut = () => {
-    signOut()
-    toast.success('You have logged out', { duration: 3000 })
-    router.refresh()
-  }
 
   const {
     register,
@@ -60,6 +50,23 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
   })
 
   const searchUserBy = watch('searchByUser')
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) return null
+
+  const handleTabClick = (e: any, tabId: any) => {
+    e.preventDefault()
+    setActiveTab(tabId)
+  }
+
+  const handleSignOut = () => {
+    signOut()
+    toast.success('You have logged out', { duration: 3000 })
+    router.refresh()
+  }
 
   return (
     <div className="overflow-x-auto">
@@ -127,7 +134,7 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
                 onClick={(e) => handleTabClick(e, 'payment')}
               >
                 <GiReceiveMoney size={20} className="me-2" />
-                Manage Cancellations
+                View payments
               </a>
             </li>
           </ul>
@@ -206,7 +213,7 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
           >
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-                Manage Cancellations
+                View Payments
               </h3>
               {/* <div className="flex items-center mb-2">
                 <p className="mr-2">Search by: </p>

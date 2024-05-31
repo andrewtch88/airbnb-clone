@@ -1,6 +1,6 @@
-import getCurrentAdmin from '@/app/actions/getCurrentAdmin'
 import { NextResponse } from 'next/server'
 import prisma from '@/app/libs/prismadb'
+import getCurrentAdmin from '@/app/actions/getCurrentAdmin'
 
 export async function GET(request: Request) {
   try {
@@ -25,6 +25,11 @@ export async function GET(request: Request) {
       query = { averageRating: { lte: 3 } }
     } else if (sortBy !== null) {
       throw new Error('Invalid Sort By Selection')
+    }
+
+    query = {
+      ...query,
+      isSuspended: false,
     }
 
     const listings = await prisma.listing.findMany({
