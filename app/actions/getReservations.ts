@@ -60,6 +60,9 @@ export default async function getReservations(params: IParams) {
 
     return safeReservations
   } catch (error) {
-    throw new Error(error)
+    // Check if error is an instance of Error and get the message
+    const errorMessage =
+      error instanceof Error ? error.message : 'An unknown error occurred'
+    throw new Error(errorMessage)
   }
 }

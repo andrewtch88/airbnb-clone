@@ -30,16 +30,16 @@ export async function POST(request: Request, { params }: { params: IParams }) {
 
     const { userId, appealLetter } = body
 
-    if (!appealLetter) {
+    if (!userId) {
       return NextResponse.json(
-        { error: 'Appeal letter is missing.' },
+        { error: 'User ID is missing.' },
         { status: 400 }
       )
     }
 
-    if (!userId) {
+    if (appealLetter === '') {
       return NextResponse.json(
-        { error: 'User ID is missing.' },
+        { error: 'Appeal letter is missing.' },
         { status: 400 }
       )
     }

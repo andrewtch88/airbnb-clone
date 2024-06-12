@@ -1,11 +1,11 @@
 import prisma from '@/app/libs/prismadb'
 
 interface IParams {
-  listingId?: string
-  reservationId?: string
+  listingId: string
+  reservationId: string
 }
 
-export async function updateListingRating(params: IParams) {
+export default async function updateListingRating(params: IParams) {
   try {
     const { listingId, reservationId } = params // url params: listingId?='abc123' or string
 
@@ -55,6 +55,9 @@ export async function updateListingRating(params: IParams) {
       },
     })
   } catch (error) {
-    throw new Error(error)
+    // Check if error is an instance of Error and get the message
+    const errorMessage =
+      error instanceof Error ? error.message : 'An unknown error occurred'
+    throw new Error(errorMessage)
   }
 }

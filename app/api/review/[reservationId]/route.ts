@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 
 import prisma from '@/app/libs/prismadb'
 import getCurrentUser from '@/app/actions/getCurrentUser'
-import { updateListingRating } from '@/app/actions/refreshListingRating'
+import updateListingRating from '@/app/actions/refreshListingRating'
 
 // API to create a review and also refresh the ratings of the listing
 interface IParams {
@@ -38,29 +38,14 @@ export async function POST(request: Request, { params }: { params: IParams }) {
     if (
       !listingId ||
       !reservationId ||
-      !cleanlinessRating ||
-      !accuracyRating ||
-      !checkInRating ||
-      !communicationRating ||
-      !locationRating ||
-      !valueRating ||
-      !review
+      cleanlinessRating === undefined ||
+      accuracyRating === undefined ||
+      checkInRating === undefined ||
+      communicationRating === undefined ||
+      locationRating === undefined ||
+      valueRating === undefined
     ) {
       return NextResponse.error()
-    }
-
-    if (review && review.length < 50) {
-      return NextResponse.json(
-        { error: 'Review must be at least 50 characters.' },
-        { status: 400 }
-      )
-    }
-
-    if (review && review.length > 500) {
-      return NextResponse.json(
-        { error: 'Review must be less than 500 characters.' },
-        { status: 400 }
-      )
     }
 
     const minRating = 1
@@ -75,7 +60,21 @@ export async function POST(request: Request, { params }: { params: IParams }) {
     const hasInvalidRating = ratings.some((rating) => rating < minRating)
     if (hasInvalidRating) {
       return NextResponse.json(
-        { error: 'Star ratings are required.' },
+        { error: 'All star ratings must be at least 1.' },
+        { status: 400 }
+      )
+    }
+
+    if (review && review.length > 0 && review.length < 50) {
+      return NextResponse.json(
+        { error: 'Review must be at least 50 characters long.' },
+        { status: 400 }
+      )
+    }
+
+    if (review && review.length > 500) {
+      return NextResponse.json(
+        { error: 'Review must be less than 500 characters.' },
         { status: 400 }
       )
     }

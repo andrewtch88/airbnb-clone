@@ -146,12 +146,12 @@ const EditListingModal: React.FC<EditListingModalProps> = ({ listing }) => {
           />
         </div>
 
-        <div>
+        <div className="-mb-7">
           <Heading title="" subtitle="Enter property address" />
         </div>
         <div>
           <div className="mt-2">
-            <div className="mb-10">
+            <div className="mb-8">
               <Input
                 id="city"
                 label="City Name"
