@@ -10,6 +10,8 @@ import ToasterProvider from './providers/ToasterProvider'
 import getCurrentUser from './actions/getCurrentUser'
 import RentModal from './components/modals/CreateListingModal'
 import getNotifications from './actions/getNotifications'
+import { QueryProvider } from './providers/queryProvider'
+import { SocketProvider } from './providers/socketProvider'
 // import { EditListingProvider } from './contextAPI/EditListingContext'
 
 // root layout file of the application
@@ -44,9 +46,12 @@ export default async function RootLayout({
         <RegisterModal />
         <Navbar currentUser={currentUser} notifications={notifications} />
 
-        {/* children - (Home or other pages) are placed here */}
-
-        <div className="pb-20 pt-28">{children}</div>
+        <SocketProvider>
+          <QueryProvider>
+            {/* children - (Home or other pages) are placed here */}
+            <div className="pb-20 pt-28">{children}</div>
+          </QueryProvider>
+        </SocketProvider>
       </body>
     </html>
   )

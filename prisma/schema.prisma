@@ -37,8 +37,42 @@ model User {
   reservations Reservation[] // ''
   reviews Review[] // ''
   appeals Appeal[] // ''
-  messages Message[] // ''
+  directMessages DirectMessage[] // ''
+
+  conversationsInitiated Conversation[] @relation("MemberOne") // ''
+  conversationsReceived Conversation[] @relation("MemberTwo") // ''
+
   notification Notification? // one to one
+}
+
+model Conversation {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  
+  memberOneId String @db.ObjectId
+  memberOne User @relation("MemberOne", fields: [memberOneId], references: [id], onDelete: Cascade)
+
+  memberTwoId String @db.ObjectId
+  memberTwo User @relation("MemberTwo", fields: [memberTwoId], references: [id], onDelete: Cascade)
+
+  directMessages DirectMessage[]
+  @@index([memberTwoId])
+}
+
+model DirectMessage {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  content String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String @db.ObjectId
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade) // cascasde means referenced record is deleted also
+
+  conversationId String @db.ObjectId
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([conversationId])
 }
 
 // OAuth
@@ -187,19 +221,4 @@ model Payment {
   updatedAt DateTime @updatedAt
 
   reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade) // one to one
-}
-
-model Message {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  content String
-  fileUrl String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  userId String @db.ObjectId
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade) // cascasde means referenced record is deleted also
-
-  deleted Boolean @default(false)
-
-  @@index([userId])
 }

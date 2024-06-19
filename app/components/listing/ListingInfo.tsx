@@ -19,6 +19,7 @@ interface ListingInfoProps {
   roomCount: number
   guestCount: number
   bathroomCount: number
+  region: string
 }
 
 const ListingInfo: React.FC<ListingInfoProps> = ({
@@ -28,14 +29,14 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
   roomCount,
   guestCount,
   bathroomCount,
+  region,
 }) => {
   return (
     <>
       <div className="col-span-4 flex flex-col gap-8">
         <div className="flex flex-col gap-2">
           <div className="text-xl font-semibold flex flex-row items-center gap-2">
-            <div>Hosted by {listing.user?.name}</div>
-            <Avatar src={listing.user?.image} />
+            <div>Located in {region}</div>
           </div>
           <div className="flex flex-row items-center gap-4 font-light text-neutral-500">
             <div>{guestCount} guests</div>
@@ -70,27 +71,29 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
           />
         )}
         <hr />
-        <ShowMoreText
-          lines={6}
-          more={
-            <span className="underline text-gray-900 font-medium">
-              Show more >
-            </span>
-          }
-          less={
-            <div className="mt-2">
+        <div className="mb-10">
+          <ShowMoreText
+            lines={6}
+            more={
               <span className="underline text-gray-900 font-medium">
-                Show less
+                Show more >
               </span>
-            </div>
-          }
-          className="text-lg font-light text-neutral-500 whitespace-pre-line"
-          truncatedEndingComponent={'... '}
-        >
-          <p style={{ whiteSpace: 'pre-line', overflowWrap: 'anywhere' }}>
-            {description}
-          </p>
-        </ShowMoreText>
+            }
+            less={
+              <div className="mt-2">
+                <span className="underline text-gray-900 font-medium">
+                  Show less
+                </span>
+              </div>
+            }
+            className="text-lg font-light text-neutral-500 whitespace-pre-line"
+            truncatedEndingComponent={'... '}
+          >
+            <p style={{ whiteSpace: 'pre-line', overflowWrap: 'anywhere' }}>
+              {description}
+            </p>
+          </ShowMoreText>
+        </div>
       </div>
     </>
   )

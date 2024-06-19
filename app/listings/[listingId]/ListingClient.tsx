@@ -22,6 +22,8 @@ import ListingReservation from '@/app/components/listing/ListingReservation'
 import { Range } from 'react-date-range'
 import dynamic from 'next/dynamic'
 import ListingReview from '@/app/components/listing/ListingReview'
+import Button from '@/app/components/Button'
+import Image from 'next/image'
 
 // this file is the root of the listing page setup, with listingHead, ListingInfo and Listing Reservation UI
 
@@ -168,28 +170,67 @@ const ListingClient: React.FC<ListingClientProps> = ({
             imageSrc={listing.imageSrc}
             id={listing.id}
             currentUser={currentUser}
-            region={listing.city + ', ' + listing.country}
           />
           <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
             <ListingInfo
               listing={listing}
+              region={listing.city + ', ' + listing.country}
               category={category}
               description={listing.description}
               roomCount={listing.roomCount}
               guestCount={listing.guestCount}
               bathroomCount={listing.bathroomCount}
             />
-            <div className="order-first mb-10 md:order-last md:col-span-3">
-              <ListingReservation
-                price={listing.price}
-                totalPrice={totalPrice}
-                onChangeDateRange={(value) => setDateRange(value)}
-                dateRange={dateRange}
-                onSubmit={onCheckout}
-                disabled={isLoading}
-                disabledDates={disabledDates}
-                isOwner={listing.userId === currentUser?.id}
-              />
+
+            <div className="md:col-span-3">
+              {/* Contact Host */}
+              {listing?.user?.id !== currentUser?.id && (
+                <div className="w-full mb-6 md:mb-0 md:order-first">
+                  <div className="bg-white border border-gray-200 rounded-lg shadow">
+                    <div className="flex flex-col items-center pb-10">
+                      <Image
+                        className="w-24 h-24 mb-3 rounded-full shadow-lg"
+                        src={listing?.user?.image || '/images/placeholder.jpg'}
+                        alt="Host profile pic"
+                        width={200}
+                        height={200}
+                      />
+                      <h5 className="mb-1 text-xl font-medium text-gray-900">
+                        {listing?.user?.name}
+                      </h5>
+                      <span className="text-sm text-gray-500 dark:text-gray-400">
+                        Host
+                      </span>
+                      <div className="flex mt-4 md:mt-6">
+                        <Button
+                          disabled={isLoading}
+                          label="Message Host"
+                          outline
+                          className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-700 rounded-lg hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-black dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+                          onClick={() =>
+                            router.push(`/myInbox/${listing?.user?.id}`)
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {/* ListingReservation */}
+              <div className="order-last md:order-none mt-6">
+                <div className="w-full">
+                  <ListingReservation
+                    price={listing.price}
+                    totalPrice={totalPrice}
+                    onChangeDateRange={(value) => setDateRange(value)}
+                    dateRange={dateRange}
+                    onSubmit={onCheckout}
+                    disabled={isLoading}
+                    disabledDates={disabledDates}
+                    isOwner={listing.userId === currentUser?.id}
+                  />
+                </div>
+              </div>
             </div>
           </div>
 

@@ -95,6 +95,10 @@ const UserMenu: React.FC<UserMenuProps> = ({
             {currentUser ? (
               <>
                 <MenuItem
+                  label="My inbox"
+                  onClick={() => router.push('/myInbox')}
+                />
+                <MenuItem
                   label="My trips"
                   onClick={() => router.push('/myTrips')}
                 />
@@ -112,7 +116,9 @@ const UserMenu: React.FC<UserMenuProps> = ({
                   label="My properties"
                   onClick={() => router.push('/myProperties')}
                 />
-                <MenuItem label="Bearbnb my home" onClick={toggleRentModal} />
+                <div className="md:hidden">
+                  <MenuItem label="Bearbnb my home" onClick={toggleRentModal} />
+                </div>
                 <hr />
                 <MenuItem label="Logout" onClick={handleSignOut} />
               </>

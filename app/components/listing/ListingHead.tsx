@@ -11,7 +11,6 @@ interface ListingHeadProps {
   imageSrc: string[]
   id: string
   currentUser?: SafeUser | null
-  region: string
 }
 
 const ListingHead: React.FC<ListingHeadProps> = ({
@@ -19,11 +18,10 @@ const ListingHead: React.FC<ListingHeadProps> = ({
   imageSrc,
   id,
   currentUser,
-  region,
 }) => {
   return (
     <>
-      <Heading title={title} subtitle={region} />
+      <Heading title={title} subtitle={''} />
       <>
         <ListingGallery
           images={imageSrc}
