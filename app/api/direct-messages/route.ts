@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 import getCurrentUser from '@/app/actions/getCurrentUser'
 import prisma from '@/app/libs/prismadb'
 
-// Infinite scroll function, request 10 messages at a time
+// Infinite fetch api, request 10 messages at a time (either is by scroll or button)
 const MESSAGES_BATCH = 10
 
 export async function GET(req: Request) {

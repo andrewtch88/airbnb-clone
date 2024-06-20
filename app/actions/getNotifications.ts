@@ -1,7 +1,7 @@
 import getCurrentUser from './getCurrentUser'
 import prisma from '@/app/libs/prismadb'
 
-export default async function getNotifications() {
+export default async function getReserveNotification() {
   try {
     const currentUser = await getCurrentUser()
 
@@ -9,7 +9,7 @@ export default async function getNotifications() {
       return []
     }
 
-    const notifications = await prisma.notification.findMany({
+    const notifications = await prisma.reserveNotification.findMany({
       where: {
         userId: currentUser.id,
       },

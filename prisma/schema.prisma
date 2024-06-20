@@ -42,7 +42,8 @@ model User {
   conversationsInitiated Conversation[] @relation("MemberOne") // ''
   conversationsReceived Conversation[] @relation("MemberTwo") // ''
 
-  notification Notification? // one to one
+  reserveNotification ReserveNotification? // one to one
+  inboxNotification InboxNotification? // one to one 
 }
 
 model Conversation {
@@ -168,7 +169,7 @@ model Reservation {
   @@index([listingId], name: "index_reservations_on_listingId") // Index on listingId for faster lookup of reservations for a specific listing
 }
 
-model Notification {
+model ReserveNotification {
   id                  String    @id @default(auto()) @map("_id") @db.ObjectId
   userId              String    @unique @db.ObjectId // one to one
   newReservationIds   String[]  @db.ObjectId 
@@ -177,6 +178,29 @@ model Notification {
   updatedAt           DateTime  @updatedAt
 
   user                User      @relation(fields: [userId], references: [id], onDelete: Cascade) // one to one
+
+  @@index([newReservationIds], name: "index_newReservationIds") 
+}
+
+model InboxNotification {
+  id                  String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId              String    @unique @db.ObjectId // one to one
+  conversations       ConversationNotification[]
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade) // one to one
+}
+
+model ConversationNotification {
+  id                  String     @id @default(auto()) @map("_id") @db.ObjectId
+  conversationId      String     @db.ObjectId
+  unreadCount         Int
+  inboxNotificationId String @db.ObjectId
+
+  inboxNotification InboxNotification @relation(fields: [inboxNotificationId], references: [id], onDelete: Cascade)
+  @@index([conversationId])
+  @@index([inboxNotificationId])
 }
 
 model Review {

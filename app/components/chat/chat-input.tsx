@@ -6,6 +6,7 @@ import qs from 'query-string'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import Input from '../inputs/Input'
+import { AiOutlineSend } from 'react-icons/ai'
 
 interface ChatInputProps {
   apiUrl: string
@@ -54,15 +55,11 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="fixed bottom-0 w-full bg-white"
-    >
-      <div className="relative p-4 pb-6">
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="fixed bottom-0 inset-x-0 bg-white px-4 py-4 sm:px-6 sm:flex sm:flex-row-reverse sm:justify-between md:mr-10 inline-flex">
         <Input
           id="content"
           label={`Message ${name}`}
-          className="px-14 py-6 bg-zinc-200/90 border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600"
           disabled={isLoading}
           register={register}
           errors={errors}
@@ -72,9 +69,10 @@ export const ChatInput: React.FC<ChatInputProps> = ({
         <button
           disabled={isLoading}
           type="submit"
-          className="relative disabled:opacity-70 disabled:cursor-not-allowed rounded-lg hover:opacity-80 transition w-full"
+          className="disabled:opacity-70 disabled:cursor-not-allowed rounded-lg hover:opacity-80 transition bg-rose-500 text-white 
+            font-semibold text-lg py-2 px-4 md:ml-10 md:mr-5"
         >
-          Send
+          <AiOutlineSend size={24} />
         </button>
       </div>
     </form>

@@ -1,7 +1,7 @@
 'use client'
 import {
   safeListing,
-  safeNotification,
+  safeReserveNotification,
   safeReservation,
   SafeUser,
 } from '@/app/types'
@@ -26,7 +26,7 @@ interface ListingCardProps {
   onSecondaryAction?: (id: string) => void
   actionId?: string // used with onAction to know e.g. deleteId
   currentUser?: SafeUser | null
-  notifications?: safeNotification[]
+  notifications?: safeReserveNotification[]
 }
 
 const ListingCard: React.FC<ListingCardProps> = ({

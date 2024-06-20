@@ -5,7 +5,7 @@ import axios from 'axios'
 import { useCallback, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { safeNotification, safeReservation, SafeUser } from '@/app/types'
+import { safeReserveNotification, safeReservation, SafeUser } from '@/app/types'
 import Heading from '@/app/components/Heading'
 import Container from '@/app/components/Container'
 import ListingCard from '@/app/components/listing/ListingCard'
@@ -14,7 +14,7 @@ import { IoIosNotifications } from 'react-icons/io'
 interface ReservationsClientProps {
   reservations: safeReservation[]
   currentUser?: SafeUser | null
-  notifications?: safeNotification[]
+  notifications?: safeReserveNotification[]
 }
 
 const ReservationsClient: React.FC<ReservationsClientProps> = ({

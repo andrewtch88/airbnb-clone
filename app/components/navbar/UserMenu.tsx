@@ -6,7 +6,7 @@ import { AiOutlineMenu } from 'react-icons/ai' // hamburger menu icon
 import Avatar from '../Avatar'
 import MenuItem from './MenuItem'
 import { signOut } from 'next-auth/react'
-import { safeNotification, SafeUser } from '@/app/types'
+import { safeReserveNotification, SafeUser } from '@/app/types'
 import useRentModal from '@/app/hooks/useRentModal'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
@@ -14,7 +14,7 @@ import toast from 'react-hot-toast'
 interface UserMenuProps {
   currentUser?: SafeUser | null
   showComponent?: boolean
-  notifications: safeNotification[]
+  notifications: safeReserveNotification[]
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({

@@ -11,7 +11,7 @@ export async function PUT(request: Request) {
       return NextResponse.error()
     }
 
-    const markAsRead = await prisma.notification.updateMany({
+    const markAsRead = await prisma.reserveNotification.updateMany({
       where: {
         userId: currentUser.id,
       },

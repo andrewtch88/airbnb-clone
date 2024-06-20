@@ -9,7 +9,7 @@ import LoginModal from './components/modals/LoginModal'
 import ToasterProvider from './providers/ToasterProvider'
 import getCurrentUser from './actions/getCurrentUser'
 import RentModal from './components/modals/CreateListingModal'
-import getNotifications from './actions/getNotifications'
+import getReserveNotification from './actions/getNotifications'
 import { QueryProvider } from './providers/queryProvider'
 import { SocketProvider } from './providers/socketProvider'
 // import { EditListingProvider } from './contextAPI/EditListingContext'
@@ -35,7 +35,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const currentUser = await getCurrentUser()
-  const notifications = await getNotifications()
+  const notifications = await getReserveNotification()
 
   return (
     <html lang="en">

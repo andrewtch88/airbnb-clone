@@ -18,7 +18,6 @@ import AdminManageProperties from '../components/admin/AdminManageProperties'
 import { safeListing, safePayment } from '../types'
 import AdminManageAppeals from '../components/admin/AdminManageAppeals'
 import AdminViewPayments from '../components/admin/AdminViewPayments'
-import Input from '../components/inputs/Input'
 import { FieldValues, useForm } from 'react-hook-form'
 
 interface AdminDashboardProps {

@@ -110,7 +110,7 @@ export async function POST(request: Request) {
             throw new Error('Listing owner not found')
           }
 
-          createNotification = await prisma.notification.upsert({
+          createNotification = await prisma.reserveNotification.upsert({
             where: { userId: listingOwner.userId },
             update: {
               unreadCount: {

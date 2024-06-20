@@ -24,7 +24,7 @@ const StarRating: React.FC<StarRatingProps> = ({
         {[...Array(5)].map((_, i) => {
           const currentRating = i + 1
           const onChangeRating = useCallback(() => {
-            if (disabled) {
+            if (disabled || !onChange) {
               return
             }
             setRating(currentRating)

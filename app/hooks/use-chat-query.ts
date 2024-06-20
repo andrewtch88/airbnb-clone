@@ -11,6 +11,7 @@ interface ChatQueryProps {
   paramValue: string
 }
 
+// hook to fetch chat messages
 export const useChatQuery = ({
   queryKey,
   apiUrl,

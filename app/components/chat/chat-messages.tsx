@@ -8,11 +8,9 @@ import { LuLoader2 } from 'react-icons/lu'
 import { LuServerCrash } from 'react-icons/lu'
 import { Fragment, useRef, ElementRef, useEffect } from 'react'
 import { ChatItem } from './chat-item'
-import { format } from 'date-fns'
+import { formatDistanceToNow } from 'date-fns'
 import { useChatSocket } from '@/app/hooks/use-chat-socket'
 import { useChatScroll } from '@/app/hooks/use-chat-scroll'
-
-const DATE_FORMAT = 'd MMM yyyy, HH:mm'
 
 type MessageWithMember = DirectMessage & {
   user: User // access user Model from DirectMessage (relation)
@@ -127,7 +125,9 @@ export const ChatMessages = ({
                 currentMember={user}
                 member={message.user}
                 content={message.content}
-                timestamp={format(new Date(message.createdAt), DATE_FORMAT)}
+                timestamp={formatDistanceToNow(new Date(message.createdAt), {
+                  addSuffix: true,
+                })}
               />
             ))}
           </Fragment>

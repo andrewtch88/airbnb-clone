@@ -1,4 +1,3 @@
-import StarRating from '../inputs/StarRating'
 import Image from 'next/image'
 import { IoStar } from 'react-icons/io5'
 
