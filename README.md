@@ -80,7 +80,6 @@ Next JS Tailwind design\
 Full responsiveness\
 Google OAuth authentication\
 Properties Reviews\
-Live Chat using Socket.io\
 Image upload using Cloudinary CDN\
 Calendars with react-date-range\
 Booking / Reservation system\
@@ -88,7 +87,8 @@ Properties Management\
 Search properties\
 Basic Admin Dashboard\
 Stripe Payment\
-Fetching Data with React Server Components (Without API!)
+Fetching Data with React Server Components (Without API!)\
+Live Chat using Socket.io, tanstack query for infinite loading of messages in batches, Websocket fallback: Polling with alerts
 
 ## :toolbox: Getting Started
 
