@@ -6,7 +6,7 @@
 
 <br />
 <p>
-Full Stack Airbnb Clone with Next.js 14: React, Tailwind CSS, Prisma, MongoDB, NextAuth (Google OAuth), Image Upload using Cloudinary CDN  
+Full Stack Airbnb Clone with Next.js 14: React, Tailwind CSS, Prisma, MongoDB, NextAuth (Google OAuth), Image Upload using Cloudinary CDN, Stripe, Live Chat using socket.io  
 </p>
 </div>
 <br />
@@ -80,6 +80,7 @@ Next JS Tailwind design\
 Full responsiveness\
 Google OAuth authentication\
 Properties Reviews\
+Live Chat using Socket.io\
 Image upload using Cloudinary CDN\
 Calendars with react-date-range\
 Booking / Reservation system\
