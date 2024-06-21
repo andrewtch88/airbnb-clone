@@ -11,9 +11,14 @@ import { usePathname } from 'next/navigation'
 interface NavbarProps {
   currentUser?: SafeUser | null
   notifications?: safeReserveNotification[]
+  inboxNotifications?: safeReserveNotification[]
 }
 
-const Navbar: React.FC<NavbarProps> = ({ currentUser, notifications }) => {
+const Navbar: React.FC<NavbarProps> = ({
+  currentUser,
+  notifications,
+  inboxNotifications,
+}) => {
   const pathname = usePathname()
   const showComponent = pathname !== '/adminDashboard'
   const showSearch = pathname !== '/adminDashboard' && pathname !== '/'
@@ -34,6 +39,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser, notifications }) => {
                 currentUser={currentUser}
                 showComponent={showComponent}
                 notifications={notifications}
+                inboxNotifications={inboxNotifications}
               />
             </div>
           </div>

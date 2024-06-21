@@ -6,7 +6,11 @@ import { AiOutlineMenu } from 'react-icons/ai' // hamburger menu icon
 import Avatar from '../Avatar'
 import MenuItem from './MenuItem'
 import { signOut } from 'next-auth/react'
-import { safeReserveNotification, SafeUser } from '@/app/types'
+import {
+  safeInboxNotification,
+  safeReserveNotification,
+  SafeUser,
+} from '@/app/types'
 import useRentModal from '@/app/hooks/useRentModal'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
@@ -15,12 +19,14 @@ interface UserMenuProps {
   currentUser?: SafeUser | null
   showComponent?: boolean
   notifications: safeReserveNotification[]
+  inboxNotifications?: safeInboxNotification[]
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({
   currentUser,
   showComponent,
   notifications,
+  inboxNotifications,
 }) => {
   const router = useRouter()
   const registerModal = useRegisterModal()
@@ -28,6 +34,17 @@ const UserMenu: React.FC<UserMenuProps> = ({
   const rentModal = useRentModal()
 
   const [isOpen, setIsOpen] = useState(false)
+
+  let totalUnreadCount = 0
+  const calculateTotalUnreadCount = () => {
+    if (notifications && notifications[0]?.unreadCount > 0) {
+      totalUnreadCount += notifications[0]?.unreadCount
+    }
+
+    if (inboxNotifications && inboxNotifications.length > 0) {
+      totalUnreadCount += inboxNotifications.length
+    }
+  }
 
   // easier method, onClick={() => setShowAlert(!showAlert)}>, useCallback better performance
   const toggleOpen = useCallback(() => {
@@ -49,12 +66,21 @@ const UserMenu: React.FC<UserMenuProps> = ({
     router.refresh()
   }
 
-  const unreadCount = () => {
+  const reservationUnreadCount = () => {
     if (notifications && notifications[0]?.unreadCount > 0) {
       return `(${notifications[0]?.unreadCount} new)`
     }
     return ''
   }
+
+  const inboxUnread = () => {
+    if (inboxNotifications && inboxNotifications.length > 0) {
+      return `(${inboxNotifications.length} new)`
+    }
+    return ''
+  }
+
+  calculateTotalUnreadCount()
 
   return (
     <div className="relative">
@@ -78,9 +104,9 @@ const UserMenu: React.FC<UserMenuProps> = ({
                   <Avatar src={currentUser?.image} />
                 </div>
 
-                {notifications && notifications[0]?.unreadCount > 0 && (
+                {totalUnreadCount > 0 && (
                   <span className="absolute top-0 right-0 block h-6 w-6 bg-red-500 text-white rounded-full text-center leading-6">
-                    {notifications[0]?.unreadCount}
+                    {totalUnreadCount}
                   </span>
                 )}
               </div>
@@ -95,20 +121,20 @@ const UserMenu: React.FC<UserMenuProps> = ({
             {currentUser ? (
               <>
                 <MenuItem
-                  label="My inbox"
-                  onClick={() => router.push('/myInbox')}
-                />
-                <MenuItem
-                  label="My trips"
-                  onClick={() => router.push('/myTrips')}
-                />
-                <MenuItem
                   label="My favourites"
                   onClick={() => router.push('/myFavourites')}
                 />
+                <MenuItem
+                  label={`My trips`}
+                  onClick={() => router.push('/myTrips')}
+                />
+                <MenuItem
+                  label={`My inbox ${inboxUnread()}`}
+                  onClick={() => router.push('/myInbox')}
+                />
                 <div className="whitespace-nowrap">
                   <MenuItem
-                    label={`My reservations ${unreadCount()}`}
+                    label={`My reservations ${reservationUnreadCount()}`}
                     onClick={() => router.push('/myReservations')}
                   />
                 </div>

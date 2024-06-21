@@ -29,3 +29,36 @@ export default async function getReserveNotification() {
     throw new Error(errorMessage)
   }
 }
+
+export async function getInboxNotification() {
+  try {
+    const currentUser = await getCurrentUser()
+
+    if (!currentUser) {
+      return null
+    }
+
+    const notifications = await prisma.inboxNotification.findMany({
+      where: {
+        userId: currentUser.id,
+      },
+      include: {
+        conversations: true,
+      },
+    })
+
+    const inboxNotifications = notifications.flatMap((notification) =>
+      notification.conversations.map((conversation) => ({
+        conversationId: conversation.conversationId,
+        unread: conversation.unread,
+      }))
+    )
+
+    return inboxNotifications
+  } catch (error) {
+    // Check if error is an instance of Error and get the message
+    const errorMessage =
+      error instanceof Error ? error.message : 'An unknown error occurred'
+    throw new Error(errorMessage)
+  }
+}

@@ -26,7 +26,7 @@ const InboxPage = async () => {
     )
   }
 
-  return <InboxClient conversations={conversations} />
+  return <InboxClient conversations={conversations} currentUser={currentUser} />
 }
 
 export default InboxPage

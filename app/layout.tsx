@@ -9,9 +9,14 @@ import LoginModal from './components/modals/LoginModal'
 import ToasterProvider from './providers/ToasterProvider'
 import getCurrentUser from './actions/getCurrentUser'
 import RentModal from './components/modals/CreateListingModal'
-import getReserveNotification from './actions/getNotifications'
+import getReserveNotification, {
+  getInboxNotification,
+} from './actions/getNotifications'
 import { QueryProvider } from './providers/queryProvider'
 import { SocketProvider } from './providers/socketProvider'
+import getListings from './actions/getListings'
+import { safeReserveNotification } from './types'
+
 // import { EditListingProvider } from './contextAPI/EditListingContext'
 
 // root layout file of the application
@@ -36,6 +41,7 @@ export default async function RootLayout({
 }) {
   const currentUser = await getCurrentUser()
   const notifications = await getReserveNotification()
+  const inboxNotifications = await getInboxNotification()
 
   return (
     <html lang="en">
@@ -44,7 +50,11 @@ export default async function RootLayout({
         <RentModal />
         <LoginModal />
         <RegisterModal />
-        <Navbar currentUser={currentUser} notifications={notifications} />
+        <Navbar
+          currentUser={currentUser}
+          notifications={notifications}
+          inboxNotifications={inboxNotifications}
+        />
 
         <SocketProvider>
           <QueryProvider>

@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Avatar from '../Avatar'
 import { useChatQuery } from '@/app/hooks/use-chat-query'
-import { format, formatDistanceToNow } from 'date-fns'
+import { formatDistanceToNow } from 'date-fns'
 
 type MessageWithMember = DirectMessage & {
   user: User // access user Model from DirectMessage (relation)
@@ -14,12 +14,16 @@ type MessageWithMember = DirectMessage & {
 
 interface ConversationProps {
   conversation: Conversation
+  currentUser: User
 }
 
-const ConversationPreview: React.FC<ConversationProps> = ({ conversation }) => {
+const ConversationPreview: React.FC<ConversationProps> = ({
+  conversation,
+  currentUser,
+}) => {
   const router = useRouter()
-  const [otherUser, setOtherUser] = useState<User | null>(null)
 
+  const [otherUser, setOtherUser] = useState<User | null>(null)
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(`/api/conversations/${conversation.id}`)
@@ -56,11 +60,14 @@ const ConversationPreview: React.FC<ConversationProps> = ({ conversation }) => {
         </div>
       </div>
 
-      <p className="mt-5 text-zinc-500 hover:text-zinc-600 text-sm cursor-pointer">
+      <div className="mt-5 text-zinc-500 hover:text-zinc-600 text-sm cursor-pointer">
         {latestMessagePreview && (
           <div className="flex justify-between">
             <div key={latestMessagePreview.id} className="left-0">
-              {latestMessagePreview.user.name}: {latestMessagePreview.content}
+              {latestMessagePreview.user.name === currentUser
+                ? 'You'
+                : otherUser?.name}
+              : {latestMessagePreview.content}
             </div>
 
             <div className="right-0">
@@ -70,7 +77,7 @@ const ConversationPreview: React.FC<ConversationProps> = ({ conversation }) => {
             </div>
           </div>
         )}
-      </p>
+      </div>
     </div>
   )
 }

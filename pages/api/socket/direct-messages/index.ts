@@ -3,7 +3,7 @@ import { NextApiRequest } from 'next'
 import prisma from '@/app/libs/prismadb'
 import { NextApiResponseServerIO } from '@/types'
 
-// create a new direct message
+// create a new direct message and notify other user
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponseServerIO
@@ -16,6 +16,7 @@ export default async function handler(
     const { content } = req.body
     const conversationId = req.query.conversationId as string
     const currentUserId = req.query.currentUserId as string
+    const otherUserId = req.query.otherUserId as string
 
     if (!currentUserId) {
       return res.status(401).json({ error: 'Unauthorized' })
@@ -23,6 +24,10 @@ export default async function handler(
 
     if (!conversationId) {
       return res.status(400).json({ error: 'Conversation ID missing' })
+    }
+
+    if (!otherUserId) {
+      return res.status(400).json({ error: 'Other user ID missing' })
     }
 
     if (!content) {
@@ -78,6 +83,52 @@ export default async function handler(
     const channelKey = `chat:${conversationId}:messages`
 
     res?.socket?.server?.io?.emit(channelKey, message) // used in client to watch for new messages using hooks
+
+    /* START upsert notification to other user */
+    let inboxNotification = await prisma.inboxNotification.findUnique({
+      where: { userId: otherUserId },
+    })
+
+    if (!inboxNotification) {
+      inboxNotification = await prisma.inboxNotification.create({
+        data: {
+          userId: otherUserId,
+        },
+      })
+    }
+
+    const conversationNotification = await prisma.conversationNotification.findFirst(
+      {
+        where: {
+          inboxNotification: { userId: otherUserId },
+          conversationId: conversationId,
+        },
+      }
+    )
+
+    if (conversationNotification) {
+      // Check if the unread property is already true
+      if (!conversationNotification.unread) {
+        // Update existing conversation notification only if unread is not true
+        await prisma.conversationNotification.update({
+          where: { id: conversationNotification.id },
+          data: {
+            unread: true,
+          },
+        })
+      }
+    } else {
+      // Create new conversation notification
+      await prisma.conversationNotification.create({
+        data: {
+          unread: true,
+          inboxNotificationId: inboxNotification.id,
+          conversationId: conversationId,
+        },
+      })
+    }
+
+    /* END upsert notification to other user */
 
     return res.status(200).json(message)
   } catch (error) {

@@ -7,9 +7,13 @@ import ConversationPreview from '../components/chat/Conversation'
 
 interface InboxClientProps {
   conversations: Conversation[]
+  currentUser: User
 }
 
-const InboxClient: React.FC<InboxClientProps> = ({ conversations }) => {
+const InboxClient: React.FC<InboxClientProps> = ({
+  conversations,
+  currentUser,
+}) => {
   return (
     <Container>
       <Heading title="Inbox" subtitle="List of your conversations" />
@@ -18,6 +22,7 @@ const InboxClient: React.FC<InboxClientProps> = ({ conversations }) => {
           <ConversationPreview
             key={conversation.id}
             conversation={conversation}
+            currentUser={currentUser}
           />
         )
       })}

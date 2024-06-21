@@ -45,6 +45,7 @@ export const ChatMessages = ({
     }
   }, [chatId])
 
+  // fetch initial set of chat messages and manage pagination.
   const {
     data,
     fetchNextPage,
@@ -58,7 +59,9 @@ export const ChatMessages = ({
     paramValue,
   })
 
-  useChatSocket({ queryKey, addKey })
+  useChatSocket({ queryKey, addKey }) // Set up the socket listener for real-time updates
+
+  // Set up scroll behavior for the chat (fetch old messages too)
   useChatScroll({
     chatRef,
     bottomRef,

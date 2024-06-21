@@ -11,7 +11,19 @@ export default async function hasConversation() {
 
     const conversations = await prisma.conversation.findMany({
       where: {
-        OR: [{ memberOneId: currentUser.id }, { memberTwoId: currentUser.id }],
+        AND: [
+          {
+            OR: [
+              { memberOneId: currentUser.id },
+              { memberTwoId: currentUser.id },
+            ],
+          },
+          {
+            directMessages: {
+              some: {},
+            },
+          },
+        ],
       },
     })
 

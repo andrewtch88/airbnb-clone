@@ -58,6 +58,7 @@ const ConversationPage = async ({ params }: { params: IParams }) => {
           query={{
             conversationId: conversation.id,
             currentUserId: currentUser.id,
+            otherUserId: otherMember.id,
           }}
         />
       </div>

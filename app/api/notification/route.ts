@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 
 import getCurrentUser from '@/app/actions/getCurrentUser'
 import prisma from '@/app/libs/prismadb'
+import getReserveNotification from '@/app/actions/getNotifications'
 
 export async function PUT(request: Request) {
   try {

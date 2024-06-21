@@ -24,6 +24,8 @@ export const useChatSocket = ({ addKey, queryKey }: ChatSocketProps) => {
     // listen for to receive new messages (on emit function in pages/api/socket/dm)
     socket.on(addKey, (message: MessageWithMemberWithProfile) => {
       queryClient.setQueryData([queryKey], (oldData: any) => {
+        // When new message received, update cached data using queryClient.setQueryData
+        // setQueryData function updates the existing cache by prepending the new message to the list of messages in oldData.
         if (!oldData || !oldData.pages || oldData.pages.length === 0) {
           return {
             pages: [
