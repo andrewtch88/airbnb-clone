@@ -2,11 +2,11 @@
 
 ![image](https://github.com/andrewtch88/airbnb-clone/assets/59404615/e739aad4-d645-4f35-a32f-fc1c8c3fc041)
 
-# Airbnb Clone with Next.js 13!
+# Airbnb Clone!
 
 <br />
 <p>
-Full Stack Airbnb Clone with Next.js 14: React, Tailwind CSS, Prisma, MongoDB, NextAuth (Google OAuth), Image Upload using Cloudinary CDN, Stripe, Live Chat using socket.io  
+Full Stack Airbnb Clone with Next 14, Tailwind CSS, Prisma, MongoDB, NextAuth (Google OAuth), Stripe, Live Chat using socket.io   
 </p>
 </div>
 <br />
@@ -17,72 +17,12 @@ Full Stack Airbnb Clone with Next.js 14: React, Tailwind CSS, Prisma, MongoDB, N
 
 <br />
 
-<table>
-    <tr>
-        <td>
-<a href="#"><img src="https://github.com/andrewtch88/airbnb-clone/assets/59404615/412246f9-3717-44e6-95ac-e5b85d5432a6" alt="Alt text" width="60" height="60" /></a>
-        </td>
-        <td>
-<a href="#"><img src="https://github.com/andrewtch88/airbnb-clone/assets/59404615/27dae3a8-2375-412a-835c-05b90cf73b0c" alt="Alt text" width="60" height="60" /></a>
-        </td>
-        <td>
-<a href="#"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" alt="" width="30" height="30" /></a>
-        </td>
-                <td>
-<a href="#"><img src="https://user-images.githubusercontent.com/99184393/183096870-fdf58e59-d78c-44f4-bd1c-f9033c16d907.png" alt="Google" width="30" height="30" /></a>
-        </td>
-                        <td>
-<a href="#"><img src="https://user-images.githubusercontent.com/99184393/179383376-874f547c-4e6f-4826-850e-706b009e7e2b.png" alt="" width="30" height="30" /></a>
-        </td>
-                              <td>
-<a href="#"><img src="https://user-images.githubusercontent.com/99184393/181918664-569af962-756c-438c-b350-294f042e6f61.png" alt="" width="30" height="30" /></a>
-        </td>
-                        <td>
-<a href="#"><img src="https://user-images.githubusercontent.com/99184393/180462270-ea4a249c-627c-4479-9431-5c3fd25454c4.png" alt="" width="30" height="30" /></a>
-        </td>
-                                      <td>
-<a href="#"><img src="https://user-images.githubusercontent.com/99184393/229775276-a7cb148b-7fbd-4334-a07f-f2223bc49f62.png" alt="" width="30"height="30"/></a>
-        </td>
-      <td>
-<a href="#"><img src="https://user-images.githubusercontent.com/99184393/204170976-0e5c6e2a-2b41-483d-adbd-d5d1e40b8d15.png" alt="" width="30"height="30"/></a>
-        </td>
-        <td>
-<a href="#"><img src="https://user-images.githubusercontent.com/99184393/214867309-7b59fa0e-c872-484e-bc8f-462896c54d2a.png" alt="" height="30"/></a>
-        </td>
-    </tr>
-</table>
-
-<details>
-  <summary>Client</summary>
-  <ul>
-    <li><a href="https://#/">Typescript</a></li>
-    <li><a href="https://nextjs.org/">Next.js</a></li>
-    <li><a href="https://reactjs.org/">React.js</a></li>
-    <li><a href="https://tailwindcss.com/">TailwindCSS</a></li>
-    <li><a href="https://www.prisma.io">Prisma</a></li>
-    <li><a href="https://stripe.com/">Stripe</a></li>
-  </ul>
-</details>
-
-<details>
-<summary>Database</summary>
-  <ul>
-  <li><a href="https://firebase.google.com">Mongodb</a></li>
-  <li><a href="https://cloudinary.com/">Cloudinary</a></li>
-  </ul>
-</details>
-
-<br />
-
 ## Features
 
-Next JS Tailwind design\
-Full responsiveness\
-Google OAuth authentication\
+OAuth authentication\
 Properties Reviews\
 Image upload using Cloudinary CDN\
-Calendars with react-date-range\
-Booking / Reservation system\
+Reservation system\
 Properties Management\
 Search properties\
 Basic Admin Dashboard\
@@ -218,10 +158,6 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
 ## Learn More
 
