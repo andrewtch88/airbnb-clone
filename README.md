@@ -13,7 +13,7 @@ Full Stack Airbnb Clone with Next 14, Tailwind CSS, Prisma, MongoDB, NextAuth (G
 
 ## Tech Stack
 
-![image](https://github.com/andrewtch88/airbnb-clone/assets/59404615/2026d9b3-ecac-4b1f-b8f5-360b53d8a23a)
+![image](https://github.com/andrewtch88/airbnb-clone/assets/59404615/e83e32cc-f95e-4a40-88a2-da3971de56bb)
 
 <br />
 
