@@ -1,6 +1,6 @@
 <div align="center">
 
-![image](https://github.com/andrewtch88/airbnb-clone/assets/59404615/e739aad4-d645-4f35-a32f-fc1c8c3fc041)
+![image](https://github.com/andrewtch88/airbnb-clone/assets/59404615/399c2f8f-8951-46f0-99b9-74d99981b2de)
 
 # Airbnb Clone!
 
@@ -13,7 +13,7 @@ Full Stack Airbnb Clone with Next 14, Tailwind CSS, Prisma, MongoDB, NextAuth (G
 
 ## Tech Stack
 
-![image](https://github.com/andrewtch88/airbnb-clone/assets/59404615/147abe5a-9499-4040-aa88-8511ce71b1d2)
+![image](https://github.com/andrewtch88/airbnb-clone/assets/59404615/2026d9b3-ecac-4b1f-b8f5-360b53d8a23a)
 
 <br />
 
