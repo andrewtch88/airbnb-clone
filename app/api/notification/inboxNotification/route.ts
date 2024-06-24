@@ -1,29 +1,27 @@
-import { NextResponse } from 'next/server'
-
 import getCurrentUser from '@/app/actions/getCurrentUser'
 import prisma from '@/app/libs/prismadb'
+import { NextResponse } from 'next/server'
 
-export async function PUT(request: Request) {
+export async function GET() {
   try {
     const currentUser = await getCurrentUser()
 
     if (!currentUser) {
-      return NextResponse.error()
+      return null
     }
 
-    const markAsRead = await prisma.reserveNotification.updateMany({
+    const notifications = await prisma.inboxNotification.findUnique({
       where: {
         userId: currentUser.id,
       },
-      data: {
-        unreadCount: 0,
-        newReservationIds: [],
+      include: {
+        conversations: true,
       },
     })
 
-    return NextResponse.json(markAsRead)
+    return NextResponse.json(notifications)
   } catch (error) {
-    console.log('api/notification', error)
+    console.log('api/notification/inboxNotification', error)
     return new NextResponse('Internal Error', { status: 500 })
   }
 }

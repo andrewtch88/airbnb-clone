@@ -26,7 +26,7 @@ interface ListingCardProps {
   onSecondaryAction?: (id: string) => void
   actionId?: string // used with onAction to know e.g. deleteId
   currentUser?: SafeUser | null
-  notifications?: safeReserveNotification[]
+  notifications?: safeReserveNotification | null
 }
 
 const ListingCard: React.FC<ListingCardProps> = ({
@@ -146,7 +146,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
             {data.isSuspended ||
             (reservation &&
               notifications &&
-              notifications[0].newReservationIds.includes(reservation.id)) ? (
+              notifications?.newReservationIds.includes(reservation.id)) ? (
               <div className="absolute inset-0 flex items-center justify-center">
                 <span className="text-center text-xl font-bold text-red-600 bg-white bg-opacity-80 px-4 py-2 rounded-md">
                   {data.isSuspended ? overlayText : 'New'}

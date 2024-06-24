@@ -12,6 +12,8 @@ type MessageWithMemberWithProfile = DirectMessage & {
   member: User
 }
 
+// (on emit function in pages/api/socket/dm) trigger this
+// chatMessages can use also
 export const useChatSocket = ({ addKey, queryKey }: ChatSocketProps) => {
   const { socket } = useSocket()
   const queryClient = useQueryClient()
@@ -21,7 +23,7 @@ export const useChatSocket = ({ addKey, queryKey }: ChatSocketProps) => {
       return
     }
 
-    // listen for to receive new messages (on emit function in pages/api/socket/dm)
+    // listen for to receive new messages and update the cache
     socket.on(addKey, (message: MessageWithMemberWithProfile) => {
       queryClient.setQueryData([queryKey], (oldData: any) => {
         // When new message received, update cached data using queryClient.setQueryData

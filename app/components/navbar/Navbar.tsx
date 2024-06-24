@@ -1,6 +1,10 @@
 'use client'
 
-import { safeReserveNotification, SafeUser } from '@/app/types'
+import {
+  safeInboxNotification,
+  safeReserveNotification,
+  SafeUser,
+} from '@/app/types'
 import Container from '../Container'
 import Categories from './Categories'
 import Logo from './Logo'
@@ -10,8 +14,8 @@ import { usePathname } from 'next/navigation'
 
 interface NavbarProps {
   currentUser?: SafeUser | null
-  notifications?: safeReserveNotification[]
-  inboxNotifications?: safeReserveNotification[]
+  notifications?: safeReserveNotification
+  inboxNotifications?: safeInboxNotification
 }
 
 const Navbar: React.FC<NavbarProps> = ({
@@ -38,8 +42,8 @@ const Navbar: React.FC<NavbarProps> = ({
               <UserMenu
                 currentUser={currentUser}
                 showComponent={showComponent}
-                notifications={notifications}
-                inboxNotifications={inboxNotifications}
+                initialNotifications={notifications}
+                initialInboxNotifications={inboxNotifications}
               />
             </div>
           </div>

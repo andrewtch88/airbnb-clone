@@ -8,6 +8,7 @@ import {
   Payment,
   ReserveNotification,
   InboxNotification,
+  ConversationNotification,
 } from '@prisma/client'
 
 export type safeListing = Omit<Listing, 'createdAt'> & {
@@ -53,7 +54,7 @@ export type safePayment = Omit<Payment, 'createdAt' | 'updatedAt'> & {
 
 export type safeReservation = Omit<
   Reservation,
-  'createdAt' | 'startDate' | 'endDate' | 'listing | user'
+  'createdAt' | 'startDate' | 'endDate' | 'listing' | 'user'
 > & {
   createdAt: string
   startDate: string
@@ -108,4 +109,5 @@ export type safeInboxNotification = Omit<
 > & {
   createdAt: string
   updatedAt: string
+  conversations: ConversationNotification
 }

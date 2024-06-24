@@ -3,7 +3,6 @@
 import { toast } from 'react-hot-toast'
 import axios from 'axios'
 import { useCallback, useState } from 'react'
-import { useRouter } from 'next/navigation'
 
 import { safeReservation, SafeUser } from '@/app/types'
 
@@ -12,6 +11,8 @@ import Container from '@/app/components/Container'
 import ListingCard from '@/app/components/listing/ListingCard'
 import useReviewModal from '../hooks/useReviewModal'
 import ReviewModal from '../components/modals/ReviewModal'
+import useContactHostModal from '../hooks/useContactModal'
+import ContactHostModal from '../components/modals/ContactModal'
 
 interface TripsClientProps {
   reservations: safeReservation[] // reservation includes listings now
@@ -22,35 +23,27 @@ const TripsClient: React.FC<TripsClientProps> = ({
   reservations,
   currentUser,
 }) => {
-  const router = useRouter()
   const reviewModal = useReviewModal()
+  const contactHostModal = useContactHostModal()
 
-  const [deletingId, setDeletingId] = useState('')
   const [
     reservationData,
     setReservationData,
   ] = useState<safeReservation | null>(null)
 
-  // const onCancel = useCallback(
-  //   // id retrieve from key prop, that's why react force to use key prop
-  //   (id: string) => {
-  //     setDeletingId(id)
+  const onCancel = useCallback(
+    async (id: string) => {
+      try {
+        const response = await axios.get(`/api/reservations/${id}`)
+        setReservationData(response.data)
 
-  //     axios
-  //       .delete(`/api/reservations/${id}`)
-  //       .then(() => {
-  //         toast.success('Reservation cancelled')
-  //         router.refresh()
-  //       })
-  //       .catch((error) => {
-  //         toast.error(error?.response?.data?.error)
-  //       })
-  //       .finally(() => {
-  //         setDeletingId('')
-  //       })
-  //   },
-  //   [router]
-  // )
+        contactHostModal.onOpen()
+      } catch (error) {
+        toast.error('Error fetching reservation details')
+      }
+    },
+    [contactHostModal, setReservationData]
+  )
 
   const onToggleReviewModal = useCallback(
     async (id: string) => {
@@ -91,8 +84,13 @@ const TripsClient: React.FC<TripsClientProps> = ({
                   data={reservation.listing}
                   reservation={reservation}
                   actionId={reservation.id}
-                  onAction={onToggleReviewModal}
+                  actionLabel="Message / Cancel"
+                  onAction={onCancel}
                   currentUser={currentUser}
+                  {...(reservation.hasReviewed === false && {
+                    secondaryActionLabel: 'Add review',
+                  })}
+                  onSecondaryAction={onToggleReviewModal}
                 />
               ))}
             </div>
@@ -109,10 +107,10 @@ const TripsClient: React.FC<TripsClientProps> = ({
                   data={reservation.listing}
                   reservation={reservation}
                   actionId={reservation.id}
-                  onAction={onToggleReviewModal}
                   currentUser={currentUser}
+                  onSecondaryAction={onToggleReviewModal}
                   {...(reservation.hasReviewed === false && {
-                    actionLabel: 'Add review',
+                    secondaryActionLabel: 'Add review',
                   })}
                 />
               ))}
@@ -121,6 +119,7 @@ const TripsClient: React.FC<TripsClientProps> = ({
         )}
       </>
       <ReviewModal reservation={reservationData} />
+      <ContactHostModal reservation={reservationData} />
     </Container>
   )
 }

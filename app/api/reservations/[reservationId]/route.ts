@@ -63,7 +63,11 @@ export async function GET(request: Request, { params }: { params: IParams }) {
         id: reservationId,
       },
       include: {
-        listing: true,
+        listing: {
+          include: {
+            user: true,
+          },
+        },
         user: true,
       },
     })

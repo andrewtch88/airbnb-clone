@@ -9,11 +9,13 @@ import { safeReserveNotification, safeReservation, SafeUser } from '@/app/types'
 import Heading from '@/app/components/Heading'
 import Container from '@/app/components/Container'
 import ListingCard from '@/app/components/listing/ListingCard'
+import useContactModal from '@/app/hooks/useContactModal'
+import ContactHostModal from '../components/modals/ContactModal'
 
 interface ReservationsClientProps {
   reservations: safeReservation[]
-  currentUser?: SafeUser | null
-  notifications?: safeReserveNotification[]
+  currentUser?: SafeUser
+  notifications?: safeReserveNotification | null
 }
 
 const ReservationsClient: React.FC<ReservationsClientProps> = ({
@@ -22,7 +24,14 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
   notifications,
 }) => {
   const router = useRouter()
+  const contactModal = useContactModal()
+
   const [deletingId, setDeletingId] = useState('')
+  const [
+    reservationData,
+    setReservationData,
+  ] = useState<safeReservation | null>(null)
+  console.log(reservationData)
 
   const onCancel = useCallback(
     (id: string) => {
@@ -44,12 +53,26 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
     [router]
   )
 
+  const onToggleContactModal = useCallback(
+    async (id: string) => {
+      try {
+        const response = await axios.get(`/api/reservations/${id}`)
+        setReservationData(response.data)
+
+        contactModal.onOpen()
+      } catch (error) {
+        toast.error('Error fetching reservation details')
+      }
+    },
+    [contactModal, setReservationData]
+  )
+
   const onMarkRead = useCallback(() => {
     axios
       .put(`/api/notification/`)
       .then(() => {
-        toast.success('Marked as read')
         router.refresh()
+        toast.success('Marked as read')
       })
       .catch(() => {
         toast.error('Something went wrong.')
@@ -98,7 +121,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
   return (
     <Container>
       <div className="pt-10">
-        {notifications && notifications[0]?.unreadCount > 0 && (
+        {notifications && notifications?.unreadCount > 0 && (
           <div className="relative">
             <div
               className="absolute top-0 right-0 mr-10 bg-white shadow-md p-2 rounded bg-gray-100 cursor-pointer hover:font-bold hover:text-blue-500"
@@ -122,11 +145,13 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
                   data={reservation.listing}
                   reservation={reservation}
                   actionId={reservation.id}
-                  // onAction={onCancel}
+                  onAction={onCancel}
                   disabled={deletingId === reservation.id}
-                  // actionLabel="Cancel guest reservation"
+                  actionLabel="Cancel guest reservation"
                   currentUser={currentUser}
                   notifications={notifications}
+                  secondaryActionLabel="Message Tenant"
+                  onSecondaryAction={onToggleContactModal}
                 />
               ))}
             </div>
@@ -146,11 +171,13 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
                   data={reservation.listing}
                   reservation={reservation}
                   actionId={reservation.id}
-                  // onAction={onCancel}
+                  onAction={onCancel}
                   disabled={deletingId === reservation.id}
-                  // actionLabel="Cancel guest reservation"
+                  actionLabel="Cancel guest reservation"
                   currentUser={currentUser}
                   notifications={notifications}
+                  secondaryActionLabel="Message Tenant"
+                  onSecondaryAction={onToggleContactModal}
                 />
               ))}
             </div>
@@ -180,6 +207,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
           </div>
         )}
       </div>
+      <ContactHostModal reservation={reservationData} isHost />
     </Container>
   )
 }

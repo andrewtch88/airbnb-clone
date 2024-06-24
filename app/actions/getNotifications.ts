@@ -9,19 +9,13 @@ export default async function getReserveNotification() {
       return []
     }
 
-    const notifications = await prisma.reserveNotification.findMany({
+    const notifications = await prisma.reserveNotification.findUnique({
       where: {
         userId: currentUser.id,
       },
     })
 
-    const safeNotifications = notifications.map((notification) => ({
-      ...notification,
-      createdAt: notification.createdAt.toISOString(),
-      updatedAt: notification.updatedAt.toISOString(),
-    }))
-
-    return safeNotifications
+    return notifications
   } catch (error) {
     // Check if error is an instance of Error and get the message
     const errorMessage =
@@ -38,7 +32,7 @@ export async function getInboxNotification() {
       return null
     }
 
-    const notifications = await prisma.inboxNotification.findMany({
+    const notifications = await prisma.inboxNotification.findUnique({
       where: {
         userId: currentUser.id,
       },
@@ -47,14 +41,7 @@ export async function getInboxNotification() {
       },
     })
 
-    const inboxNotifications = notifications.flatMap((notification) =>
-      notification.conversations.map((conversation) => ({
-        conversationId: conversation.conversationId,
-        unread: conversation.unread,
-      }))
-    )
-
-    return inboxNotifications
+    return notifications
   } catch (error) {
     // Check if error is an instance of Error and get the message
     const errorMessage =

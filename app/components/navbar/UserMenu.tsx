@@ -1,7 +1,7 @@
 'use client'
 import useLoginModal from '@/app/hooks/useLoginModal'
 import useRegisterModal from '@/app/hooks/useRegisterModal'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { AiOutlineMenu } from 'react-icons/ai' // hamburger menu icon
 import Avatar from '../Avatar'
 import MenuItem from './MenuItem'
@@ -14,35 +14,76 @@ import {
 import useRentModal from '@/app/hooks/useRentModal'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
+import axios from 'axios'
 
 interface UserMenuProps {
   currentUser?: SafeUser | null
   showComponent?: boolean
-  notifications: safeReserveNotification[]
-  inboxNotifications?: safeInboxNotification[]
+  initialNotifications: safeReserveNotification
+  initialInboxNotifications?: safeInboxNotification
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({
   currentUser,
   showComponent,
-  notifications,
-  inboxNotifications,
+  initialInboxNotifications,
+  initialNotifications,
 }) => {
   const router = useRouter()
   const registerModal = useRegisterModal()
   const loginModal = useLoginModal()
   const rentModal = useRentModal()
 
+  const [notifications, setNotifications] = useState(initialNotifications)
+  const [inboxNotifications, setInboxNotifications] = useState(
+    initialInboxNotifications
+  )
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    const pollNotifications = async () => {
+      try {
+        const response = await axios.get(
+          '/api/notification/reserveNotification'
+        )
+        setNotifications(response.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    const intervalId = setInterval(pollNotifications, 300000)
+
+    return () => clearInterval(intervalId) // Clean up on unmount
+  }, [])
+
+  useEffect(() => {
+    const pollNotifications = async () => {
+      try {
+        const response = await axios.get('/api/notification/inboxNotification')
+        setInboxNotifications(response.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    const intervalId = setInterval(pollNotifications, 1800000)
+
+    return () => clearInterval(intervalId) // Clean up on unmount
+  }, [])
 
   let totalUnreadCount = 0
   const calculateTotalUnreadCount = () => {
-    if (notifications && notifications[0]?.unreadCount > 0) {
-      totalUnreadCount += notifications[0]?.unreadCount
+    if (notifications && notifications?.unreadCount > 0) {
+      totalUnreadCount += notifications?.unreadCount
     }
 
-    if (inboxNotifications && inboxNotifications.length > 0) {
-      totalUnreadCount += inboxNotifications.length
+    if (
+      inboxNotifications &&
+      inboxNotifications.conversations?.conversationIds.length > 0
+    ) {
+      totalUnreadCount +=
+        inboxNotifications.conversations?.conversationIds.length
     }
   }
 
@@ -67,15 +108,18 @@ const UserMenu: React.FC<UserMenuProps> = ({
   }
 
   const reservationUnreadCount = () => {
-    if (notifications && notifications[0]?.unreadCount > 0) {
-      return `(${notifications[0]?.unreadCount} new)`
+    if (notifications && notifications?.unreadCount > 0) {
+      return `(${notifications?.unreadCount} new)`
     }
     return ''
   }
 
   const inboxUnread = () => {
-    if (inboxNotifications && inboxNotifications.length > 0) {
-      return `(${inboxNotifications.length} new)`
+    if (
+      inboxNotifications &&
+      inboxNotifications.conversations?.conversationIds.length > 0
+    ) {
+      return `(${inboxNotifications.conversations?.conversationIds.length} new)`
     }
     return ''
   }

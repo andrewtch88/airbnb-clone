@@ -9,6 +9,7 @@ const nextConfig = {
       'source.unsplash.com',
       'maps.googleapis.com',
       'media-cdn.tripadvisor.com',
+      'unsplash.it',
     ],
   },
 }

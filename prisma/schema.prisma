@@ -158,19 +158,17 @@ model InboxNotification {
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
 
-  conversations       ConversationNotification[]
+  conversations       ConversationNotification?
   user                User      @relation(fields: [userId], references: [id], onDelete: Cascade) // one to one
 }
 
 model ConversationNotification {
-  id                  String     @id @default(auto()) @map("_id") @db.ObjectId
-  conversationId      String     @db.ObjectId
-  unread              Boolean
-  inboxNotificationId String     @db.ObjectId
+  id                    String     @id @default(auto()) @map("_id") @db.ObjectId
+  conversationIds       String[]   @db.ObjectId
+  inboxNotificationId   String     @unique @db.ObjectId
 
   inboxNotification InboxNotification @relation(fields: [inboxNotificationId], references: [id], onDelete: Cascade)
-  @@index([conversationId])
-  @@index([inboxNotificationId])
+  @@index([conversationIds])
 }
 
 model Conversation {

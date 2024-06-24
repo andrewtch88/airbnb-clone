@@ -1,5 +1,6 @@
 import hasConversation from '../actions/getConversations'
 import getCurrentUser from '../actions/getCurrentUser'
+import { getInboxNotification } from '../actions/getNotifications'
 import EmptyState from '../components/EmptyState'
 import InboxClient from './InboxClient'
 
@@ -16,6 +17,7 @@ const InboxPage = async () => {
   }
 
   const conversations = await hasConversation()
+  const notifications = await getInboxNotification()
 
   if (conversations.length === 0) {
     return (
@@ -26,7 +28,13 @@ const InboxPage = async () => {
     )
   }
 
-  return <InboxClient conversations={conversations} currentUser={currentUser} />
+  return (
+    <InboxClient
+      inboxNotifications={notifications}
+      conversations={conversations}
+      currentUser={currentUser}
+    />
+  )
 }
 
 export default InboxPage

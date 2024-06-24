@@ -33,8 +33,8 @@ export const ChatMessages = ({
   paramKey,
   paramValue,
 }: ChatMessagesProps) => {
-  const queryKey = `chat:${chatId}`
-  const addKey = `chat:${chatId}:messages`
+  const queryKey = `chat:${chatId}` // identify and manage the cache for specific chat data.
+  const addKey = `chat:${chatId}:messages` // listen for new messages on a specific channel.
 
   const chatRef = useRef<ElementRef<'div'>>(null)
   const bottomRef = useRef<ElementRef<'div'>>(null)

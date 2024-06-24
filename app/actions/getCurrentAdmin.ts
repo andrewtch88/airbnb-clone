@@ -13,8 +13,6 @@ export default async function getCurrentAdmin() {
   try {
     const session = await getSession()
 
-    console.log('Session in getCurrentAdmin:', session)
-
     // should be admin object, remain first
     if (!session?.user?.email) {
       return null

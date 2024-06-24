@@ -120,10 +120,11 @@ const ListingClient: React.FC<ListingClientProps> = ({
       if (success === 'true' && !isSuccessHandled) {
         isSuccessHandled = true
 
+        toast.success('Listing reserved! Redirecting...', { duration: 5000 })
+
         setDateRange(initialDateRange)
 
         router.push('/myTrips')
-        toast.success('Listing reserved!', { duration: 5000 })
       } else if (success === 'false') {
         toast.error('Checkout cancelled or failed.')
       }
