@@ -98,6 +98,8 @@ export default async function getListingById(params: IParams) {
       ratingCategoriesAvg,
     }
   } catch (error) {
-    throw new Error(error)
+    const errorMessage =
+      error instanceof Error ? error.message : 'An unknown error occurred'
+    throw new Error(errorMessage)
   }
 }
