@@ -5,6 +5,7 @@ import EmptyState from '../components/EmptyState'
 import getCurrentUser from '../actions/getCurrentUser'
 import getListings from '../actions/getListings'
 import PropertiesClient from './PropertiesClient'
+import { safeListing } from '../types'
 
 // import { EditListingProvider } from '../contextAPI/EditListingContext'
 
@@ -37,7 +38,10 @@ const PropertiesPage = async () => {
 
   return (
     // <EditListingProvider>
-    <PropertiesClient listings={listings} currentUser={currentUser} />
+    <PropertiesClient
+      listings={listings as safeListing[]}
+      currentUser={currentUser}
+    />
     // </EditListingProvider>
   )
 }

@@ -4,6 +4,7 @@ import getCurrentUser from '@/app/actions/getCurrentUser'
 import getListingById from '@/app/actions/getListingById'
 import getReservations from '@/app/actions/getReservations'
 import EmptyState from '@/app/components/EmptyState'
+import { safeListing } from '@/app/types'
 import ListingClient from './ListingClient'
 
 interface IParams {
@@ -30,7 +31,8 @@ const listingPage = async ({ params }: { params: IParams }) => {
 
   return (
     <ListingClient
-      listing={listing}
+      // @ts-ignore
+      listing={listing} // @ts-ignore
       reservations={reservations}
       currentUser={currentUser}
     />

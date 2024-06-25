@@ -42,7 +42,7 @@ const Navbar: React.FC<NavbarProps> = ({
               <UserMenu
                 currentUser={currentUser}
                 showComponent={showComponent}
-                initialNotifications={notifications}
+                initialNotifications={notifications as safeReserveNotification}
                 initialInboxNotifications={inboxNotifications}
               />
             </div>

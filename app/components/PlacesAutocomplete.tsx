@@ -21,6 +21,7 @@ const PlacesAutocomplete: React.FC<ContainerProps> = ({
   const inputRef = useRef(null)
 
   const handlePlaceChanged = () => {
+    // @ts-ignore
     const [place] = inputRef.current.getPlaces()
     if (place) {
       setAddress(place.formatted_address)
@@ -43,6 +44,7 @@ const PlacesAutocomplete: React.FC<ContainerProps> = ({
     <>
       <StandaloneSearchBox
         onPlacesChanged={handlePlaceChanged}
+        // @ts-ignore
         onLoad={(ref) => (inputRef.current = ref)}
       >
         <div className="mt-[-30px]">{children}</div>

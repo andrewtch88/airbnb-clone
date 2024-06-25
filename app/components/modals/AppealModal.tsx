@@ -15,7 +15,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 
 interface AppealModalProps {
-  listing: safeListing
+  listing: safeListing | null
   adminView?: boolean
 }
 
@@ -132,7 +132,7 @@ const AppealModal: React.FC<AppealModalProps> = ({ listing, adminView }) => {
             <Link href={`/listings/${listing?.id}`} passHref>
               <Image
                 alt="data"
-                src={listing?.imageSrc[0]}
+                src={listing?.imageSrc[0] || '/images/placeholder.jpg'}
                 fill
                 className="object-cover h-50 w-50 group-hover:scale-110 transition select-none"
                 sizes="( min-width: 640px) 640px, 100vw"

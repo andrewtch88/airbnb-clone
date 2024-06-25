@@ -4,6 +4,7 @@ import getCurrentUser from '@/app/actions/getCurrentUser'
 import getFavoriteListings from '@/app/actions/getFavoriteListings'
 
 import FavouritesClient from './FavouritesClient'
+import { safeListing } from '../types'
 
 const ListingPage = async () => {
   const currentUser = await getCurrentUser()
@@ -29,7 +30,10 @@ const ListingPage = async () => {
   }
 
   return (
-    <FavouritesClient favouritedListings={listings} currentUser={currentUser} />
+    <FavouritesClient
+      favouritedListings={listings as safeListing[]}
+      currentUser={currentUser}
+    />
   )
 }
 

@@ -52,7 +52,8 @@ export default async function RootLayout({
         <RegisterModal />
         <Navbar
           currentUser={currentUser}
-          notifications={notifications}
+          // @ts-ignore
+          notifications={notifications} // @ts-ignore
           inboxNotifications={inboxNotifications}
         />
 

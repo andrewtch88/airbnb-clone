@@ -18,8 +18,11 @@ export async function POST(request: Request) {
       process.env.NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET!
     )
   } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'An unknown error occurred'
+
     return NextResponse.json(
-      { error: `Webhook error: ${error.message}` },
+      { error: `Webhook error: ${errorMessage}` },
       { status: 400 }
     )
   }
@@ -135,8 +138,12 @@ export async function POST(request: Request) {
       return NextResponse.json(reserveAndNotify)
     } catch (error) {
       console.error('Error creating reservation:', error)
+
+      const errorMessage =
+        error instanceof Error ? error.message : 'An unknown error occurred'
+
       return NextResponse.json(
-        { error: `Internal Server Error: ${error.message}` },
+        { error: `Internal Server Error: ${errorMessage}` },
         { status: 500 }
       )
     }

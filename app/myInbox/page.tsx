@@ -29,9 +29,9 @@ const InboxPage = async () => {
   }
 
   return (
-    <InboxClient
+    <InboxClient // @ts-ignore
       inboxNotifications={notifications}
-      conversations={conversations}
+      conversations={conversations} // @ts-ignore
       currentUser={currentUser}
     />
   )

@@ -66,11 +66,11 @@ const AdminManageReviews: React.FC<AdminManageReviewsProps> = ({ sortBy }) => {
   const reviewItem = (review: safeReview) => (
     <div className="border border-gray-300 flex flex-col xl:flex-row gap-4 xl:gap-8 relative">
       <div className="group">
-        <Link href={`/listings/${review?.listing.id}`} passHref>
+        <Link href={`/listings/${review?.listing?.id}`} passHref>
           <div className="aspect-square w-full h-60 xl:w-60 relative">
             <Image
               alt="data"
-              src={review?.listing.imageSrc[0]}
+              src={review?.listing?.imageSrc[0] || '/images/placeholder.jpg'}
               fill
               className="object-cover h-50 w-50 group-hover:scale-110 transition select-none"
               sizes="(max-width: 60px) 60px, 60vw"

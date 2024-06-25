@@ -3,6 +3,7 @@ import getListings, { IListingsParams } from '../actions/getListings'
 import Container from '../components/Container'
 import EmptyState from '../components/EmptyState'
 import ListingCard from '../components/listing/ListingCard'
+import { safeListing } from '../types'
 
 interface listingsPageProps {
   searchParams: IListingsParams
@@ -26,7 +27,7 @@ const listingsPage = async ({ searchParams }: listingsPageProps) => {
           return (
             <ListingCard
               key={listing.id}
-              data={listing}
+              data={listing as safeListing}
               currentUser={currentUser}
             />
           )

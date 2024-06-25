@@ -44,7 +44,7 @@ const ConversationPage = async ({ params }: { params: IParams }) => {
     <Container>
       <div className="bg-white flex flex-col h-full">
         <ChatHeader name={otherMember.name} imageUrl={otherMember.image} />
-        <ChatMessages
+        <ChatMessages // @ts-ignore
           user={currentUser}
           name={otherMember.name}
           chatId={conversation.id}

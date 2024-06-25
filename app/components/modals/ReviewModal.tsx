@@ -93,7 +93,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ reservation }) => {
         <div className="aspect-square w-60 relative overflow-hidden rounded-xl">
           <Image
             alt="data"
-            src={reservation?.listing.imageSrc[0]}
+            src={reservation?.listing.imageSrc[0] || '/images/placeholder.jpg'}
             fill
             className="object-cover h-50 w-50 group-hover:scale-110 transition select-none"
             sizes="( min-width: 640px) 640px, 100vw"

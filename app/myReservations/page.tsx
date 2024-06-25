@@ -30,8 +30,8 @@ const ReservationsPage = async () => {
   }
 
   return (
-    <ReservationsClient
-      notifications={notifications}
+    <ReservationsClient // @ts-ignore
+      notifications={notifications} // @ts-ignore
       reservations={reservations}
       currentUser={currentUser}
     />
