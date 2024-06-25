@@ -6,7 +6,7 @@ export default async function getReserveNotification() {
     const currentUser = await getCurrentUser()
 
     if (!currentUser) {
-      return []
+      return null
     }
 
     const notifications = await prisma.reserveNotification.findUnique({

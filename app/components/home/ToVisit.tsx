@@ -35,12 +35,12 @@ const ToVisit = () => {
           <PlaceCardLoader />
         ) : (
           listings?.map((listing, index) => (
-            <div key={index} className="group cursor-pointer">
+            <div key={index} className="group cursor-pointer pb-10">
               {/* Country Photo is rendered if found, or a default image is rendered as fallback */}
 
               <Link href={`/listingsPage?country=${listing.country}`} passHref>
                 <Image
-                  src={`https://unsplash.it/700/700/?${listing.country}`}
+                  src={`https://unsplash.it/1000/1000/?${listing.country}`}
                   className="w-full h-full object-cover group-hover:brightness-125"
                   alt={listing?.country}
                   width={400}

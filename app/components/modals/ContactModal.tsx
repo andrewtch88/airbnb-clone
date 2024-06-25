@@ -104,6 +104,7 @@ const ContactHostModal: React.FC<ContactHostModalProps> = ({
       secondaryAction={cancel}
       secondaryActionLabel="Cancel"
       body={bodyContent}
+      disabled={isLoading}
     />
   )
 }

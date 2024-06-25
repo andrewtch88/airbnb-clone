@@ -7,11 +7,10 @@ export async function GET() {
     const currentUser = await getCurrentUser()
 
     if (!currentUser) {
-      return []
+      return null
     }
 
-    const notifications = await prisma.reserveNotification.findMany({
-      take: 1,
+    const notifications = await prisma.reserveNotification.findUnique({
       where: {
         userId: currentUser.id,
       },

@@ -31,7 +31,6 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
     reservationData,
     setReservationData,
   ] = useState<safeReservation | null>(null)
-  console.log(reservationData)
 
   const onCancel = useCallback(
     (id: string) => {

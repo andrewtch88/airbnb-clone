@@ -248,6 +248,7 @@ const EditListingModal: React.FC<EditListingModalProps> = ({ listing }) => {
       secondaryActionLabel={'Cancel'}
       secondaryAction={cancel}
       body={bodyContent}
+      disabled={isLoading}
     />
   )
 }

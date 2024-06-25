@@ -200,6 +200,7 @@ const AppealModal: React.FC<AppealModalProps> = ({ listing, adminView }) => {
       secondaryActionLabel={adminView ? 'Approve Appeal' : 'Cancel'}
       secondaryAction={adminView ? onApproveAppeal : cancel}
       body={bodyContent}
+      disabled={isLoading}
     />
   )
 }

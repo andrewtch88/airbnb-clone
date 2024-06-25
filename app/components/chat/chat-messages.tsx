@@ -39,12 +39,6 @@ export const ChatMessages = ({
   const chatRef = useRef<ElementRef<'div'>>(null)
   const bottomRef = useRef<ElementRef<'div'>>(null)
 
-  useEffect(() => {
-    if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
-  }, [chatId])
-
   // fetch initial set of chat messages and manage pagination.
   const {
     data,

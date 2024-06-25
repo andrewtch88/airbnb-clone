@@ -190,6 +190,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ reservation }) => {
       secondaryActionLabel={'Cancel'}
       secondaryAction={cancel}
       body={bodyContent}
+      disabled={isLoading}
     />
   )
 }

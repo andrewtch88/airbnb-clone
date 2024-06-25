@@ -18,11 +18,11 @@ export async function GET(request: Request) {
 
     if (sortBy === 'newest') {
       orderBy = { createdAt: 'desc' }
-      query = { averageRating: { lt: 4 } }
+      query = { averageRating: { lt: 4, gt: 0 } }
     } else if (sortBy === 'gte: 3, lte: 4') {
       query = { averageRating: { gte: 3, lte: 4 } }
     } else if (sortBy === 'lte: 3') {
-      query = { averageRating: { lte: 3 } }
+      query = { averageRating: { lte: 3, gt: 0 } }
     } else if (sortBy !== null) {
       throw new Error('Invalid Sort By Selection')
     }
