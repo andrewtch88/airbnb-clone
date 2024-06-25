@@ -7,7 +7,7 @@ export async function GET() {
     const currentUser = await getCurrentUser()
 
     if (!currentUser) {
-      return null
+      return new NextResponse('Unauthorized', { status: 401 })
     }
 
     const notifications = await prisma.reserveNotification.findUnique({
