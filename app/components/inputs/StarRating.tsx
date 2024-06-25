@@ -18,18 +18,22 @@ const StarRating: React.FC<StarRatingProps> = ({
   const [rating, setRating] = useState(value)
   const [hover, setHover] = useState<number | null>(null)
 
+  const handleRatingChange = useCallback(
+    (currentRating: number) => {
+      if (disabled || !onChange) {
+        return
+      }
+      setRating(currentRating)
+      onChange(currentRating)
+    },
+    [onChange, disabled]
+  )
+
   const renderStars = () => {
     return (
       <div className="flex items-center">
         {[...Array(5)].map((_, i) => {
           const currentRating = i + 1
-          const onChangeRating = useCallback(() => {
-            if (disabled || !onChange) {
-              return
-            }
-            setRating(currentRating)
-            onChange(currentRating)
-          }, [currentRating, onChange, disabled])
 
           return (
             <label key={i} className="mr-2 sm:mr-4 last:mr-0">
@@ -37,7 +41,7 @@ const StarRating: React.FC<StarRatingProps> = ({
                 type="radio"
                 name="rating"
                 value={currentRating}
-                onChange={onChangeRating}
+                onChange={() => handleRatingChange(currentRating)}
                 disabled={disabled}
                 className="hidden"
               />

@@ -44,7 +44,7 @@ const AppealModal: React.FC<AppealModalProps> = ({ listing, adminView }) => {
     } else {
       reset()
     }
-  }, [appealModal.isOpen, listing, reset])
+  }, [appealModal.isOpen, listing, reset, adminView])
 
   const cancel = () => {
     appealModal.onClose()

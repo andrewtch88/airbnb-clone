@@ -2,10 +2,10 @@ import countries from 'i18n-iso-countries'
 import enLocale from 'i18n-iso-countries/langs/en.json'
 import useCountries from '@/app/hooks/useCountries'
 
-countries.registerLocale(enLocale)
-const { getByValue } = useCountries()
-
 const getRegionByAddress = (address: string) => {
+  // countries.registerLocale(enLocale)
+  // const { getByValue } = useCountries()
+
   const addressArray = address.split(', ')
   let country = ''
   let location: string | undefined = ''
@@ -19,7 +19,7 @@ const getRegionByAddress = (address: string) => {
     }
   }
 
-  const countryDetails = getByValue(location as string)
+  // const countryDetails = getByValue(location as string)
   return (
     // countryDetails?.region || 'Region not found' + ', ' +
     country || 'Country not found'

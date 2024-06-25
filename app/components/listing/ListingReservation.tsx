@@ -65,7 +65,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
         ) : (
           <div className="items-center gap-4">
             <p className="font-light text-neutral-600 mb-4 text-center text-sm">
-              You won't be charged yet
+              You won&apos;t be charged yet
             </p>
             <Button
               disabled={disabled}

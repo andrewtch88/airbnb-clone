@@ -52,8 +52,8 @@ const Home = () => {
             Keep it personalized
           </h3>
           <p className="text-gray-600 text-md md:text-lg">
-            Unique homes and unusual properties that traditional hotels can't
-            match. Live like a local.
+            Unique homes and unusual properties that traditional hotels
+            can&apos;t match. Live like a local.
           </p>
         </div>
         <div className="flex flex-col max-w-xs p-4 lg:mr-8">

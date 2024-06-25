@@ -111,7 +111,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
       toast.error('Something went wrong')
       setIsLoading(false)
     }
-  }, [totalPrice, dateRange, listing?.id, currentUser, loginModal])
+  }, [totalPrice, dateRange, listing, currentUser, loginModal])
 
   useEffect(() => {
     let isSuccessHandled = false
@@ -133,7 +133,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
     handleSuccessfulCheckout()
 
     return () => setIsLoading(false)
-  }, [success, setDateRange, router])
+  }, [success, setDateRange, router, initialDateRange])
 
   // on calendar change, count total price based on days selected
   useEffect(() => {

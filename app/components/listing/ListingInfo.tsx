@@ -76,7 +76,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
             lines={6}
             more={
               <span className="underline text-gray-900 font-medium">
-                Show more >
+                Show more
               </span>
             }
             less={

@@ -53,7 +53,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
       onSecondaryAction?.(actionId)
     },
-    [onSecondaryAction, disabled]
+    [onSecondaryAction, disabled, actionId]
   )
 
   const handleCancel = useCallback(
@@ -66,7 +66,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
       onAction?.(actionId)
     },
-    [onAction, disabled]
+    [onAction, disabled, actionId]
   )
 
   // useMemo returns a memoized value, while useCallback returns a memoized function
