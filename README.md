@@ -1,6 +1,6 @@
 <div align="center">
 
-![image](https://github.com/andrewtch88/airbnb-clone/assets/59404615/399c2f8f-8951-46f0-99b9-74d99981b2de)
+![image](https://github.com/andrewtch88/airbnb-clone/assets/59404615/31f6a4f0-66aa-4944-9a42-7729e9495c33)
 
 # Airbnb Clone!
 
@@ -13,7 +13,7 @@ Full Stack Airbnb Clone with Next 14, Tailwind CSS, Prisma, MongoDB, NextAuth (G
 
 ## Tech Stack
 
-![image](https://github.com/andrewtch88/airbnb-clone/assets/59404615/e83e32cc-f95e-4a40-88a2-da3971de56bb)
+![image](https://github.com/andrewtch88/airbnb-clone/assets/59404615/c046932b-59a4-4396-aadc-8960992d0074)
 
 <br />
 
@@ -131,13 +131,13 @@ Add the `@tailwind` directives for each of Tailwind’s layers to your `./styles
 Clone the project
 
 ```bash
-  git clone https://github.com/SashenJayathilaka/Airbnb-Build.git
+  git clone https://github.com/andrewtch88/airbnb-clone.git
 ```
 
 change directory
 
 ```bash
-  cd Airbnb-Build
+  cd airbnb-clone
 ```
 
 ## Install required packages in the terminal
