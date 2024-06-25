@@ -1,7 +1,7 @@
 'use client'
 
 import { safeListing, safeReservation, SafeUser } from '@/app/types'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { categories } from '@/app/components/navbar/Categories'
 import Container from '@/app/components/Container'
 import ListingHead from '../../components/listing/ListingHead'
@@ -44,7 +44,6 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const loginModal = useLoginModal()
   const router = useRouter()
   const params = useSearchParams()
-  const success = params?.get('success')
 
   // calculate disabled dates on the calendar based on the reservations
   const disabledDates = useMemo(() => {
@@ -113,27 +112,26 @@ const ListingClient: React.FC<ListingClientProps> = ({
     }
   }, [totalPrice, dateRange, listing, currentUser, loginModal])
 
+  // handle successful checkout
+  const successHandledRef = useRef(false)
+
   useEffect(() => {
-    let isSuccessHandled = false
+    const success = params?.get('success')
 
-    const handleSuccessfulCheckout = () => {
-      if (success === 'true' && !isSuccessHandled) {
-        isSuccessHandled = true
-
+    if (!successHandledRef.current) {
+      if (success === 'true') {
         toast.success('Listing reserved! Redirecting...', { duration: 5000 })
-
         setDateRange(initialDateRange)
-
         router.push('/myTrips')
+        successHandledRef.current = true
       } else if (success === 'false') {
         toast.error('Checkout cancelled or failed.')
+        successHandledRef.current = true
       }
     }
 
-    handleSuccessfulCheckout()
-
     return () => setIsLoading(false)
-  }, [success, setDateRange, router, initialDateRange])
+  }, [params, router, initialDateRange])
 
   // on calendar change, count total price based on days selected
   useEffect(() => {
