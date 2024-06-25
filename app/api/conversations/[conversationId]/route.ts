@@ -12,7 +12,7 @@ export async function GET(request: Request, { params }: { params: IParams }) {
     const currentUser = await getCurrentUser()
 
     if (!currentUser) {
-      return null
+      return new NextResponse('Unauthorized', { status: 401 })
     }
 
     const { conversationId } = params
