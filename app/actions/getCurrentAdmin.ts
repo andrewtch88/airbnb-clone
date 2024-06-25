@@ -3,9 +3,17 @@ import { getServerSession } from 'next-auth/next'
 import NextAuth from '@/pages/api/auth/[...nextauth]'
 import prisma from '@/app/libs/prismadb'
 
+type CustomSession = {
+  user?: {
+    email?: string
+    name?: string
+    image?: string
+  }
+}
+
 // NextAuth library that retrieves the user session on the server side
-export async function getSession() {
-  return await getServerSession(NextAuth)
+export async function getSession(): Promise<CustomSession | null> {
+  return (await getServerSession(NextAuth)) as CustomSession
 }
 
 // Retrieves the current user using Prisma and checks if user authenticated then fetch user data from DB
