@@ -132,6 +132,8 @@ export default async function getListings(params: IListingsParams) {
 
     return safeListings
   } catch (error) {
-    throw new Error(error)
+    const errorMessage =
+      error instanceof Error ? error.message : 'An unknown error occurred'
+    throw new Error(errorMessage)
   }
 }

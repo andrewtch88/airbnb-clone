@@ -25,6 +25,8 @@ export default async function getFavoriteListings() {
 
     return safeFavorites
   } catch (error) {
-    throw new Error(error)
+    const errorMessage =
+      error instanceof Error ? error.message : 'An unknown error occurred'
+    throw new Error(errorMessage)
   }
 }

@@ -56,6 +56,8 @@ export default async function getPayments() {
 
     return safePayments
   } catch (error) {
-    throw new Error(error)
+    const errorMessage =
+      error instanceof Error ? error.message : 'An unknown error occurred'
+    throw new Error(errorMessage)
   }
 }
