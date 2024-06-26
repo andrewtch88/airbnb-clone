@@ -112,7 +112,11 @@ const AdminManageReviews: React.FC<AdminManageReviewsProps> = ({
       <div className="space-y-10">
         <div className="lg:grid lg:grid-cols-2 lg:gap-4 space-y-8 lg:space-y-0 bg-white">
           {/* Show latest reviews first. */}
-          <Paginate items={reviews} itemsPerPage={6} renderItem={reviewItem} />
+          <Paginate
+            items={reviews as safeReview[]}
+            itemsPerPage={6}
+            renderItem={reviewItem}
+          />
         </div>
       </div>
     </section>
