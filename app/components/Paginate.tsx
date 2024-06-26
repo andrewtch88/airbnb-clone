@@ -11,16 +11,10 @@ interface PaginateProps<T> {
 
 const Paginate: React.FC<PaginateProps<any>> = ({
   itemsPerPage,
-  items = [],
+  items,
   renderItem,
 }) => {
   const [currentPage, setCurrentPage] = useState(0)
-
-  // Ensure items is always an array
-  if (!Array.isArray(items)) {
-    console.error('Expected items to be an array, but got', typeof items)
-    items = []
-  }
 
   const indexOfLastItem = (currentPage + 1) * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
