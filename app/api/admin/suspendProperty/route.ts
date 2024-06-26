@@ -17,17 +17,15 @@ export async function GET(request: Request) {
     let query: any = {}
     let orderBy: any = {}
 
-    if (sortBy !== 'default') {
-      if (sortBy === 'newest') {
-        orderBy = { createdAt: 'desc' }
-        query = { averageRating: { lt: 4, gt: 0 } }
-      } else if (sortBy === 'gte: 3, lte: 4') {
-        query = { averageRating: { gte: 3, lte: 4 } }
-      } else if (sortBy === 'lte: 3') {
-        query = { averageRating: { lte: 3, gt: 0 } }
-      } else if (sortBy !== null) {
-        throw new Error('Invalid Sort By Selection')
-      }
+    if (sortBy === 'newest') {
+      orderBy = { createdAt: 'desc' }
+      query = { averageRating: { lt: 4, gt: 0 } }
+    } else if (sortBy === 'gte: 3, lte: 4') {
+      query = { averageRating: { gte: 3, lte: 4 } }
+    } else if (sortBy === 'lte: 3') {
+      query = { averageRating: { lte: 3, gt: 0 } }
+    } else if (sortBy !== null) {
+      throw new Error('Invalid Sort By Selection')
     }
 
     query = {
@@ -38,8 +36,7 @@ export async function GET(request: Request) {
     // @ts-ignore
     const listings: safeListing[] = await prisma.listing.findMany({
       where: query,
-      orderBy:
-        Object.keys(orderBy).length > 0 ? orderBy : { createdAt: 'desc' },
+      orderBy: orderBy,
     })
 
     return NextResponse.json(listings)

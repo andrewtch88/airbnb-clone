@@ -19,6 +19,7 @@ import { safeListing, safePayment, safeReview } from '../types'
 import AdminManageAppeals from '../components/admin/AdminManageAppeals'
 import AdminViewPayments from '../components/admin/AdminViewPayments'
 import { FieldValues, useForm } from 'react-hook-form'
+import axios from 'axios'
 
 interface AdminDashboardProps {
   appealListings: safeListing[]
@@ -39,6 +40,8 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
   const [activeTab, setActiveTab] = useState('payment')
   const [sortReviewBy, setSortReviewBy] = useState('newest')
   const [sortPropertyBy, setSortPropertyBy] = useState('newest')
+  const [reviews, setReviews] = useState(initialReviews)
+  const [listings, setListings] = useState(initialListings)
 
   const router = useRouter()
 
@@ -52,11 +55,40 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
     },
   })
 
-  const searchUserBy = watch('searchByUser')
+  //const searchUserBy = watch('searchByUser')
 
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  useEffect(() => {
+    if (mounted) {
+      const fetchReviews = async () => {
+        try {
+          const response = await axios.get(
+            `/api/admin/review?sortBy=${sortReviewBy}`
+          )
+          setReviews(response.data)
+        } catch (error) {
+          toast.error('Failed to fetch reviews')
+        }
+      }
+
+      const fetchProperties = async () => {
+        try {
+          const response = await axios.get(
+            `/api/admin/suspendProperty?sortBy=${sortPropertyBy}`
+          )
+          setListings(response.data)
+        } catch (error) {
+          toast.error('Failed to fetch properties or reviews')
+        }
+      }
+
+      fetchProperties()
+      fetchReviews()
+    }
+  }, [mounted, sortReviewBy, sortPropertyBy])
 
   if (!mounted) return null
 
@@ -167,10 +199,7 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
                 </select>
               </div>
             </div>
-            <AdminManageProperties
-              initialListings={initialListings}
-              sortBy={mounted ? sortPropertyBy : 'default'}
-            />
+            <AdminManageProperties listings={listings} />
           </div>
           <div
             className={`p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full ${
@@ -208,10 +237,7 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
                 </select>
               </div>
             </div>
-            <AdminManageReviews
-              sortBy={mounted ? sortReviewBy : 'default'}
-              initialReviews={initialReviews}
-            />
+            <AdminManageReviews reviews={reviews} />
           </div>
           <div
             className={`p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full ${

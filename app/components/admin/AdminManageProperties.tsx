@@ -7,33 +7,15 @@ import { safeListing } from '@/app/types'
 import Paginate from '../Paginate'
 
 interface AdminManagePropertiesProps {
-  sortBy?: string
-  initialListings: safeListing[]
+  listings: safeListing[]
 }
 
 const AdminManageProperties: React.FC<AdminManagePropertiesProps> = ({
-  sortBy,
-  initialListings,
+  listings,
 }) => {
-  const [listings, setListings] = useState(initialListings)
   const [suspendId, setSuspendId] = useState('')
 
   const router = useRouter()
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `/api/admin/suspendProperty?sortBy=${sortBy}`
-        )
-        setListings(Array.isArray(response.data) ? response.data : [])
-      } catch (error) {
-        toast.error('Failed to fetch listings')
-      }
-    }
-
-    fetchData()
-  }, [sortBy])
 
   const onSuspend = useCallback(
     (id: string) => {

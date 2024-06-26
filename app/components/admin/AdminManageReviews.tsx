@@ -10,32 +10,14 @@ import Button from '../Button'
 import Paginate from '../Paginate'
 
 interface AdminManageReviewsProps {
-  sortBy: string
-  initialReviews: safeReview[]
+  reviews: safeReview[]
 }
 
-const AdminManageReviews: React.FC<AdminManageReviewsProps> = ({
-  sortBy,
-  initialReviews,
-}) => {
-  const [reviews, setReviews] = useState(initialReviews)
+const AdminManageReviews: React.FC<AdminManageReviewsProps> = ({ reviews }) => {
   const [deletingId, setDeletingId] = useState('')
   const [disabled, setDisabled] = useState(false)
 
   const router = useRouter()
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`/api/admin/review?sortBy=${sortBy}`)
-        setReviews(Array.isArray(response.data) ? response.data : [])
-      } catch (error) {
-        toast.error('Failed to fetch reviews')
-      }
-    }
-
-    fetchData()
-  }, [sortBy])
 
   const onDelete = useCallback(
     // id retrieve from key prop, that's why react force to use key prop
