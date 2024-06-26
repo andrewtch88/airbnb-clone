@@ -40,8 +40,8 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
   const [activeTab, setActiveTab] = useState('payment')
   const [sortReviewBy, setSortReviewBy] = useState('newest')
   const [sortPropertyBy, setSortPropertyBy] = useState('newest')
-  const [reviews, setReviews] = useState(initialReviews)
-  const [listings, setListings] = useState(initialListings)
+  const [reviews, setReviews] = useState<safeReview[]>(initialReviews)
+  const [listings, setListings] = useState<safeListing[]>(initialListings)
 
   const router = useRouter()
 
