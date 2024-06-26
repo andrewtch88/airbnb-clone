@@ -37,6 +37,7 @@ Live Chat using Socket.io, tanstack query for infinite loading of messages in ba
 - Install Node JS in your computer <a href='https://nodejs.org/en/'>HERE</a>
 - Sign up for a Cloudinary account <a href='https://cloudinary.com/'>HERE</a>
 - Sign up for a Google Cloud Platform <a href='https://console.cloud.google.com/'>HERE</a>
+- And other accounts needed depending on the environment variable
 
 ### :key: Setup Environment Variables (.env and .env.local file)
 ```bash
@@ -77,57 +78,6 @@ npx create-next-app@latest project-name --typescript --eslint
 cd project-name
 ```
 
-## Install dependencies
-
-### :test_tube: Install Tailwind CSS with Next.js
-
-#### Install Tailwind CSS
-
-![](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-
-Install tailwindcss and its peer dependencies via npm, and then run the init command to generate both `tailwind.config.js` and `postcss.config.js`.
-
-```
-npm install -D tailwindcss postcss autoprefixer
-```
-
-```
-npx tailwindcss init -p
-```
-
-#### Configure your template paths
-
-Add the paths to all of your template files in your `tailwind.config.js` file.
-<br>
-
-```js
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    "./app/**/*.{js,ts,jsx,tsx}",
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
-
-    // Or if using `src` directory:
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-};
-```
-
-#### Add the Tailwind directives to your CSS
-
-Add the `@tailwind` directives for each of Tailwind’s layers to your `./styles/globals.css` file.
-
-```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-```
-
 Clone the project
 
 ```bash
@@ -158,18 +108,5 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 <div align="center">Don't forget to leave a star ⭐️</div>
