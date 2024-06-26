@@ -7,13 +7,15 @@ import { safeListing } from '@/app/types'
 import Paginate from '../Paginate'
 
 interface AdminManagePropertiesProps {
-  sortBy: string
+  sortBy?: string
+  initialListings: safeListing[]
 }
 
 const AdminManageProperties: React.FC<AdminManagePropertiesProps> = ({
   sortBy,
+  initialListings,
 }) => {
-  const [listings, setListings] = useState<safeListing[]>([])
+  const [listings, setListings] = useState(initialListings)
   const [suspendId, setSuspendId] = useState('')
 
   const router = useRouter()

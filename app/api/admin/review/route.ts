@@ -16,14 +16,16 @@ export async function GET(request: Request) {
 
     let query: any = {}
 
-    if (sortBy === 'newest') {
-      query = { createdAt: 'desc' }
-    } else if (sortBy === 'finalRating asc') {
-      query = { finalRating: 'asc' }
-    } else if (sortBy === 'finalRating desc') {
-      query = { finalRating: 'desc' }
-    } else if (sortBy !== null) {
-      throw new Error('Invalid Sort By Selection')
+    if (sortBy !== 'default') {
+      if (sortBy === 'newest') {
+        query = { createdAt: 'desc' }
+      } else if (sortBy === 'finalRating asc') {
+        query = { finalRating: 'asc' }
+      } else if (sortBy === 'finalRating desc') {
+        query = { finalRating: 'desc' }
+      } else if (sortBy !== null) {
+        throw new Error('Invalid Sort By Selection')
+      }
     }
 
     const reviews = await prisma.review.findMany({
@@ -31,7 +33,7 @@ export async function GET(request: Request) {
         user: true,
         listing: true,
       },
-      orderBy: query,
+      orderBy: Object.keys(query).length > 0 ? query : { createdAt: 'desc' },
     })
 
     const safeReviews = reviews.map((review) => ({

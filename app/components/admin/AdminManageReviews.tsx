@@ -11,10 +11,14 @@ import Paginate from '../Paginate'
 
 interface AdminManageReviewsProps {
   sortBy: string
+  initialReviews: safeReview[]
 }
 
-const AdminManageReviews: React.FC<AdminManageReviewsProps> = ({ sortBy }) => {
-  const [reviews, setReviews] = useState<safeReview[]>([])
+const AdminManageReviews: React.FC<AdminManageReviewsProps> = ({
+  sortBy,
+  initialReviews,
+}) => {
+  const [reviews, setReviews] = useState(initialReviews)
   const [deletingId, setDeletingId] = useState('')
   const [disabled, setDisabled] = useState(false)
 

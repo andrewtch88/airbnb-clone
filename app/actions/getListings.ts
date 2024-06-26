@@ -14,6 +14,7 @@ export interface IListingsParams {
   category?: string
   allProperties?: boolean
   onAppeal?: boolean
+  underPerforming?: boolean
 }
 
 export default async function getListings(params: IListingsParams) {
@@ -30,9 +31,17 @@ export default async function getListings(params: IListingsParams) {
       address,
       allProperties,
       onAppeal,
+      underPerforming,
     } = params
 
     let query: any = {}
+
+    if (underPerforming) {
+      query.averageRating = {
+        lt: 4,
+        gt: 0,
+      }
+    }
 
     if (!allProperties) {
       query.isSuspended = false

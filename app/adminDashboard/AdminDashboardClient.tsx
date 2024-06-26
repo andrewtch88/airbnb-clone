@@ -15,7 +15,7 @@ import { signOut } from 'next-auth/react'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import AdminManageProperties from '../components/admin/AdminManageProperties'
-import { safeListing, safePayment } from '../types'
+import { safeListing, safePayment, safeReview } from '../types'
 import AdminManageAppeals from '../components/admin/AdminManageAppeals'
 import AdminViewPayments from '../components/admin/AdminViewPayments'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -23,11 +23,15 @@ import { FieldValues, useForm } from 'react-hook-form'
 interface AdminDashboardProps {
   appealListings: safeListing[]
   payments: safePayment[]
+  initialListings: safeListing[]
+  initialReviews: safeReview[]
 }
 
 const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
   appealListings,
   payments,
+  initialListings,
+  initialReviews,
 }) => {
   // console.log({ currentAdmin })
 
@@ -163,7 +167,10 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
                 </select>
               </div>
             </div>
-            <AdminManageProperties sortBy={sortPropertyBy} />
+            <AdminManageProperties
+              initialListings={initialListings}
+              sortBy={mounted ? sortPropertyBy : 'default'}
+            />
           </div>
           <div
             className={`p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full ${
@@ -201,7 +208,10 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
                 </select>
               </div>
             </div>
-            <AdminManageReviews sortBy={sortReviewBy} />
+            <AdminManageReviews
+              sortBy={mounted ? sortReviewBy : 'default'}
+              initialReviews={initialReviews}
+            />
           </div>
           <div
             className={`p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full ${
