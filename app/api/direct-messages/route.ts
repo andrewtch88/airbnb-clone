@@ -57,7 +57,7 @@ export async function GET(req: Request) {
       })
     }
 
-    let nextCursor = null
+    let nextCursor: string | null = null
 
     if (messages.length === MESSAGES_BATCH) {
       nextCursor = messages[MESSAGES_BATCH - 1].id
