@@ -20,10 +20,14 @@ const AdminManageProperties: React.FC<AdminManagePropertiesProps> = ({
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(
-        `/api/admin/suspendProperty?sortBy=${sortBy}`
-      )
-      setListings(response.data)
+      try {
+        const response = await axios.get(
+          `/api/admin/suspendProperty?sortBy=${sortBy}`
+        )
+        setListings(Array.isArray(response.data) ? response.data : [])
+      } catch (error) {
+        toast.error('Failed to fetch listings')
+      }
     }
 
     fetchData()

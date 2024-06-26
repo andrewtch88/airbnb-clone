@@ -17,7 +17,7 @@ export async function PUT(request: Request, { params }: { params: IParams }) {
 
     const { conversationId } = params
 
-    const inboxNotification = await prisma.inboxNotification.findFirst({
+    const inboxNotification = await prisma.inboxNotification.findUnique({
       where: {
         userId: currentUser.id,
       },

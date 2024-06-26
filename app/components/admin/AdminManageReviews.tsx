@@ -22,8 +22,12 @@ const AdminManageReviews: React.FC<AdminManageReviewsProps> = ({ sortBy }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`/api/admin/review?sortBy=${sortBy}`)
-      setReviews(response.data)
+      try {
+        const response = await axios.get(`/api/admin/review?sortBy=${sortBy}`)
+        setReviews(Array.isArray(response.data) ? response.data : [])
+      } catch (error) {
+        toast.error('Failed to fetch reviews')
+      }
     }
 
     fetchData()

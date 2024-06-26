@@ -92,19 +92,13 @@ export default async function handler(
         where: { userId: otherUserId },
         update: {},
         create: { userId: otherUserId },
+        include: { conversations: true },
       })
 
-      // Find the conversation notification
-      let conversationNotification = await prisma.conversationNotification.findUnique(
-        {
-          where: {
-            inboxNotificationId: inboxNotification.id,
-          },
-        }
-      )
+      // Check if a conversation notification already exists
+      const conversationNotification = inboxNotification.conversations
 
       if (conversationNotification) {
-        // Update only if unread is false
         if (
           !conversationNotification?.conversationIds?.includes(conversationId)
         ) {
@@ -120,7 +114,6 @@ export default async function handler(
           })
         }
       } else {
-        // Create new conversation notification
         await prisma.conversationNotification.create({
           data: {
             inboxNotificationId: inboxNotification.id,
