@@ -4,6 +4,7 @@ import { headers } from 'next/headers'
 
 import { stripe } from '@/app/libs/stripe'
 import prisma from '@/app/libs/prismadb'
+import { Payment } from '@prisma/client'
 
 export async function POST(request: Request) {
   const body = await request.text()
@@ -85,15 +86,12 @@ export async function POST(request: Request) {
           where: { reservationId },
         })
 
-        let createPayment = null
-        let createNotification = null
-
         if (existingPayment) {
           throw new Error(
             'Reservation already taken by someone else, try other dates.'
           )
         } else {
-          createPayment = await prisma.payment.create({
+          await prisma.payment.create({
             data: {
               reservationId: reservationId,
               totalAmount: Math.round(Number(totalPrice!)),
@@ -113,7 +111,7 @@ export async function POST(request: Request) {
             throw new Error('Listing owner not found')
           }
 
-          createNotification = await prisma.reserveNotification.upsert({
+          await prisma.reserveNotification.upsert({
             where: { userId: listingOwner.userId },
             update: {
               unreadCount: {
@@ -132,7 +130,7 @@ export async function POST(request: Request) {
           // End creating owner notification
         }
 
-        return { createReservation, createPayment, createNotification }
+        return { createReservation }
       })
 
       return NextResponse.json(reserveAndNotify)
