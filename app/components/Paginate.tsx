@@ -9,16 +9,18 @@ interface PaginateProps<T> {
   renderItem: (item: T) => React.ReactNode
 }
 
-const Paginate: React.FC<PaginateProps<any>> = ({
+const Paginate = <T,>({
   itemsPerPage,
   items,
   renderItem,
-}) => {
+}: PaginateProps<T>) => {
   const [currentPage, setCurrentPage] = useState(0)
+
+  // console.log('Current items:', items)
 
   const indexOfLastItem = (currentPage + 1) * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = items.slice(indexOfFirstItem, indexOfLastItem)
+  const currentItems: T[] = items.slice(indexOfFirstItem, indexOfLastItem)
 
   const handlePageChange = (event: { selected: number }) => {
     setCurrentPage(event.selected)
@@ -26,7 +28,9 @@ const Paginate: React.FC<PaginateProps<any>> = ({
 
   return (
     <>
-      {currentItems.map((item) => renderItem(item))}
+      {currentItems.map((item, index) => (
+        <React.Fragment key={index}>{renderItem(item)}</React.Fragment>
+      ))}
       <div className="fixed bottom-0 left-0 right-0 bg-gray-50 dark:bg-gray-800">
         <div className="col-span-2 max-w-screen-xl mx-auto">
           <div className="flex justify-center p-3">
