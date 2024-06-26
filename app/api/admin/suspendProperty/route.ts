@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/app/libs/prismadb'
 import getCurrentAdmin from '@/app/actions/getCurrentAdmin'
+import { safeListing } from '@/app/types'
 
 export async function GET(request: Request) {
   try {
@@ -32,7 +33,8 @@ export async function GET(request: Request) {
       isSuspended: false,
     }
 
-    const listings = await prisma.listing.findMany({
+    // @ts-ignore
+    const listings: safeListing[] = await prisma.listing.findMany({
       where: query,
       orderBy: orderBy,
     })

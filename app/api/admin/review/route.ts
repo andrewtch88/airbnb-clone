@@ -1,6 +1,7 @@
 import getCurrentAdmin from '@/app/actions/getCurrentAdmin'
 import { NextResponse } from 'next/server'
 import prisma from '@/app/libs/prismadb'
+import { safeReview } from '@/app/types'
 
 export async function GET(request: Request) {
   try {
@@ -49,7 +50,7 @@ export async function GET(request: Request) {
       },
     }))
 
-    return NextResponse.json(safeReviews)
+    return NextResponse.json(safeReviews as safeReview[])
   } catch (error) {
     console.log('api/admin/review', error)
     return new NextResponse('Internal Error', { status: 500 })
