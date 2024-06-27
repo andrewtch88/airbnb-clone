@@ -14,8 +14,6 @@ import getReserveNotification, {
 } from './actions/getNotifications'
 import { QueryProvider } from './providers/queryProvider'
 import { SocketProvider } from './providers/socketProvider'
-import getListings from './actions/getListings'
-import { safeReserveNotification } from './types'
 
 // import { EditListingProvider } from './contextAPI/EditListingContext'
 

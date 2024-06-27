@@ -1,22 +1,23 @@
 'use client'
 
 import { useEffect } from 'react'
+import EmptyState from './components/EmptyState'
 
-export default function Error({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string }
-  reset: () => void
-}) {
+interface ErrorStateProps {
+  error: Error
+}
+
+const ErrorState: React.FC<ErrorStateProps> = ({ error }) => {
   useEffect(() => {
     console.error(error)
   }, [error])
 
   return (
-    <div>
-      <h2>Something went wrong!</h2>
-      <button onClick={() => reset()}>Try again</button>
-    </div>
+    <EmptyState
+      title="Uh-oh!"
+      subtitle="Something went wrong! Please try again."
+    />
   )
 }
+
+export default ErrorState

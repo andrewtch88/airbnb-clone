@@ -43,8 +43,8 @@ export default async function getListings(params: IListingsParams) {
       }
     }
 
-    if (!allProperties) {
-      query.isSuspended = false
+    if (allProperties) {
+      query.isSuspended = true
     }
 
     if (onAppeal) {

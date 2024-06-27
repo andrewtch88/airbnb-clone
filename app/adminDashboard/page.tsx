@@ -22,7 +22,6 @@ const AdminDashboardPage = async () => {
   const payments = await getPayments()
   const listings = await getListings({
     underPerforming: true,
-    allProperties: true,
   })
   const reviews = await getReviews()
 

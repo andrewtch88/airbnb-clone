@@ -39,9 +39,7 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
   const [mounted, setMounted] = useState(false)
   const [activeTab, setActiveTab] = useState('payment')
   const [sortReviewBy, setSortReviewBy] = useState('newest')
-  const [sortPropertyBy, setSortPropertyBy] = useState('newest')
   const [reviews, setReviews] = useState<safeReview[]>(initialReviews)
-  const [listings, setListings] = useState<safeListing[]>(initialListings)
 
   const router = useRouter()
 
@@ -73,22 +71,9 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
           toast.error('Failed to fetch reviews')
         }
       }
-
-      const fetchProperties = async () => {
-        try {
-          const response = await axios.get(
-            `/api/admin/suspendProperty?sortBy=${sortPropertyBy}`
-          )
-          setListings(response.data)
-        } catch (error) {
-          toast.error('Failed to fetch properties or reviews')
-        }
-      }
-
-      fetchProperties()
       fetchReviews()
     }
-  }, [mounted, sortReviewBy, sortPropertyBy])
+  }, [mounted, sortReviewBy])
 
   if (!mounted) return null
 
@@ -184,22 +169,8 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
               <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
                 Underperforming Properties
               </h3>
-              <div className="flex items-center mb-2">
-                <p className="mr-2">Sort by: </p>
-                <select
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2"
-                  value={sortPropertyBy}
-                  onChange={(e) => setSortPropertyBy(e.target.value)}
-                >
-                  <option value="newest">Latest</option>
-                  <option value="gte: 3, lte: 4">
-                    Average Performing Properties
-                  </option>
-                  <option value="lte: 3">Below Average Properties</option>
-                </select>
-              </div>
             </div>
-            <AdminManageProperties listings={listings} />
+            <AdminManageProperties listings={initialListings} />
           </div>
           <div
             className={`p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full ${
