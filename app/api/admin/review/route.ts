@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import getCurrentAdmin from '@/app/actions/getCurrentAdmin'
 import { NextResponse } from 'next/server'
 import prisma from '@/app/libs/prismadb'

@@ -65,7 +65,7 @@ export async function POST(request: Request, { params }: { params: IParams }) {
       )
     }
 
-    if (review && review === '') {
+    if (review === '') {
       return NextResponse.json(
         { error: 'Review cannot be empty.' },
         { status: 400 }

@@ -61,13 +61,23 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
   }, [])
 
   useEffect(() => {
+    console.log('sortReviewBy changed:', sortReviewBy)
+
     const fetchReviews = async () => {
       setIsLoading(true)
       try {
         const response = await axios.get(
-          `/api/admin/review?sortBy=${sortReviewBy}`
+          `/api/admin/review?sortBy=${sortReviewBy}&t=${Date.now()}`
         )
-        setReviews(response.data)
+        console.log('Received reviews:', response.data)
+        setReviews((prevReviews) => {
+          if (response.data && response.data.length > 0) {
+            return response.data
+          }
+          // If the response is empty, keep the previous reviews
+          console.log('Received empty review data, keeping previous reviews')
+          return prevReviews
+        })
       } catch (error) {
         toast.error('Failed to fetch reviews')
       } finally {
