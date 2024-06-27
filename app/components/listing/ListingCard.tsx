@@ -96,7 +96,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
     } else if (data.appeal?.status === 'pending') {
       overlayText = 'Appeal for suspension pending'
     } else {
-      overlayText = 'Property suspended: Bad reviews and ratings'
+      overlayText = 'Property suspended: Bad reviews'
     }
   }
 
@@ -142,21 +142,22 @@ const ListingCard: React.FC<ListingCardProps> = ({
               />
             )}
 
-            {/* Overlay Text (Suspension status or New reservation) */}
-            {data.isSuspended ||
-            (reservation &&
-              notifications &&
-              notifications?.newReservationIds.includes(reservation.id)) ? (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-center text-xl font-bold text-red-600 bg-white bg-opacity-80 px-4 py-2 rounded-md">
-                  {data.isSuspended ? overlayText : 'New'}
-                </span>
-              </div>
-            ) : (
-              <div className="absolute top-3 right-3">
-                <HeartButton listingId={data.id} currentUser={currentUser} />
-              </div>
-            )}
+            {/* Overlay Text for Owner (Suspension status or New reservation) */}
+            {data?.userId == currentUser?.id &&
+              (data.isSuspended ||
+              (reservation &&
+                notifications &&
+                notifications?.newReservationIds.includes(reservation.id)) ? (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-center text-xl font-bold text-red-600 bg-white bg-opacity-80 px-4 py-2 rounded-md">
+                    {data.isSuspended ? overlayText : 'New'}
+                  </span>
+                </div>
+              ) : (
+                <div className="absolute top-3 right-3">
+                  <HeartButton listingId={data.id} currentUser={currentUser} />
+                </div>
+              ))}
           </div>
         </div>
       </div>

@@ -60,20 +60,19 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
   }, [])
 
   useEffect(() => {
-    if (mounted) {
-      const fetchReviews = async () => {
-        try {
-          const response = await axios.get(
-            `/api/admin/review?sortBy=${sortReviewBy}`
-          )
-          setReviews(response.data)
-        } catch (error) {
-          toast.error('Failed to fetch reviews')
-        }
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get(
+          `/api/admin/review?sortBy=${sortReviewBy}`
+        )
+        setReviews(response.data)
+      } catch (error) {
+        toast.error('Failed to fetch reviews')
       }
-      fetchReviews()
     }
-  }, [mounted, sortReviewBy])
+
+    fetchReviews()
+  }, [sortReviewBy])
 
   if (!mounted) return null
 

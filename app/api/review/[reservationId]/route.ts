@@ -65,7 +65,7 @@ export async function POST(request: Request, { params }: { params: IParams }) {
       )
     }
 
-    if (review && review.length > 0 && review.length < 50) {
+    if (review && review.length < 50) {
       return NextResponse.json(
         { error: 'Review must be at least 50 characters long.' },
         { status: 400 }
@@ -94,7 +94,7 @@ export async function POST(request: Request, { params }: { params: IParams }) {
         userId: currentUser.id,
         listingId: listingId,
         reservationId,
-        review: review ? review : 'No review given.',
+        review: review,
         cleanlinessRating,
         accuracyRating,
         checkIn_Rating: checkInRating,
