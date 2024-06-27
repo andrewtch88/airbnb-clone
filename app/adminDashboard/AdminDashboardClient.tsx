@@ -39,7 +39,8 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
   const [mounted, setMounted] = useState(false)
   const [activeTab, setActiveTab] = useState('payment')
   const [sortReviewBy, setSortReviewBy] = useState('newest')
-  const [reviews, setReviews] = useState<safeReview[]>(initialReviews)
+  const [reviews, setReviews] = useState<safeReview[]>(initialReviews || [])
+  const [isLoading, setIsLoading] = useState(false)
 
   const router = useRouter()
 
@@ -61,6 +62,7 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
 
   useEffect(() => {
     const fetchReviews = async () => {
+      setIsLoading(true)
       try {
         const response = await axios.get(
           `/api/admin/review?sortBy=${sortReviewBy}`
@@ -68,11 +70,15 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
         setReviews(response.data)
       } catch (error) {
         toast.error('Failed to fetch reviews')
+      } finally {
+        setIsLoading(false)
       }
     }
 
-    fetchReviews()
-  }, [sortReviewBy])
+    if (mounted && sortReviewBy !== 'newest') {
+      fetchReviews()
+    }
+  }, [sortReviewBy, mounted])
 
   if (!mounted) return null
 
@@ -207,7 +213,13 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
                 </select>
               </div>
             </div>
-            <AdminManageReviews reviews={reviews} />
+            {isLoading ? (
+              <p>Loading reviews...</p>
+            ) : reviews && reviews.length > 0 ? (
+              <AdminManageReviews reviews={reviews} />
+            ) : (
+              <p>No reviews available.</p>
+            )}
           </div>
           <div
             className={`p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full ${

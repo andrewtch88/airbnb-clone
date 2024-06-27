@@ -16,7 +16,7 @@ const Paginate = <T,>({
 }: PaginateProps<T>) => {
   const [currentPage, setCurrentPage] = useState(0)
 
-  // console.log('Current items:', items)
+  console.log('Current items:', items)
 
   if (!Array.isArray(items)) {
     console.error('Items is not an array:', items)
