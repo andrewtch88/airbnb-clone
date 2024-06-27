@@ -18,6 +18,11 @@ const Paginate = <T,>({
 
   // console.log('Current items:', items)
 
+  if (!Array.isArray(items)) {
+    console.error('Items is not an array:', items)
+    return null // or handle this case as needed
+  }
+
   const indexOfLastItem = (currentPage + 1) * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems: T[] = items.slice(indexOfFirstItem, indexOfLastItem)

@@ -129,7 +129,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ reservation }) => {
 
       <TextArea
         id="review"
-        label="Review (optional, up to 500 characters)"
+        label="Review (up to 500 characters)"
         disabled={isLoading}
         register={register}
         errors={errors}

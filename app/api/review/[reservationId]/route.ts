@@ -65,6 +65,13 @@ export async function POST(request: Request, { params }: { params: IParams }) {
       )
     }
 
+    if (review && review.length === 0) {
+      return NextResponse.json(
+        { error: 'Review cannot be empty.' },
+        { status: 400 }
+      )
+    }
+
     if (review && review.length < 50) {
       return NextResponse.json(
         { error: 'Review must be at least 50 characters long.' },
