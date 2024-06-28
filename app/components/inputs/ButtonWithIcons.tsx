@@ -52,7 +52,9 @@ const ButtonInput: React.FC<ButtonInputProps> = ({
         <img src={imageUrl} className="object-cover w-full h-full rounded-md" />
         <div className="font-semilight">{label}</div>
       </div>
-      <div className="font-semilight">{description}</div>
+      <div className="font-semilight text-sm md:text-lg lg:text-sm">
+        {description}
+      </div>
     </>
   )
 }

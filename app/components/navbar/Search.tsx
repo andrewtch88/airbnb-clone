@@ -243,7 +243,9 @@ const Search = () => {
     <>
       {/* Search Places Suggestion on the left */}
       <div className="md:w-1/2 md:order-first">
-        <div className="font-bold p-5 gap-1 ">Search by destinations</div>
+        <div className="font-bold p-5 gap-1 text-lg lg:text-sm">
+          Search by destinations
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-1 gap-1 p-5">
           <PlacesAutocomplete noMapOnSmallScreens={true}>
             <Input
@@ -260,8 +262,8 @@ const Search = () => {
 
       {/* Search By Region larger screens */}
       <div className="md:w-1/2 flex flex-col p-5 hidden md:block">
-        <div className="font-bold">Search by region</div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-1 max-h-[50vh] overflow-y-auto">
+        <div className="font-bold text-lg lg:text-sm">Search by region</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 max-h-[50vh] overflow-y-auto">
           <RegionsButtons
             countries={countries}
             country={country}
@@ -272,7 +274,7 @@ const Search = () => {
 
       {/* Search By Region smaller screens*/}
       <div className="md:hidden flex flex-col p-5">
-        <div className="font-bold">Search by region</div>
+        <div className="font-bold text-lg">Search by region</div>
         <div className="w-full h-[40vh] rounded-lg object-cover flex space-x-2 overflow-x-auto">
           <RegionsButtons
             countries={countries}
@@ -358,15 +360,21 @@ const Search = () => {
       <Popover.Button>
         <div className="border-[1px] w-full md:w-auto py-2 rounded-full shadow-sm hover:shadow-md transition cursor-pointer select-none bg-white">
           <div className="flex flex-row items-center justify-between">
-            <div className="text-sm font-semibold px-6">{locationLabel}</div>
-            <div className="hidden sm:block text-sm font-semibold px-6 border-x-[1px] flex-1 text-center">
+            <div className="text-sm md:text-lg lg:text-sm font-semibold px-6">
+              {locationLabel}
+            </div>
+            <div className="hidden sm:block text-lg lg:text-sm font-semibold px-6 border-x-[1px] flex-1 text-center">
               {durationLabel}
             </div>
             <div className="text-sm pl-6 pr-2 text-gray-600 flex flex-row items-center gap-10">
-              <div className="hidden sm:block">{guestCountLabel}</div>
+              <div className="hidden sm:block text-lg lg:text-sm">
+                {guestCountLabel}
+              </div>
               <div className="flex items-center p-2 bg-rose-500 rounded-full text-white font-bold">
                 <BiSearch size={18} />
-                <div className="hidden sm:block ml-2">Search</div>
+                <div className="hidden sm:block ml-2 text-lg lg:text-sm">
+                  Search
+                </div>
               </div>
             </div>
           </div>

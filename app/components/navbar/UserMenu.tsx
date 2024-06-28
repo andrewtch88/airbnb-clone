@@ -133,16 +133,15 @@ const UserMenu: React.FC<UserMenuProps> = ({
           <>
             <div
               onClick={toggleRentModal}
-              className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer"
+              className="hidden lg:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer"
             >
               Bearbnb your home
             </div>
             <div
               onClick={toggleOpen}
-              className="p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
+              className="p-4 md:py-2 md:px-4 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
             >
-              <AiOutlineMenu />
-
+              {isOpen ? 'X' : <AiOutlineMenu />}
               <div className="inline-block">
                 <div className="hidden md:block select-none">
                   <Avatar src={currentUser?.image} />
@@ -160,7 +159,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
       </div>
 
       {isOpen && (
-        <div className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm">
+        <div className="absolute rounded-xl shadow-md w-[50vw] min-w-[200px] md:w-3/4 lg:w-2/3 xl:w-1/2 bg-white overflow-hidden right-0 top-12 text-sm">
           <div className="flex flex-col cursor-pointer select-none">
             {currentUser ? (
               <>
@@ -169,7 +168,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                   onClick={() => router.push('/myFavourites')}
                 />
                 <MenuItem
-                  label={`My trips`}
+                  label="My trips"
                   onClick={() => router.push('/myTrips')}
                 />
                 <MenuItem
