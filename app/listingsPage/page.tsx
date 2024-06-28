@@ -11,7 +11,7 @@ interface listingsPageProps {
   searchParams: IListingsParams
 }
 
-// get url parameters in a server component (searchParams)
+// automatically get url parameters in a server component (searchParams)
 const listingsPage = async ({ searchParams }: listingsPageProps) => {
   const listings = await getListings(searchParams)
   const currentUser = await getCurrentUser()

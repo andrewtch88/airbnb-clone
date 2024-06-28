@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     }
 
     const url = new URL(request.url)
-    const sortBy = url.searchParams.get('sortBy')
+    const sortBy = url.searchParams.get('sortBy') // if got searchParams then must use force dynamic to get latest data
 
     let query: any = {}
 

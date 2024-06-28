@@ -120,7 +120,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
     if (!successHandledRef.current) {
       if (success === 'true') {
-        toast.success('Listing reserved! Redirecting...', { duration: 5000 })
+        toast.success('Listing reserved! Redirecting...', { duration: 3000 })
         setDateRange(initialDateRange)
         router.push('/myTrips')
         successHandledRef.current = true

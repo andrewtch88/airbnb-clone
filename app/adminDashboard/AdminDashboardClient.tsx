@@ -39,7 +39,7 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
   const [mounted, setMounted] = useState(false)
   const [activeTab, setActiveTab] = useState('payment')
   const [sortReviewBy, setSortReviewBy] = useState('newest')
-  const [reviews, setReviews] = useState<safeReview[]>(initialReviews || [])
+  const [reviews, setReviews] = useState<safeReview[]>(initialReviews || []) // async await should use default empty data type (not fetched yet)
   const [isLoading, setIsLoading] = useState(false)
 
   const router = useRouter()
@@ -223,6 +223,7 @@ const AdminDashboardClient: React.FC<AdminDashboardProps> = ({
                 </select>
               </div>
             </div>
+            {/* define loading state then render when is ready (async await) */}
             {isLoading ? (
               <p>Loading reviews...</p>
             ) : reviews && reviews.length > 0 ? (

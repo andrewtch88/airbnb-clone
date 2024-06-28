@@ -84,15 +84,14 @@ const Modal: React.FC<ModalProps> = ({
     return null
   }
 
-  // w-full md:w-4/6 lg:w-3/6 xl:w-2/5 is screen dimensions
   return (
     <>
       <div
         className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none bg-neutral-800/70"
         style={{ display: showModal ? 'flex' : 'none' }}
       >
-        <div
-          className="relative w-full md:w-4/6 lg:w-3/6 xl:w-2/5 my-6 mx-auto h-full lg:h-auto md:h-auto overflow-y-auto"
+        <div // w-full md:w-3/4 lg:w-2/3 xl:w-1/2 is screen dimensions
+          className="relative w-full md:w-3/4 lg:w-2/3 xl:w-1/2 my-6 mx-auto h-full lg:h-auto md:h-auto overflow-y-auto"
           style={{ maxHeight: '90vh', maxWidth: '100vw' }}
         >
           {/* CONTENT */}

@@ -46,9 +46,9 @@ const StarRating: React.FC<StarRatingProps> = ({
                 className="hidden"
               />
               <span
-                className={`text-2xl sm:text-3xl cursor-pointer ${
+                className={`cursor-pointer ${
                   disabled ? 'opacity-30 cursor-not-allowed' : ''
-                }`}
+                } text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl`}
                 style={{
                   color:
                     currentRating <= (hover || rating) ? '#ffc107' : '#e4e5e9',
@@ -69,7 +69,7 @@ const StarRating: React.FC<StarRatingProps> = ({
     <div className="flex justify-between py-4">
       <label
         htmlFor={categoryRating}
-        className="text-sm font-medium leading-6 text-gray-900"
+        className="text-sm md:text-lg font-medium leading-6 text-gray-900 mt-1"
       >
         {categoryRating}
       </label>

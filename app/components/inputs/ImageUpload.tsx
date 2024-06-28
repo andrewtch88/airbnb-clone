@@ -18,7 +18,8 @@ const ImageUpload: FC<ImageUploadProps> = ({ onChange, value, disabled }) => {
   )
 
   // Remove the image at the specified index
-  const handleRemove = (index: number) => {
+  const handleRemove = (index: number, event: React.MouseEvent) => {
+    event.stopPropagation()
     const updatedImages = [...value]
     updatedImages.splice(index, 1)
     onChange(updatedImages)
@@ -40,15 +41,15 @@ const ImageUpload: FC<ImageUploadProps> = ({ onChange, value, disabled }) => {
             <div className="font-semibold text-lg font-size-sm">
               Click here to upload, first image = thumbnail
             </div>
-            <div className="flex flex-wrap gap-4">
+            <div className="grid gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {Array.isArray(value) &&
                 value.map((imageUrl, index) => (
                   <div
                     key={index}
-                    className="relative w-50 h-50 overflow-hidden"
+                    className="relative overflow-hidden"
                     style={{
-                      height: '140px',
-                      width: '140px',
+                      height: '190px',
+                      width: '100%',
                     }}
                   >
                     <Image
@@ -59,7 +60,9 @@ const ImageUpload: FC<ImageUploadProps> = ({ onChange, value, disabled }) => {
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                     <button
-                      onClick={() => !disabled && handleRemove(index)}
+                      onClick={(event) =>
+                        !disabled && handleRemove(index, event)
+                      }
                       className="p-1 border-0 hover:opacity-70 transition absolute left-0 top-0 bg-red-500 rounded-full text-white"
                     >
                       <IoMdClose size={18} />
