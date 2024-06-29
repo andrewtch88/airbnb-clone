@@ -38,9 +38,7 @@ Live Chat using Socket.io, tanstack query for infinite loading of messages in ba
 ![](https://img.shields.io/badge/next.js-20232A?style=for-the-badge&logo=next.js&logoColor=61DAFB)
 
 ## Install my-project with npm
-```
-npx create-next-app@latest project-name --typescript --eslint
-```
+![image](https://github.com/andrewtch88/airbnb-clone/assets/59404615/54140da4-f3fd-4975-8776-7e05811968c8)
 
 ```
 cd project-name
