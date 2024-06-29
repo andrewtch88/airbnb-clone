@@ -32,30 +32,16 @@ Live Chat using Socket.io, tanstack query for infinite loading of messages in ba
 
 ## :toolbox: Getting Started
 
-### :gear: Installation
-
-![](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![](https://img.shields.io/badge/next.js-20232A?style=for-the-badge&logo=next.js&logoColor=61DAFB)
-
-## Install my-project with npm
-![image](https://github.com/andrewtch88/airbnb-clone/assets/59404615/54140da4-f3fd-4975-8776-7e05811968c8)
-
-```
-cd project-name
-```
-
-Clone the project
+### :gear: Create a projects folder in ur pc
+Clone the project (open terminal in the folder)
 
 ```bash
   git clone https://github.com/andrewtch88/airbnb-clone.git
 ```
 
-change directory
-
-```bash
-  cd airbnb-clone
-```
-
+### Open your project in code editor
+Right click the airbnb-clone folder and open in vscode?
+ 
 ### :bangbang: Prerequisites
 
 - Install Node JS in your computer <a href='https://nodejs.org/en/'>HERE</a>
@@ -63,7 +49,7 @@ change directory
 - Sign up for a Google Cloud Platform <a href='https://console.cloud.google.com/'>HERE</a>
 - And other accounts needed depending on the environment variable
 
-### :key: Setup Environment Variables (.env and .env.local file)
+### Create .env and .env.local file to Setup Environment Variables
 ```bash
 DATABASE_URL=""
 NEXTAUTH_SECRET=""
@@ -106,5 +92,7 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+Any errors, kindly google and stackoverflow answers will help
 
 <div align="center">Don't forget to leave a star ⭐️</div>
