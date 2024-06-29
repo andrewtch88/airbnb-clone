@@ -32,38 +32,6 @@ Live Chat using Socket.io, tanstack query for infinite loading of messages in ba
 
 ## :toolbox: Getting Started
 
-### :bangbang: Prerequisites
-
-- Install Node JS in your computer <a href='https://nodejs.org/en/'>HERE</a>
-- Sign up for a Cloudinary account <a href='https://cloudinary.com/'>HERE</a>
-- Sign up for a Google Cloud Platform <a href='https://console.cloud.google.com/'>HERE</a>
-- And other accounts needed depending on the environment variable
-
-### :key: Setup Environment Variables (.env and .env.local file)
-```bash
-DATABASE_URL=""
-NEXTAUTH_SECRET=""
-NEXTAUTH_URL=
-GITHUB_ID=
-GITHUB_SECRET=
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-```
-
-```bash
-NEXT_PUBLIC_GMAP_GEOCODING_API_KEY=
-NEXT_PUBLIC_GMAP_PLACES_API_KEY=
-NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=""
-NEXT_PUBLIC_STRIPE_API_KEY=
-NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET=
-```
-
-## Setup Prisma
-
-```bash
-npx prisma db push
-```
-
 ### :gear: Installation
 
 ![](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
@@ -90,9 +58,41 @@ change directory
   cd airbnb-clone
 ```
 
+### :bangbang: Prerequisites
+
+- Install Node JS in your computer <a href='https://nodejs.org/en/'>HERE</a>
+- Sign up for a Cloudinary account <a href='https://cloudinary.com/'>HERE</a>
+- Sign up for a Google Cloud Platform <a href='https://console.cloud.google.com/'>HERE</a>
+- And other accounts needed depending on the environment variable
+
+### :key: Setup Environment Variables (.env and .env.local file)
+```bash
+DATABASE_URL=""
+NEXTAUTH_SECRET=""
+NEXTAUTH_URL=
+GITHUB_ID=
+GITHUB_SECRET=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+```
+
+```bash
+NEXT_PUBLIC_GMAP_GEOCODING_API_KEY=
+NEXT_PUBLIC_GMAP_PLACES_API_KEY=
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=""
+NEXT_PUBLIC_STRIPE_API_KEY=
+NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET=
+```
+
 ## Install required packages in the terminal
 ```
 npm i
+```
+
+## Setup Prisma
+
+```bash
+npx prisma db push
 ```
 
 ## Start the app
