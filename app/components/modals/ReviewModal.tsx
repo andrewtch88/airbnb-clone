@@ -12,6 +12,8 @@ import TextArea from '../inputs/TextArea'
 import StarRating from '../inputs/StarRating'
 import toast from 'react-hot-toast'
 import axios from 'axios'
+import Avatar from '../Avatar'
+import Heading from '../Heading'
 
 interface ReviewModalProps {
   reservation: safeReservation | null
@@ -99,18 +101,18 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ reservation }) => {
             sizes="( min-width: 640px) 640px, 100vw"
           />
         </div>
-        <div className="ml-3 text-2xl text-black font-medium">
-          <div>
+        <div className="ml-3">
+          <div className="text-2xl text-black font-medium">
             {reservation?.listing.title} in{' '}
             {reservation?.listing.city + ', ' + reservation?.listing.country}
           </div>
           {reservation?.listing.reviewCount == 0 ? (
-            <span className="mt-2 text-xl font-medium leading-6 text-gray-900 flex items-center">
+            <span className="mt-2 mb-2 text-xl font-medium leading-6 text-gray-900 flex items-center">
               <IoStar className="inline h-6 w-6 fill-current me-2" />
               No reviews (yet)
             </span>
           ) : (
-            <div className="mt-2 text-xl font-medium leading-6 text-gray-900 flex items-center">
+            <div className="mt-2 mb-2 text-xl font-medium leading-6 text-gray-900 flex items-center">
               <IoStar className="inline h-6 w-6 fill-current me-2" />
               <span>
                 {reservation?.listing.averageRating.toFixed(2)} (
@@ -118,14 +120,44 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ reservation }) => {
               </span>
             </div>
           )}
+          <div className="md:col-span-3">
+            {/* Contact Host */}
+            <div className="w-full md:order-first">
+              <div className="bg-white border border-gray-200 rounded-lg shadow">
+                <div className="flex flex-col items-center pb-2">
+                  <Image
+                    className="w-24 h-24 mb-3 rounded-full shadow-lg"
+                    src={
+                      reservation?.listing?.user?.image ||
+                      '/images/placeholder.jpg'
+                    }
+                    alt="Host profile pic"
+                    width={200}
+                    height={200}
+                  />
+                  <h5 className="mb-1 text-xl font-medium text-gray-900">
+                    {reservation?.listing?.user?.name}
+                  </h5>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    Host
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="relative py-6 mt-4">
+      <div className="relative py-3 mt-2">
         <div className="absolute inset-0 flex items-center" aria-hidden="true">
           <div className="w-full border-t border-gray-300"></div>
         </div>
       </div>
+
+      <Heading
+        title="Your Review"
+        subtitle="Share your experience with others"
+      />
 
       <TextArea
         id="review"
