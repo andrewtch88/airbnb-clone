@@ -60,67 +60,6 @@ interface Places {
   status: string
 }
 
-const tokyoDisneyland = {
-  html_attributions: [],
-  results: [
-    {
-      business_status: 'OPERATIONAL',
-      formatted_address: '1-1 Maihama, Urayasu, Chiba 279-0031, Japan',
-      geometry: {
-        location: {
-          lat: 35.6328964,
-          lng: 139.8803943,
-        },
-        viewport: {
-          northeast: {
-            lat: 35.63923269999999,
-            lng: 139.8826676,
-          },
-          southwest: {
-            lat: 35.63078430000001,
-            lng: 139.8735744,
-          },
-        },
-      },
-      icon:
-        'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png',
-      icon_background_color: '#7B9EB0',
-      icon_mask_base_uri:
-        'https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet',
-      name: 'Tokyo Disneyland',
-      opening_hours: {
-        open_now: true,
-      },
-      photos: [
-        {
-          height: 4000,
-          html_attributions: [
-            '\u003ca href="https://maps.google.com/maps/contrib/103182151579405941913"\u003e杉山隆史\u003c/a\u003e',
-          ],
-          photo_reference:
-            'AUGGfZlFlPnCwgliFYDaB2FNaUPndO4V16wmGQRjUPYZsDIN0YXAHVBzJhtlN185AF6y5YaqWpSDc4ix_D79m3VZDr9HfVl16bfGJPYQSc4ROEsmzfVZ7kb3-HtOvSyKCnJmOgp2bOXRyg3D1sSwF0KsLkDAb7RMSTTpHQD3NKbK4-YcaWBq',
-          width: 3000,
-        },
-      ],
-      place_id: 'ChIJszdHEQN9GGARy9MJ1TY22eQ',
-      plus_code: {
-        compound_code: 'JVMJ+55 Urayasu, Chiba, Japan',
-        global_code: '8Q7XJVMJ+55',
-      },
-      rating: 4.6,
-      reference: 'ChIJszdHEQN9GGARy9MJ1TY22eQ',
-      types: [
-        'tourist_attraction',
-        'amusement_park',
-        'point_of_interest',
-        'establishment',
-      ],
-      user_ratings_total: 104224,
-    },
-  ],
-  status: 'OK',
-}
-
 const ToDo = () => {
   const [franceData, setFranceData] = useState<Places>()
   const [australiaData, setAustraliaData] = useState<Places>()
@@ -176,17 +115,19 @@ const ToDo = () => {
               },
             }}
           >
-            {tokyoDisneyland.results.map((result, index) => (
-              <SwiperSlide key={`tokyo-${index}`}>
+            {japanData.results.map((result, index) => (
+              <SwiperSlide key={`japan-${index}`}>
                 <PlaceCard result={result} />
               </SwiperSlide>
             ))}
 
-            {franceData.results.map((result, index) => (
-              <SwiperSlide key={`france-${index}`}>
-                <PlaceCard result={result} />
-              </SwiperSlide>
-            ))}
+            {franceData.results
+              .filter((result) => !result.name.includes('France'))
+              .map((result, index) => (
+                <SwiperSlide key={`france-${index}`}>
+                  <PlaceCard result={result} />
+                </SwiperSlide>
+              ))}
 
             {australiaData.results
               .filter((result) => !result.name.includes('Australia'))
@@ -195,12 +136,6 @@ const ToDo = () => {
                   <PlaceCard result={result} />
                 </SwiperSlide>
               ))}
-
-            {japanData.results.map((result, index) => (
-              <SwiperSlide key={`japan-${index}`}>
-                <PlaceCard result={result} />
-              </SwiperSlide>
-            ))}
           </Swiper>
         </>
       )}
