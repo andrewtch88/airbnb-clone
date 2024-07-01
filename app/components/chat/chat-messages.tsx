@@ -39,7 +39,7 @@ export const ChatMessages = ({
   const chatRef = useRef<ElementRef<'div'>>(null)
   const bottomRef = useRef<ElementRef<'div'>>(null)
 
-  // fetch initial set of chat messages and manage pagination.
+  // fetch chat messages and manage pagination.
   const {
     data,
     fetchNextPage,

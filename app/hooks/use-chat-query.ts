@@ -11,7 +11,8 @@ interface ChatQueryProps {
   paramValue: string
 }
 
-// hook to fetch chat messages
+// hook to fetch chat messages and manage pagination.
+// when add new messages, the use chat query triggers re-render and this is called again
 export const useChatQuery = ({
   queryKey,
   apiUrl,
@@ -45,7 +46,7 @@ export const useChatQuery = ({
   } = useInfiniteQuery({
     queryKey: [queryKey],
     queryFn: fetchMessages,
-    getNextPageParam: (lastPage) => lastPage?.nextCursor,
+    getNextPageParam: (lastPage) => lastPage?.nextCursor, // last page from the get direct-messages API
     refetchInterval: isConnected ? false : 1000,
     initialPageParam: null, // Set this to null or provide a valid initial value
   })
