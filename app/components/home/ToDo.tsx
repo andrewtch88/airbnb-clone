@@ -115,11 +115,13 @@ const ToDo = () => {
               },
             }}
           >
-            {japanData.results.map((result, index) => (
-              <SwiperSlide key={`japan-${index}`}>
-                <PlaceCard result={result} />
-              </SwiperSlide>
-            ))}
+            {japanData.results
+              .filter((result) => !result.name.includes('Japan'))
+              .map((result, index) => (
+                <SwiperSlide key={`japan-${index}`}>
+                  <PlaceCard result={result} />
+                </SwiperSlide>
+              ))}
 
             {franceData.results
               .filter((result) => !result.name.includes('France'))

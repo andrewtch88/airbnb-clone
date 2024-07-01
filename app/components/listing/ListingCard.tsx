@@ -144,8 +144,10 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
             {/* Overlay Text for Owner (Suspension status or New reservation) */}
             {data?.userId === currentUser?.id &&
-            reservation &&
-            notifications?.newReservationIds.includes(reservation.id) ? (
+            (data.isSuspended ||
+              (reservation &&
+                notifications &&
+                notifications?.newReservationIds.includes(reservation.id))) ? (
               <div className="absolute inset-0 flex items-center justify-center">
                 <span className="text-center text-xl font-bold text-red-600 bg-white bg-opacity-80 px-4 py-2 rounded-md">
                   {data.isSuspended ? overlayText : 'New'}
